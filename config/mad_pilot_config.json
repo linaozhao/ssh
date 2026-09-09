@@ -1,0 +1,40 @@
+{
+  "models": [
+    {
+      "alias": "qwen",
+      "model_name": "Qwen3-8B",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "api_key": "EMPTY",
+      "thinking_enabled": false,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    },
+    {
+      "alias": "llama",
+      "model_name": "Llama-3.1-8B",
+      "base_url": "http://127.0.0.1:8002/v1",
+      "api_key": "EMPTY",
+      "thinking_enabled": false
+    }
+  ],
+  "agents": ["A1", "A2", "A3"],
+  "rounds": [0, 1, 2],
+  "agent_round_seeds": {
+    "A1": {"0": 1101, "1": 1102, "2": 1103},
+    "A2": {"0": 2201, "1": 2202, "2": 2203},
+    "A3": {"0": 3301, "1": 3302, "2": 3303}
+  },
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "max_tokens": 512,
+  "request_timeout_seconds": 120,
+  "max_retries": 2,
+  "retry_sleep_seconds": 2,
+  "stable_control_count": 10,
+  "selection_seed": 404,
+  "parallel_model_families": true,
+  "parallel_agents_per_round": true
+}

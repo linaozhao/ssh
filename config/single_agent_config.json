@@ -1,0 +1,30 @@
+{
+  "models": [
+    {
+      "alias": "qwen",
+      "model_name": "Qwen3-8B",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "api_key": "EMPTY",
+      "thinking_enabled": false,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    },
+    {
+      "alias": "llama",
+      "model_name": "Llama-3.1-8B",
+      "base_url": "http://127.0.0.1:8002/v1",
+      "api_key": "EMPTY",
+      "thinking_enabled": false
+    }
+  ],
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "max_tokens": 512,
+  "seeds": [11, 22, 33],
+  "request_timeout_seconds": 120,
+  "max_retries": 2,
+  "retry_sleep_seconds": 2
+}
