@@ -16,6 +16,7 @@ Current scope:
 - Empirical difficulty, constraint-error, disagreement, and MAD-candidate analysis.
 - A 27-item homogeneous Qwen/Llama small baseline MAD pilot with three agents and two revision rounds.
 - Deterministic answer-transition, violation-set, peer-adoption, and consensus analysis.
+- An additive v4 generator with independent constraint-load, distractor-similarity, and information-load factors.
 
 Not included in this stage:
 
@@ -79,6 +80,31 @@ Run tests:
 ```bash
 pytest -q
 ```
+
+## Generate Factorized v4 Pool
+
+v4 is an additive generation path. It does not replace `generate_item()` or
+change the v3 schema and datasets. Generate the current 18-cell example pool
+with 10 items per cell:
+
+```bash
+python scripts/generate_v4_pool.py \
+  --items-per-cell 10 \
+  --output data/multi_constraint_v4_pool.jsonl \
+  --report-output v4_generator_report.md \
+  --seed 42
+```
+
+The three factors are independent:
+
+- `constraint_load`: CL1, CL2, and CL3 produce 3, 5, and 7 constraints.
+- `distractor_similarity`: DS1 uses far distractors, DS2 mixes one near miss with two clear errors, and DS3 uses three one-constraint near misses.
+- `information_load`: IL1 displays only relevant facts; IL2 adds two structured background facts per candidate without adding them to formal attributes.
+
+Every v4 item contains `difficulty_factors` and `generation_metadata` while
+preserving the Gold answer, formal constraints, matrix, and violation
+signatures. The CLI reloads and independently validates the serialized JSONL
+before writing the report.
 
 ## Single-Agent Screening
 
