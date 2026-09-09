@@ -1,0 +1,62 @@
+{
+  "experiment_id": "v4_1_single_agent_calibration_20260909_v2",
+  "dataset": "data/multi_constraint_v4_1_prototype.jsonl",
+  "results_dir": "results/v4_1_calibration",
+  "models": [
+    {
+      "alias": "qwen",
+      "model_name": "Qwen3-8B",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "api_key": "EMPTY",
+      "thinking_enabled": false,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "deployment": {
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B",
+        "architecture": "Qwen3ForCausalLM",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "max_model_len": 4096,
+        "gpu_index": 0,
+        "gpu_memory_utilization": 0.78
+      }
+    },
+    {
+      "alias": "llama",
+      "model_name": "Llama-3.1-8B",
+      "base_url": "http://127.0.0.1:8002/v1",
+      "api_key": "EMPTY",
+      "thinking_enabled": false,
+      "deployment": {
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/LLM-Research/Meta-Llama-3___1-8B-Instruct",
+        "architecture": "LlamaForCausalLM",
+        "dtype": "bfloat16",
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "max_model_len": 4096,
+        "gpu_index": 1,
+        "gpu_memory_utilization": 0.78
+      }
+    }
+  ],
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "max_tokens": 1024,
+  "seeds": [11, 22, 33],
+  "request_timeout_seconds": 120,
+  "max_retries": 2,
+  "retry_sleep_seconds": 2,
+  "max_concurrent_requests": 4,
+  "protocol_notes": [
+    "A stratified 108-run preflight at max_tokens=512 produced one finish_reason=length response.",
+    "The 512-token preflight is preserved under results/v4_1_calibration/preflight_512_initial and is excluded from the frozen v2 experiment."
+  ]
+}

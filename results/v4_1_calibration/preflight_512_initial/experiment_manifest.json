@@ -1,0 +1,145 @@
+{
+  "created_at_utc": "2026-09-09T13:52:51.323043+00:00",
+  "dataset_path": "data/multi_constraint_v4_1_prototype.jsonl",
+  "dataset_validation": {
+    "difficulty_cell_distribution": {
+      "CL1__DS1_far__IL1_low": 10,
+      "CL1__DS1_far__IL2_high": 10,
+      "CL1__DS2_medium__IL1_low": 10,
+      "CL1__DS2_medium__IL2_high": 10,
+      "CL1__DS3_near__IL1_low": 10,
+      "CL1__DS3_near__IL2_high": 10,
+      "CL2__DS1_far__IL1_low": 10,
+      "CL2__DS1_far__IL2_high": 10,
+      "CL2__DS2_medium__IL1_low": 10,
+      "CL2__DS2_medium__IL2_high": 10,
+      "CL2__DS3_near__IL1_low": 10,
+      "CL2__DS3_near__IL2_high": 10,
+      "CL3__DS1_far__IL1_low": 10,
+      "CL3__DS1_far__IL2_high": 10,
+      "CL3__DS2_medium__IL1_low": 10,
+      "CL3__DS2_medium__IL2_high": 10,
+      "CL3__DS3_near__IL1_low": 10,
+      "CL3__DS3_near__IL2_high": 10
+    },
+    "gold_position_distribution": {
+      "A": 45,
+      "B": 45,
+      "C": 45,
+      "D": 45
+    },
+    "scenario_distribution": {
+      "availability_selection": 60,
+      "expert_recruitment": 60,
+      "project_assignment": 60
+    },
+    "total_items": 180,
+    "validated_items": 180,
+    "validation_pass_rate": 1.0
+  },
+  "expected": {
+    "cell_model_rows": 36,
+    "formal_runs": 1080,
+    "item_model_records": 360,
+    "items": 180,
+    "preflight_items": 18,
+    "preflight_runs": 108
+  },
+  "experiment_id": "v4_1_single_agent_calibration_20260909_v1",
+  "fingerprints": {
+    "config_sha256": "58dca66bf1bf2c0c4f97a008d0264bb030920cf6f6dc17049eb170720a21d9ed",
+    "dataset_sha256": "19cedbfc33e5c56dd00355dbe90679b588388b876e7e3807123f2996269ef2c2",
+    "experiment_sha256": "631580d405776c51a9b48ca57bf252d86a19eccec72a141665151fdaefcd9edc",
+    "prompt_sha256": "c9f040a2da2b01befbad601be0536c9233efcc52d394d5fc29f8f5129e3c33ea",
+    "protocol_version": "v4.1-calibration-1"
+  },
+  "generation_parameters": {
+    "max_concurrent_requests": 4,
+    "max_tokens": 512,
+    "seeds": [
+      11,
+      22,
+      33
+    ],
+    "temperature": 0.7,
+    "top_p": 0.9
+  },
+  "models": [
+    {
+      "alias": "qwen",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "deployment": {
+        "architecture": "Qwen3ForCausalLM",
+        "dtype": "bfloat16",
+        "gpu_index": 0,
+        "gpu_memory_utilization": 0.78,
+        "max_model_len": 4096,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+      },
+      "model_name": "Qwen3-8B",
+      "thinking_enabled": false
+    },
+    {
+      "alias": "llama",
+      "base_url": "http://127.0.0.1:8002/v1",
+      "deployment": {
+        "architecture": "LlamaForCausalLM",
+        "dtype": "bfloat16",
+        "gpu_index": 1,
+        "gpu_memory_utilization": 0.78,
+        "max_model_len": 4096,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/LLM-Research/Meta-Llama-3___1-8B-Instruct"
+      },
+      "model_name": "Llama-3.1-8B",
+      "thinking_enabled": false
+    }
+  ],
+  "preflight_summary": {
+    "api_failures": 0,
+    "cell_record_counts": {
+      "CL1__DS1_far__IL1_low": 6,
+      "CL1__DS1_far__IL2_high": 6,
+      "CL1__DS2_medium__IL1_low": 6,
+      "CL1__DS2_medium__IL2_high": 6,
+      "CL1__DS3_near__IL1_low": 6,
+      "CL1__DS3_near__IL2_high": 6,
+      "CL2__DS1_far__IL1_low": 6,
+      "CL2__DS1_far__IL2_high": 6,
+      "CL2__DS2_medium__IL1_low": 6,
+      "CL2__DS2_medium__IL2_high": 6,
+      "CL2__DS3_near__IL1_low": 6,
+      "CL2__DS3_near__IL2_high": 6,
+      "CL3__DS1_far__IL1_low": 6,
+      "CL3__DS1_far__IL2_high": 6,
+      "CL3__DS2_medium__IL1_low": 6,
+      "CL3__DS2_medium__IL2_high": 6,
+      "CL3__DS3_near__IL1_low": 6,
+      "CL3__DS3_near__IL2_high": 6
+    },
+    "difficulty_cells": 18,
+    "json_compliant": 107,
+    "model_record_counts": {
+      "llama": 54,
+      "qwen": 54
+    },
+    "parse_audit_records": 1,
+    "total_records": 108,
+    "truncated": 1,
+    "valid_answers": 107
+  },
+  "prompt_template": "Solve the following multiple-choice problem independently.\n\nCarefully evaluate every stated requirement and determine which candidate satisfies all of them.\n\nProvide your answer and a concise explanation of your reasoning.\n\nReturn only valid JSON in the following format:\n\n{{\n  \"answer\": \"A\",\n  \"reasoning\": \"Briefly explain how you checked the relevant requirements.\",\n  \"confidence\": 0.85\n}}\n\nRules:\n- \"answer\" must be exactly one of A, B, C, or D.\n- \"confidence\" must be a number between 0 and 1.\n- Do not use Markdown.\n- Do not refer to other agents.\n- Solve the problem independently.\n\nProblem:\n\n{question}\n",
+  "protocol_version": "v4.1-calibration-1",
+  "status": {
+    "analysis": "pending",
+    "formal": "pending",
+    "preflight": "complete"
+  }
+}

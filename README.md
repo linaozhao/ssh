@@ -228,3 +228,30 @@ Neither field is an empirical model difficulty label.
 - It does not use LLM paraphrasing.
 - Screening results reflect the configured local model builds and sampling backend.
 - Difficulty comes from tracking constraints and near-correct options, not from intentionally obscure language.
+
+## v4.1 Single-Agent Calibration
+
+The v4.1 prototype keeps the 18 factor cells separate from the v3 difficulty
+fields. Calibration uses `difficulty_factors` and `metadata.difficulty_cell`
+directly and never synthesizes `option_closeness` or `structural_complexity`.
+
+Run the stratified 18-item preflight, then the formal 180-item experiment and
+analysis:
+
+```bash
+python scripts/run_v4_1_calibration.py --phase preflight
+python scripts/run_v4_1_calibration.py --phase formal --resume --reuse-preflight
+python scripts/analyze_v4_1_calibration.py
+```
+
+The frozen configuration is `config/v4_1_calibration_config.json`. Results are
+written under `results/v4_1_calibration/`. Each response stores the experiment,
+dataset, configuration, prompt and protocol fingerprint through the aggregate
+`experiment_fingerprint`; resume rejects mismatched or duplicate records.
+
+The v4.1 parser separately records whether an A-D answer can be identified and
+whether the complete response complies with the requested JSON schema. Text
+fallback accepts only an unambiguous explicit final answer, not ordinary
+mentions of candidates in the explanation. Parser revision 2 also recognizes
+an exact A-D value in an otherwise malformed JSON `answer` field while keeping
+`json_compliant=false`; conflicting explicit answers remain unresolved.

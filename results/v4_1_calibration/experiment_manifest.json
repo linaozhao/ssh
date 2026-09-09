@@ -1,0 +1,265 @@
+{
+  "created_at_utc": "2026-09-09T13:54:44.105283+00:00",
+  "dataset_path": "data/multi_constraint_v4_1_prototype.jsonl",
+  "dataset_validation": {
+    "difficulty_cell_distribution": {
+      "CL1__DS1_far__IL1_low": 10,
+      "CL1__DS1_far__IL2_high": 10,
+      "CL1__DS2_medium__IL1_low": 10,
+      "CL1__DS2_medium__IL2_high": 10,
+      "CL1__DS3_near__IL1_low": 10,
+      "CL1__DS3_near__IL2_high": 10,
+      "CL2__DS1_far__IL1_low": 10,
+      "CL2__DS1_far__IL2_high": 10,
+      "CL2__DS2_medium__IL1_low": 10,
+      "CL2__DS2_medium__IL2_high": 10,
+      "CL2__DS3_near__IL1_low": 10,
+      "CL2__DS3_near__IL2_high": 10,
+      "CL3__DS1_far__IL1_low": 10,
+      "CL3__DS1_far__IL2_high": 10,
+      "CL3__DS2_medium__IL1_low": 10,
+      "CL3__DS2_medium__IL2_high": 10,
+      "CL3__DS3_near__IL1_low": 10,
+      "CL3__DS3_near__IL2_high": 10
+    },
+    "gold_position_distribution": {
+      "A": 45,
+      "B": 45,
+      "C": 45,
+      "D": 45
+    },
+    "scenario_distribution": {
+      "availability_selection": 60,
+      "expert_recruitment": 60,
+      "project_assignment": 60
+    },
+    "total_items": 180,
+    "validated_items": 180,
+    "validation_pass_rate": 1.0
+  },
+  "expected": {
+    "cell_model_rows": 36,
+    "formal_runs": 1080,
+    "item_model_records": 360,
+    "items": 180,
+    "preflight_items": 18,
+    "preflight_runs": 108
+  },
+  "experiment_id": "v4_1_single_agent_calibration_20260909_v2",
+  "fingerprints": {
+    "config_sha256": "2256bfdc9cf3549d35a3c0074f964fbc92310a8066e5164b9efee89652f821bf",
+    "dataset_sha256": "19cedbfc33e5c56dd00355dbe90679b588388b876e7e3807123f2996269ef2c2",
+    "experiment_sha256": "1cd25b160df7f5b8fdaa77b251e027f405de73d10ccf1f7cf030f92344fb264c",
+    "prompt_sha256": "c9f040a2da2b01befbad601be0536c9233efcc52d394d5fc29f8f5129e3c33ea",
+    "protocol_version": "v4.1-calibration-1"
+  },
+  "formal_results": {
+    "cell_model_statistics_rows": 36,
+    "decision": {
+      "correct_wrong_coexist_by_model": {
+        "llama": 14,
+        "qwen": 1
+      },
+      "correct_wrong_coexist_item_model_count": 15,
+      "decision": "REFINE BEFORE EXPANSION",
+      "factor_support": {
+        "constraint_load": "两模型的边际结果均显示高水平更难，但受控切片并非全部单调",
+        "distractor_similarity": "两模型的边际结果均显示高水平更难，但受控切片并非全部单调",
+        "information_load": "仅部分模型显示明确下降，模型间证据不一致"
+      },
+      "informative_cell_model_rows": 10,
+      "informative_cell_model_rows_by_model": {
+        "llama": 10,
+        "qwen": 0
+      },
+      "overall_by_model": {
+        "llama": {
+          "api_failures": 0,
+          "correct": 395,
+          "json_compliance_rate": 0.959259,
+          "json_compliant": 518,
+          "records": 540,
+          "truncated": 2,
+          "unrecognized_answers": 18,
+          "valid_answer_accuracy": 0.756705,
+          "valid_answer_rate": 0.966667,
+          "valid_answers": 522
+        },
+        "qwen": {
+          "api_failures": 0,
+          "correct": 509,
+          "json_compliance_rate": 1.0,
+          "json_compliant": 540,
+          "records": 540,
+          "truncated": 0,
+          "unrecognized_answers": 0,
+          "valid_answer_accuracy": 0.942593,
+          "valid_answer_rate": 1.0,
+          "valid_answers": 540
+        }
+      },
+      "process_complete": true,
+      "qwen_near_perfect": true,
+      "recommendation": "不建议按当前比例直接均匀扩充到 540 题。先保留已有区分信号的 CL/DS 设计，增强或重构对模型影响不稳定的 IL2，并人工复核两模型三次稳定答错的题目；完成一轮小样本复核后再扩充。",
+      "within_model_behavior": {
+        "llama": {
+          "all_three_correct_items": 122,
+          "all_three_wrong_items": 35,
+          "answer_disagreement_items": 18,
+          "complete_items": 171,
+          "correct_wrong_coexist_items": 14
+        },
+        "qwen": {
+          "all_three_correct_items": 169,
+          "all_three_wrong_items": 10,
+          "answer_disagreement_items": 1,
+          "complete_items": 180,
+          "correct_wrong_coexist_items": 1
+        }
+      }
+    },
+    "item_model_analysis_records": 360,
+    "parse_audit_records": 22,
+    "run_inventory": {
+      "complete": true,
+      "completed_records": 1080,
+      "duplicate_run_count": 0,
+      "duplicate_runs": [],
+      "expected_runs": 1080,
+      "fingerprint_mismatch_count": 0,
+      "fingerprint_mismatches": [],
+      "missing_run_count": 0,
+      "missing_runs": [],
+      "unique_completed_runs": 1080,
+      "unknown_run_count": 0,
+      "unknown_runs": []
+    }
+  },
+  "formal_summary": {
+    "completed": 1080,
+    "expected": 1080,
+    "previously_completed": 1080,
+    "reused_from_preflight": 108,
+    "written": 0
+  },
+  "generation_parameters": {
+    "max_concurrent_requests": 4,
+    "max_tokens": 1024,
+    "seeds": [
+      11,
+      22,
+      33
+    ],
+    "temperature": 0.7,
+    "top_p": 0.9
+  },
+  "models": [
+    {
+      "alias": "qwen",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "deployment": {
+        "architecture": "Qwen3ForCausalLM",
+        "dtype": "bfloat16",
+        "gpu_index": 0,
+        "gpu_memory_utilization": 0.78,
+        "max_model_len": 4096,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+      },
+      "model_name": "Qwen3-8B",
+      "thinking_enabled": false
+    },
+    {
+      "alias": "llama",
+      "base_url": "http://127.0.0.1:8002/v1",
+      "deployment": {
+        "architecture": "LlamaForCausalLM",
+        "dtype": "bfloat16",
+        "gpu_index": 1,
+        "gpu_memory_utilization": 0.78,
+        "max_model_len": 4096,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/LLM-Research/Meta-Llama-3___1-8B-Instruct"
+      },
+      "model_name": "Llama-3.1-8B",
+      "thinking_enabled": false
+    }
+  ],
+  "parser_revision": "v4.1-answer-parser-2",
+  "preflight_summary": {
+    "api_failures": 0,
+    "cell_record_counts": {
+      "CL1__DS1_far__IL1_low": 6,
+      "CL1__DS1_far__IL2_high": 6,
+      "CL1__DS2_medium__IL1_low": 6,
+      "CL1__DS2_medium__IL2_high": 6,
+      "CL1__DS3_near__IL1_low": 6,
+      "CL1__DS3_near__IL2_high": 6,
+      "CL2__DS1_far__IL1_low": 6,
+      "CL2__DS1_far__IL2_high": 6,
+      "CL2__DS2_medium__IL1_low": 6,
+      "CL2__DS2_medium__IL2_high": 6,
+      "CL2__DS3_near__IL1_low": 6,
+      "CL2__DS3_near__IL2_high": 6,
+      "CL3__DS1_far__IL1_low": 6,
+      "CL3__DS1_far__IL2_high": 6,
+      "CL3__DS2_medium__IL1_low": 6,
+      "CL3__DS2_medium__IL2_high": 6,
+      "CL3__DS3_near__IL1_low": 6,
+      "CL3__DS3_near__IL2_high": 6
+    },
+    "difficulty_cells": 18,
+    "json_compliant": 108,
+    "model_record_counts": {
+      "llama": 54,
+      "qwen": 54
+    },
+    "parse_audit_records": 0,
+    "total_records": 108,
+    "truncated": 0,
+    "valid_answers": 108
+  },
+  "prompt_template": "Solve the following multiple-choice problem independently.\n\nCarefully evaluate every stated requirement and determine which candidate satisfies all of them.\n\nProvide your answer and a concise explanation of your reasoning.\n\nReturn only valid JSON in the following format:\n\n{{\n  \"answer\": \"A\",\n  \"reasoning\": \"Briefly explain how you checked the relevant requirements.\",\n  \"confidence\": 0.85\n}}\n\nRules:\n- \"answer\" must be exactly one of A, B, C, or D.\n- \"confidence\" must be a number between 0 and 1.\n- Do not use Markdown.\n- Do not refer to other agents.\n- Solve the problem independently.\n\nProblem:\n\n{question}\n",
+  "protocol_version": "v4.1-calibration-1",
+  "service_observations": [
+    {
+      "alias": "qwen",
+      "available_model_ids": [
+        "Qwen3-8B"
+      ],
+      "backend_version": {
+        "version": "0.11.2"
+      },
+      "base_url": "http://127.0.0.1:8001/v1",
+      "configured_model_name": "Qwen3-8B",
+      "observed_at_utc": "2026-09-09T14:06:58.597371+00:00",
+      "probe_error": null,
+      "probe_success": true
+    },
+    {
+      "alias": "llama",
+      "available_model_ids": [
+        "Llama-3.1-8B"
+      ],
+      "backend_version": {
+        "version": "0.11.2"
+      },
+      "base_url": "http://127.0.0.1:8002/v1",
+      "configured_model_name": "Llama-3.1-8B",
+      "observed_at_utc": "2026-09-09T14:06:58.602726+00:00",
+      "probe_error": null,
+      "probe_success": true
+    }
+  ],
+  "status": {
+    "analysis": "complete",
+    "formal": "complete",
+    "preflight": "complete"
+  }
+}
