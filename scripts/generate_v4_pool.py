@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the complete English v4 factorized-difficulty example pool."""
+"""Generate the complete English v4.1 factorized-difficulty prototype."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from mad_attr_filter.v4_validation import validate_v4_pool
 def parse_args() -> argparse.Namespace:
     """Parse command-line options."""
     parser = argparse.ArgumentParser(
-        description="Generate all 18 cells of the v4 factorized attribute-filter pool."
+        description="Generate all 18 cells of the v4.1 factorized attribute-filter prototype."
     )
     parser.add_argument(
         "--items-per-cell",
@@ -29,12 +29,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="data/multi_constraint_v4_pool.jsonl",
+        default="data/multi_constraint_v4_1_prototype.jsonl",
         help="JSONL output path relative to the project root.",
     )
     parser.add_argument(
         "--report-output",
-        default="v4_generator_report.md",
+        default="v4_1_generator_report.md",
         help="Markdown validation report path relative to the project root.",
     )
     parser.add_argument("--seed", type=int, default=42, help="Global random seed.")
@@ -53,7 +53,7 @@ def _resolve_path(raw_path: str) -> Path:
 
 
 def main() -> int:
-    """Generate, serialize, reload, validate, and report the v4 pool."""
+    """Generate, serialize, reload, validate, and report the v4.1 prototype."""
     args = parse_args()
     if args.items_per_cell < 1:
         raise SystemExit("--items-per-cell must be positive")
@@ -77,7 +77,7 @@ def main() -> int:
         else str(output_path),
     )
 
-    print(f"Wrote {len(items)} v4 items to {output_path}")
+    print(f"Wrote {len(items)} v4.1 items to {output_path}")
     print(f"Wrote validation report to {report_path}")
     print(f"Difficulty cells: {generation_report['num_cells']}")
     print(f"Items per cell: {generation_report['items_per_cell']}")

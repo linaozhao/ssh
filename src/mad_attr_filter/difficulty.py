@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from itertools import product
+from math import ceil, comb
 from typing import Any, ClassVar
 
 
@@ -96,10 +97,23 @@ def all_difficulty_configs() -> tuple[DifficultyConfig, ...]:
     )
 
 
+def far_violation_threshold(num_constraints: int) -> int:
+    """Return the v4.1 DS1 threshold, defined as ``ceil(k / 2)``."""
+    if num_constraints < 1:
+        raise DifficultyConfigError("num_constraints must be positive")
+    return ceil(num_constraints / 2)
+
+
+def far_signature_capacity(num_constraints: int) -> int:
+    """Count distinct nonempty signatures that meet the DS1 threshold."""
+    threshold = far_violation_threshold(num_constraints)
+    return sum(comb(num_constraints, size) for size in range(threshold, num_constraints + 1))
+
+
 def validate_distractor_signatures(
     config: DifficultyConfig,
     wrong_signatures: Sequence[Sequence[str]],
-) -> None:
+) -> tuple[str, ...]:
     """Validate that three wrong-option signatures implement the requested DS level."""
     if len(wrong_signatures) != 3:
         raise DifficultyConfigError(
@@ -110,19 +124,33 @@ def validate_distractor_signatures(
         raise DifficultyConfigError("Every distractor must violate at least one constraint")
 
     if config.distractor_similarity == "DS1_far":
-        if any(count < 3 for count in counts):
+        threshold = far_violation_threshold(config.num_constraints)
+        if any(count < threshold for count in counts):
             raise DifficultyConfigError(
-                f"DS1_far distractors must each violate at least 3 constraints, got {counts}"
+                f"DS1_far distractors must each violate at least {threshold} constraints "
+                f"for k={config.num_constraints}, got {counts}"
             )
-        return
+        unique_count = len({tuple(signature) for signature in wrong_signatures})
+        capacity = far_signature_capacity(config.num_constraints)
+        if unique_count == 1 and capacity >= 3:
+            raise DifficultyConfigError(
+                "DS1_far produced three identical signatures even though distinct signatures are feasible"
+            )
+        if unique_count < 3 and capacity < 3:
+            return (
+                f"Only {capacity} distinct DS1_far signatures are feasible for "
+                f"k={config.num_constraints}",
+            )
+        return ()
     if config.distractor_similarity == "DS2_medium":
         if counts[0] != 1 or counts[1] < 2:
             raise DifficultyConfigError(
                 "DS2_medium requires exactly one one-constraint near miss and two "
                 f"multi-constraint distractors, got {counts}"
             )
-        return
+        return ()
     if counts != [1, 1, 1]:
         raise DifficultyConfigError(
             f"DS3_near distractors must each violate exactly one constraint, got {counts}"
         )
+    return ()

@@ -15,6 +15,7 @@ from mad_attr_filter.difficulty import (
 )
 from mad_attr_filter.matrix import compute_constraint_matrix, compute_violation_signatures
 from mad_attr_filter.models import ConstraintSpec
+from mad_attr_filter.non_target_facts import NON_TARGET_FACT_BY_KEY
 from mad_attr_filter.semantic_validator import SemanticValidationError, validate_semantics
 
 
@@ -45,19 +46,27 @@ def _constraints_from_item(item: Mapping[str, Any]) -> list[ConstraintSpec]:
     return constraints
 
 
-def _validate_generation_metadata(item: Mapping[str, Any]) -> None:
+def _validate_generation_metadata(
+    item: Mapping[str, Any],
+    expected_warnings: Sequence[str],
+) -> None:
     metadata = item.get("generation_metadata")
     if not isinstance(metadata, Mapping):
         raise V4ValidationError("generation_metadata must be an object")
-    if metadata.get("generator_version") != "4.0":
-        raise V4ValidationError("generation_metadata.generator_version must be '4.0'")
+    if metadata.get("generator_version") != "4.1":
+        raise V4ValidationError("generation_metadata.generator_version must be '4.1'")
     if not isinstance(metadata.get("seed"), int) or isinstance(metadata.get("seed"), bool):
         raise V4ValidationError("generation_metadata.seed must be an integer")
     if not str(metadata.get("template_id", "")).strip():
         raise V4ValidationError("generation_metadata.template_id must be nonempty")
+    warnings = metadata.get("warnings")
+    if not isinstance(warnings, Sequence) or isinstance(warnings, (str, bytes)):
+        raise V4ValidationError("generation_metadata.warnings must be a list")
+    if [str(warning) for warning in warnings] != list(expected_warnings):
+        raise V4ValidationError("generation_metadata.warnings does not match factor validation")
 
 
-def _validate_irrelevant_facts(
+def _validate_non_target_facts(
     item: Mapping[str, Any],
     config: DifficultyConfig,
     candidate_attributes: Mapping[str, Mapping[str, bool]],
@@ -70,45 +79,68 @@ def _validate_irrelevant_facts(
 
     for label in ("A", "B", "C", "D"):
         entity = entities[label]
-        raw_facts = entity.get("irrelevant_facts")
+        if "irrelevant_facts" in entity:
+            raise V4ValidationError(
+                f"Entity {label} uses deprecated irrelevant_facts instead of non_target_facts"
+            )
+        raw_facts = entity.get("non_target_facts")
         if not isinstance(raw_facts, Sequence) or isinstance(raw_facts, (str, bytes)):
-            raise V4ValidationError(f"Entity {label} must contain an irrelevant_facts list")
+            raise V4ValidationError(f"Entity {label} must contain a non_target_facts list")
         facts = list(raw_facts)
         if config.information_load == "IL1_low" and facts:
-            raise V4ValidationError(f"IL1_low entity {label} contains irrelevant facts")
-        if config.information_load == "IL2_high" and len(facts) < 2:
-            raise V4ValidationError(f"IL2_high entity {label} must contain at least two irrelevant facts")
+            raise V4ValidationError(f"IL1_low entity {label} contains non-target facts")
+        if config.information_load == "IL2_high" and len(facts) != 2:
+            raise V4ValidationError(f"IL2_high entity {label} must contain exactly two non-target facts")
 
         extra_values: dict[str, bool] = {}
         seen_keys: set[str] = set()
         option_text = str(options[label])
         for fact in facts:
             if not isinstance(fact, Mapping):
-                raise V4ValidationError(f"Entity {label} has a malformed irrelevant fact")
+                raise V4ValidationError(f"Entity {label} has a malformed non-target fact")
             key = str(fact.get("key", ""))
+            category = str(fact.get("category", ""))
             text = str(fact.get("text", ""))
             if not key or not text:
-                raise V4ValidationError(f"Entity {label} has an empty irrelevant fact")
+                raise V4ValidationError(f"Entity {label} has an empty non-target fact")
             if key in ATTRIBUTE_BY_KEY:
-                raise V4ValidationError(f"Irrelevant fact {key} overlaps the formal attribute pool")
+                raise V4ValidationError(f"Non-target fact {key} overlaps the formal attribute pool")
+            if key not in NON_TARGET_FACT_BY_KEY:
+                raise V4ValidationError(f"Unknown non-target fact: {key}")
+            fact_spec = NON_TARGET_FACT_BY_KEY[key]
+            if str(item.get("scenario")) not in fact_spec.compatible_scenarios:
+                raise V4ValidationError(
+                    f"Non-target fact {key} is not domain-relevant to {item.get('scenario')}"
+                )
+            if category != fact_spec.category:
+                raise V4ValidationError(f"Non-target fact {key} has incorrect category")
             if key in seen_keys:
-                raise V4ValidationError(f"Entity {label} repeats irrelevant fact {key}")
+                raise V4ValidationError(f"Entity {label} repeats non-target fact {key}")
+            name = str(entity.get("name", ""))
+            allowed_texts = {
+                template.format(name=name) for template in fact_spec.templates
+            }
+            if text not in allowed_texts:
+                raise V4ValidationError(f"Non-target fact {key} has invalid realization")
             if text not in option_text:
-                raise V4ValidationError(f"Entity {label} option omits irrelevant fact text: {text}")
+                raise V4ValidationError(f"Entity {label} option omits non-target fact text: {text}")
             seen_keys.add(key)
             extra_values[key] = True
+        lowered_option = option_text.lower()
+        if "as background information" in lowered_option or "irrelevant" in lowered_option:
+            raise V4ValidationError(f"Entity {label} explicitly marks non-target facts as irrelevant")
         augmented_attributes[label] = {**candidate_attributes[label], **extra_values}
 
     augmented_matrix = compute_constraint_matrix(augmented_attributes, constraints)
     if augmented_matrix != recomputed_matrix:
-        raise V4ValidationError("Irrelevant facts changed constraint evaluation")
+        raise V4ValidationError("Non-target facts changed constraint evaluation")
 
 
 def validate_v4_item(item: Mapping[str, Any]) -> None:
     """Validate one v4 item without applying any v3 difficulty assumptions."""
     labels = ("A", "B", "C", "D")
-    if item.get("generator_version") != "4.0":
-        raise V4ValidationError("generator_version must be '4.0'")
+    if item.get("generator_version") != "4.1":
+        raise V4ValidationError("generator_version must be '4.1'")
     if item.get("task_family") != "multi_constraint" or item.get("task_type") != "attribute_filter":
         raise V4ValidationError("Unexpected task family or task type")
     if item.get("language") != "en":
@@ -185,18 +217,18 @@ def validate_v4_item(item: Mapping[str, Any]) -> None:
         recomputed_signatures[label] for label in labels if label != gold_label
     ]
     try:
-        validate_distractor_signatures(config, wrong_signatures)
+        signature_warnings = validate_distractor_signatures(config, wrong_signatures)
     except DifficultyConfigError as exc:
         raise V4ValidationError(f"Distractor pattern does not match factors: {exc}") from exc
 
-    _validate_irrelevant_facts(
+    _validate_non_target_facts(
         item,
         config,
         candidate_attributes,
         constraints,
         recomputed_matrix,
     )
-    _validate_generation_metadata(item)
+    _validate_generation_metadata(item, signature_warnings)
     question = str(item.get("question", ""))
     if not question.strip() or any(str(options[label]) not in question for label in labels):
         raise V4ValidationError("Question must contain all complete option descriptions")

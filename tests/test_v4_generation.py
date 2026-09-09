@@ -10,9 +10,12 @@ from mad_attr_filter.difficulty import (
     DifficultyConfig,
     DifficultyConfigError,
     all_difficulty_configs,
+    far_violation_threshold,
 )
+from mad_attr_filter.factor_audit import build_factor_audit
 from mad_attr_filter.generator import generate_item
 from mad_attr_filter.matrix import compute_constraint_matrix
+from mad_attr_filter.non_target_facts import NON_TARGET_FACT_BY_KEY
 from mad_attr_filter.v4_generator import generate_v4_item, generate_v4_pool
 from mad_attr_filter.v4_validation import (
     V4ValidationError,
@@ -48,18 +51,18 @@ def test_generate_v4_item_covers_every_factor_cell() -> None:
         validate_v4_item(item)
         assert len(item["constraints"]) == config.num_constraints
         assert item["difficulty_factors"] == config.to_dict()
-        assert item["generation_metadata"]["generator_version"] == "4.0"
+        assert item["generation_metadata"]["generator_version"] == "4.1"
 
         counts = _wrong_signature_lengths(item)
         if config.distractor_similarity == "DS1_far":
-            assert all(count >= 3 for count in counts)
+            assert all(count >= far_violation_threshold(config.num_constraints) for count in counts)
         elif config.distractor_similarity == "DS2_medium":
             assert counts[0] == 1 and counts[1] >= 2
         else:
             assert counts == [1, 1, 1]
 
 
-def test_information_load_is_separate_from_formal_attributes() -> None:
+def test_il2_facts_are_domain_relevant_and_separate_from_formal_attributes() -> None:
     low = generate_v4_item(
         1,
         DifficultyConfig("CL2", "DS3_near", "IL1_low"),
@@ -72,11 +75,15 @@ def test_information_load_is_separate_from_formal_attributes() -> None:
         2002,
         gold_label="A",
     )
-    assert all(not entity["irrelevant_facts"] for entity in low["entities"].values())
+    assert all(not entity["non_target_facts"] for entity in low["entities"].values())
     for label, entity in high["entities"].items():
-        assert len(entity["irrelevant_facts"]) == 2
-        assert all(fact["key"] not in ATTRIBUTE_BY_KEY for fact in entity["irrelevant_facts"])
-        assert all(fact["text"] in high["options"][label] for fact in entity["irrelevant_facts"])
+        assert len(entity["non_target_facts"]) == 2
+        for fact in entity["non_target_facts"]:
+            assert fact["key"] not in ATTRIBUTE_BY_KEY
+            assert fact["key"] in NON_TARGET_FACT_BY_KEY
+            assert high["scenario"] in NON_TARGET_FACT_BY_KEY[fact["key"]].compatible_scenarios
+            assert fact["text"] in high["options"][label]
+        assert "As background information" not in high["options"][label]
 
     constraints = [type("ConstraintLike", (), raw)() for raw in high["constraints"]]
     formal_attributes = {
@@ -85,7 +92,7 @@ def test_information_load_is_separate_from_formal_attributes() -> None:
     augmented_attributes = {
         label: {
             **entity["attributes"],
-            **{fact["key"]: True for fact in entity["irrelevant_facts"]},
+            **{fact["key"]: True for fact in entity["non_target_facts"]},
         }
         for label, entity in high["entities"].items()
     }
@@ -95,21 +102,23 @@ def test_information_load_is_separate_from_formal_attributes() -> None:
     )
 
 
-def test_cl1_ds1_boolean_boundary_is_valid_and_explicit() -> None:
-    item = generate_v4_item(
-        1,
-        DifficultyConfig("CL1", "DS1_far", "IL1_low"),
-        3001,
-        gold_label="D",
-    )
-    wrong_signatures = [
-        tuple(signature)
-        for label, signature in item["option_violation_signature"].items()
-        if label != item["gold_answer"]
-    ]
-    assert len(set(wrong_signatures)) == 1
-    assert wrong_signatures[0] == ("C1", "C2", "C3")
-    validate_v4_item(item)
+def test_ds1_threshold_scales_and_signatures_do_not_degenerate() -> None:
+    expected = {"CL1": 2, "CL2": 3, "CL3": 4}
+    for item_index, (constraint_load, threshold) in enumerate(expected.items(), start=1):
+        item = generate_v4_item(
+            item_index,
+            DifficultyConfig(constraint_load, "DS1_far", "IL1_low"),
+            3000 + item_index,
+            gold_label="D",
+        )
+        wrong_signatures = [
+            tuple(signature)
+            for label, signature in item["option_violation_signature"].items()
+            if label != item["gold_answer"]
+        ]
+        assert all(len(signature) >= threshold for signature in wrong_signatures)
+        assert len(set(wrong_signatures)) == 3
+        validate_v4_item(item)
 
 
 def test_v4_validation_rejects_tampered_signature() -> None:
@@ -136,6 +145,21 @@ def test_v4_pool_is_reproducible_and_balanced_by_cell() -> None:
     assert set(Counter(item["difficulty_factors"]["constraint_load"] for item in first).values()) == {12}
     assert set(Counter(item["difficulty_factors"]["distractor_similarity"] for item in first).values()) == {12}
     assert set(Counter(item["difficulty_factors"]["information_load"] for item in first).values()) == {18}
+
+
+def test_v4_1_prototype_has_180_fully_valid_items_and_passes_factor_audit() -> None:
+    items, report = generate_v4_pool(10, global_seed=42)
+    summary = validate_v4_pool(items, expected_items_per_cell=10)
+    audit = build_factor_audit(items)
+    assert len(items) == 180
+    assert report["generator_version"] == "4.1"
+    assert report["validation_failures"] == 0
+    assert report["generation_warning_count"] == 0
+    assert summary["validated_items"] == 180
+    assert summary["validation_pass_rate"] == 1.0
+    assert audit["confound_checks"]["all_ds_levels_verified"] is True
+    assert audit["confound_checks"]["all_il_levels_verified"] is True
+    assert audit["confound_checks"]["all_items_fully_valid"] is True
 
 
 def test_v3_generation_behavior_remains_on_the_v3_schema() -> None:
