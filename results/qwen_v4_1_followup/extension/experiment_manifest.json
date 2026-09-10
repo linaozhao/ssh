@@ -1,0 +1,107 @@
+{
+  "config": {
+    "dataset": "data/multi_constraint_v4_1_extension_360.jsonl",
+    "experiment_id": "qwen_v4_1_extension_360_20260910",
+    "experiment_name": "extension",
+    "max_concurrent_requests": 4,
+    "max_retries": 2,
+    "max_tokens": 1024,
+    "model": {
+      "alias": "qwen",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "deployment": {
+        "architecture": "Qwen3ForCausalLM",
+        "dtype": "bfloat16",
+        "gpu_index_for_this_run": 7,
+        "gpu_memory_utilization": 0.78,
+        "max_model_len": 4096,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "model_name": "Qwen3-8B",
+      "thinking_enabled": false
+    },
+    "request_timeout_seconds": 120,
+    "results_dir": "results/qwen_v4_1_followup/extension",
+    "retry_sleep_seconds": 2.0,
+    "seeds": [
+      11,
+      22,
+      33
+    ],
+    "temperature": 0.7,
+    "top_p": 0.9
+  },
+  "created_at_utc": "2026-09-10T01:42:42.501491+00:00",
+  "dataset_path": "data/multi_constraint_v4_1_extension_360.jsonl",
+  "expected_runs": 1080,
+  "experiment_id": "qwen_v4_1_extension_360_20260910",
+  "experiment_name": "extension",
+  "fingerprints": {
+    "config_sha256": "7b5bba4bc5763ff88935d327a48c38805cf5e40218b20541aebeac695835c83b",
+    "dataset_sha256": "3c330fa12e225d8819664d0c0a6a986a5fc985d64df8ddabf6745e8cc403fcc5",
+    "experiment_sha256": "d45ff026167fd012dd6f6fedd1952bbe7831f5a83226a5f25a82b2ad8338741d",
+    "parser_revision": "qwen-v4.1-name-aware-parser-2",
+    "prompt_sha256": "c9f040a2da2b01befbad601be0536c9233efcc52d394d5fc29f8f5129e3c33ea",
+    "protocol_version": "qwen-v4.1-followup-1"
+  },
+  "independence": {
+    "each_call_has_fresh_messages": true,
+    "gold_or_formal_fields_exposed": false,
+    "other_responses_exposed": false,
+    "prompt_input_field": "question"
+  },
+  "item_count": 360,
+  "parser_migration": {
+    "answer_changes": 0,
+    "from": "qwen-v4.1-name-aware-parser-1",
+    "new_model_calls": 0,
+    "raw_response_hash_unchanged": true,
+    "to": "qwen-v4.1-name-aware-parser-2"
+  },
+  "parser_revision": "qwen-v4.1-name-aware-parser-2",
+  "prompt_template": "Solve the following multiple-choice problem independently.\n\nCarefully evaluate every stated requirement and determine which candidate satisfies all of them.\n\nProvide your answer and a concise explanation of your reasoning.\n\nReturn only valid JSON in the following format:\n\n{{\n  \"answer\": \"A\",\n  \"reasoning\": \"Briefly explain how you checked the relevant requirements.\",\n  \"confidence\": 0.85\n}}\n\nRules:\n- \"answer\" must be exactly one of A, B, C, or D.\n- \"confidence\" must be a number between 0 and 1.\n- Do not use Markdown.\n- Do not refer to other agents.\n- Solve the problem independently.\n\nProblem:\n\n{question}\n",
+  "protocol_version": "qwen-v4.1-followup-1",
+  "run_summary": {
+    "api_failure_count": 0,
+    "complete": true,
+    "completed_records": 1080,
+    "duplicate_count": 0,
+    "duplicates": [],
+    "expected_runs": 1080,
+    "fingerprint_mismatch_count": 0,
+    "fingerprint_mismatches": [],
+    "json_noncompliant_count": 0,
+    "missing": [],
+    "missing_count": 0,
+    "previously_completed": 1080,
+    "truncated_count": 0,
+    "unique_completed_runs": 1080,
+    "unknown": [],
+    "unknown_count": 0,
+    "unrecognized_answer_count": 0,
+    "written_this_invocation": 0
+  },
+  "service_observation": {
+    "available_model_ids": [
+      "Qwen3-8B"
+    ],
+    "backend_version": {
+      "version": "0.11.2"
+    },
+    "base_url": "http://127.0.0.1:8001/v1",
+    "configured_model_name": "Qwen3-8B",
+    "observed_at_utc": "2026-09-10T01:42:42.513904+00:00",
+    "probe_error": null,
+    "probe_success": true
+  },
+  "status": "complete"
+}

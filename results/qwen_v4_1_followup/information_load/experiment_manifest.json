@@ -1,0 +1,107 @@
+{
+  "config": {
+    "dataset": "results/qwen_v4_1_followup/information_load/variants.jsonl",
+    "experiment_id": "qwen_v4_1_information_load_pair_20260910",
+    "experiment_name": "information_load",
+    "max_concurrent_requests": 4,
+    "max_retries": 2,
+    "max_tokens": 1024,
+    "model": {
+      "alias": "qwen",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "deployment": {
+        "architecture": "Qwen3ForCausalLM",
+        "dtype": "bfloat16",
+        "gpu_index_for_this_run": 7,
+        "gpu_memory_utilization": 0.78,
+        "max_model_len": 4096,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "model_name": "Qwen3-8B",
+      "thinking_enabled": false
+    },
+    "request_timeout_seconds": 120,
+    "results_dir": "results/qwen_v4_1_followup/information_load",
+    "retry_sleep_seconds": 2.0,
+    "seeds": [
+      44,
+      55,
+      66
+    ],
+    "temperature": 0.7,
+    "top_p": 0.9
+  },
+  "created_at_utc": "2026-09-10T01:38:53.200798+00:00",
+  "dataset_path": "results/qwen_v4_1_followup/information_load/variants.jsonl",
+  "expected_runs": 216,
+  "experiment_id": "qwen_v4_1_information_load_pair_20260910",
+  "experiment_name": "information_load",
+  "fingerprints": {
+    "config_sha256": "ca5230649ac67f8bba39ad673640df9cb61fbbd3bfed6386da92a9e31f4aa9fb",
+    "dataset_sha256": "30a90a1c2dbbaee0d939783d29721c97b88ec364673aaa3772bceb7d5fcca4e7",
+    "experiment_sha256": "4cddd49cc6baff010d5d5c896bb4cd3a8b1d3af27248863946a296d26e7d9192",
+    "parser_revision": "qwen-v4.1-name-aware-parser-2",
+    "prompt_sha256": "c9f040a2da2b01befbad601be0536c9233efcc52d394d5fc29f8f5129e3c33ea",
+    "protocol_version": "qwen-v4.1-followup-1"
+  },
+  "independence": {
+    "each_call_has_fresh_messages": true,
+    "gold_or_formal_fields_exposed": false,
+    "other_responses_exposed": false,
+    "prompt_input_field": "question"
+  },
+  "item_count": 72,
+  "parser_migration": {
+    "answer_changes": 0,
+    "from": "qwen-v4.1-name-aware-parser-1",
+    "new_model_calls": 0,
+    "raw_response_hash_unchanged": true,
+    "to": "qwen-v4.1-name-aware-parser-2"
+  },
+  "parser_revision": "qwen-v4.1-name-aware-parser-2",
+  "prompt_template": "Solve the following multiple-choice problem independently.\n\nCarefully evaluate every stated requirement and determine which candidate satisfies all of them.\n\nProvide your answer and a concise explanation of your reasoning.\n\nReturn only valid JSON in the following format:\n\n{{\n  \"answer\": \"A\",\n  \"reasoning\": \"Briefly explain how you checked the relevant requirements.\",\n  \"confidence\": 0.85\n}}\n\nRules:\n- \"answer\" must be exactly one of A, B, C, or D.\n- \"confidence\" must be a number between 0 and 1.\n- Do not use Markdown.\n- Do not refer to other agents.\n- Solve the problem independently.\n\nProblem:\n\n{question}\n",
+  "protocol_version": "qwen-v4.1-followup-1",
+  "run_summary": {
+    "api_failure_count": 0,
+    "complete": true,
+    "completed_records": 216,
+    "duplicate_count": 0,
+    "duplicates": [],
+    "expected_runs": 216,
+    "fingerprint_mismatch_count": 0,
+    "fingerprint_mismatches": [],
+    "json_noncompliant_count": 0,
+    "missing": [],
+    "missing_count": 0,
+    "previously_completed": 0,
+    "truncated_count": 0,
+    "unique_completed_runs": 216,
+    "unknown": [],
+    "unknown_count": 0,
+    "unrecognized_answer_count": 0,
+    "written_this_invocation": 216
+  },
+  "service_observation": {
+    "available_model_ids": [
+      "Qwen3-8B"
+    ],
+    "backend_version": {
+      "version": "0.11.2"
+    },
+    "base_url": "http://127.0.0.1:8001/v1",
+    "configured_model_name": "Qwen3-8B",
+    "observed_at_utc": "2026-09-10T01:38:53.209546+00:00",
+    "probe_error": null,
+    "probe_success": true
+  },
+  "status": "complete"
+}

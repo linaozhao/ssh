@@ -1,0 +1,107 @@
+{
+  "config": {
+    "dataset": "results/qwen_v4_1_followup/position_order/variants.jsonl",
+    "experiment_id": "qwen_v4_1_position_order_20260910",
+    "experiment_name": "position_order",
+    "max_concurrent_requests": 4,
+    "max_retries": 2,
+    "max_tokens": 1024,
+    "model": {
+      "alias": "qwen",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "deployment": {
+        "architecture": "Qwen3ForCausalLM",
+        "dtype": "bfloat16",
+        "gpu_index_for_this_run": 7,
+        "gpu_memory_utilization": 0.78,
+        "max_model_len": 4096,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "model_name": "Qwen3-8B",
+      "thinking_enabled": false
+    },
+    "request_timeout_seconds": 120,
+    "results_dir": "results/qwen_v4_1_followup/position_order",
+    "retry_sleep_seconds": 2.0,
+    "seeds": [
+      44,
+      55,
+      66
+    ],
+    "temperature": 0.7,
+    "top_p": 0.9
+  },
+  "created_at_utc": "2026-09-10T01:32:39.404641+00:00",
+  "dataset_path": "results/qwen_v4_1_followup/position_order/variants.jsonl",
+  "expected_runs": 252,
+  "experiment_id": "qwen_v4_1_position_order_20260910",
+  "experiment_name": "position_order",
+  "fingerprints": {
+    "config_sha256": "369baff3f8e4e484746b03d70db65c08034fba67e5fd22dd6acea880b9faabef",
+    "dataset_sha256": "8ee2e522a8fcdbec56665cca52015029cfe6ca0797cfabfb34873688b13e641d",
+    "experiment_sha256": "9a7aaa1de7c3fd95f41ec5b7ed8bdab77b806c0b05c8999de7de0f551c4f445d",
+    "parser_revision": "qwen-v4.1-name-aware-parser-2",
+    "prompt_sha256": "c9f040a2da2b01befbad601be0536c9233efcc52d394d5fc29f8f5129e3c33ea",
+    "protocol_version": "qwen-v4.1-followup-1"
+  },
+  "independence": {
+    "each_call_has_fresh_messages": true,
+    "gold_or_formal_fields_exposed": false,
+    "other_responses_exposed": false,
+    "prompt_input_field": "question"
+  },
+  "item_count": 84,
+  "parser_migration": {
+    "answer_changes": 0,
+    "from": "qwen-v4.1-name-aware-parser-1",
+    "new_model_calls": 0,
+    "raw_response_hash_unchanged": true,
+    "to": "qwen-v4.1-name-aware-parser-2"
+  },
+  "parser_revision": "qwen-v4.1-name-aware-parser-2",
+  "prompt_template": "Solve the following multiple-choice problem independently.\n\nCarefully evaluate every stated requirement and determine which candidate satisfies all of them.\n\nProvide your answer and a concise explanation of your reasoning.\n\nReturn only valid JSON in the following format:\n\n{{\n  \"answer\": \"A\",\n  \"reasoning\": \"Briefly explain how you checked the relevant requirements.\",\n  \"confidence\": 0.85\n}}\n\nRules:\n- \"answer\" must be exactly one of A, B, C, or D.\n- \"confidence\" must be a number between 0 and 1.\n- Do not use Markdown.\n- Do not refer to other agents.\n- Solve the problem independently.\n\nProblem:\n\n{question}\n",
+  "protocol_version": "qwen-v4.1-followup-1",
+  "run_summary": {
+    "api_failure_count": 0,
+    "complete": true,
+    "completed_records": 252,
+    "duplicate_count": 0,
+    "duplicates": [],
+    "expected_runs": 252,
+    "fingerprint_mismatch_count": 0,
+    "fingerprint_mismatches": [],
+    "json_noncompliant_count": 0,
+    "missing": [],
+    "missing_count": 0,
+    "previously_completed": 0,
+    "truncated_count": 0,
+    "unique_completed_runs": 252,
+    "unknown": [],
+    "unknown_count": 0,
+    "unrecognized_answer_count": 0,
+    "written_this_invocation": 252
+  },
+  "service_observation": {
+    "available_model_ids": [
+      "Qwen3-8B"
+    ],
+    "backend_version": {
+      "version": "0.11.2"
+    },
+    "base_url": "http://127.0.0.1:8001/v1",
+    "configured_model_name": "Qwen3-8B",
+    "observed_at_utc": "2026-09-10T01:32:39.505991+00:00",
+    "probe_error": null,
+    "probe_success": true
+  },
+  "status": "complete"
+}

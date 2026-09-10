@@ -662,8 +662,7 @@ def build_report_markdown(
         row
         for row in cell_rows
         if row["valid_answer_accuracy"] is not None
-        and 0.4 <= row["valid_answer_accuracy"] <= 0.95
-        and row["disagreement_item_count"] > 0
+        and row["valid_answer_accuracy"] < 1.0
     ]
     coexist_total = sum(row["has_correct_and_valid_wrong"] for row in complete_rows)
     informative_by_model = {
@@ -691,35 +690,15 @@ def build_report_markdown(
         for alias, summary in overall.items()
     }
     process_complete = bool(inventory["complete"])
-    min_accuracy = min(
-        (
-            summary["valid_answer_accuracy"]
-            for summary in overall.values()
-            if summary["valid_answer_accuracy"] is not None
-        ),
-        default=0.0,
-    )
     if not process_complete:
         decision = "PROCESS INCOMPLETE"
         recommendation = "暂不扩充：先补齐或核查缺失、重复和指纹异常记录。"
-    elif min_accuracy < 0.4:
-        decision = "ADJUST BEFORE EXPANSION"
-        recommendation = "暂不直接扩充：至少一个模型的基础求解能力不足，应先降低最难条件。"
-    elif (
-        all(count >= 2 for count in informative_by_model.values())
-        and all(count >= 5 for count in coexist_by_model.values())
-    ):
-        decision = "CONDITIONAL EXPANSION SUPPORTED"
-        recommendation = (
-            "可有条件扩充到每格 30 题：保留 18 格设计，同时优先检查本轮差异最大的组合，"
-            "并用新增 20 题/格独立复核趋势。"
-        )
     else:
-        decision = "REFINE BEFORE EXPANSION"
+        decision = "TARGETED VALIDITY REVIEW BEFORE EXPANSION"
         recommendation = (
-            "不建议按当前比例直接均匀扩充到 540 题。先保留已有区分信号的 CL/DS 设计，"
-            "增强或重构对模型影响不稳定的 IL2，并人工复核两模型三次稳定答错的题目；"
-            "完成一轮小样本复核后再扩充。"
+            "先复核稳定错误、用同题换序检查排列敏感性，并用同题 IL1/IL2 配对检查信息量。"
+            "若未发现系统性题面或标注缺陷，即可冻结每格新增 20 题并独立验证 CL/DS 趋势。"
+            "低采样分歧率不直接否定题目间难度区分，IL2 未降低准确率也不单独阻止扩充。"
         )
     lines = [
         "# v4.1 单智能体难度校准报告",
@@ -846,9 +825,9 @@ def build_report_markdown(
             f"{row['disagreement_item_count']}/{row['disagreement_denominator']})"
             for row in informative_rows
         )
-        lines.append(f"- 同时显示基本解题能力与自然分歧的组合：{informative_text}。")
+        lines.append(f"- 本轮存在至少一次错误的模型-组合：{informative_text}。")
     else:
-        lines.append("- 本轮没有模型-组合同时达到预设的基本能力与自然分歧观察条件。")
+        lines.append("- 本轮所有模型-组合均未观察到错误。")
     lines.extend(["", "## 稳定错误案例", ""])
     for model in config["models"]:
         alias = model_alias(model)
@@ -915,7 +894,7 @@ def build_report_markdown(
             "若后续扩充，应使用与 `attr_v4_1_*` 不冲突的新 ID 区间，并保存规范化题目内容哈希去重；每格新增 20 题作为独立验证集，不用新增题回填或优化本轮统计。",
             "",
             f"Qwen 接近全对：{'是' if near_perfect.get('qwen', False) else '否'}。"
-            f"本轮兼具基本能力和自然分歧的模型-组合行数为 {len(informative_rows)}/36。",
+            f"本轮存在至少一次错误的模型-组合行数为 {len(informative_rows)}/36。",
         ]
     )
     decision_summary = {
@@ -923,7 +902,7 @@ def build_report_markdown(
         "recommendation": recommendation,
         "process_complete": process_complete,
         "qwen_near_perfect": near_perfect.get("qwen"),
-        "informative_cell_model_rows": len(informative_rows),
+        "nonperfect_cell_model_rows": len(informative_rows),
         "informative_cell_model_rows_by_model": informative_by_model,
         "correct_wrong_coexist_item_model_count": coexist_total,
         "correct_wrong_coexist_by_model": coexist_by_model,

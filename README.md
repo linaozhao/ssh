@@ -255,3 +255,40 @@ fallback accepts only an unambiguous explicit final answer, not ordinary
 mentions of candidates in the explanation. Parser revision 2 also recognizes
 an exact A-D value in an otherwise malformed JSON `answer` field while keeping
 `json_compliant=false`; conflicting explicit answers remain unresolved.
+
+## Qwen v4.1 Follow-up and 540-item Pool
+
+The Qwen-centered follow-up preserves the original 180-item prototype as a
+development calibration split. It adds an independently seeded 360-item
+validation split, for 30 items in each of the 18 CL x DS x IL cells. Diagnostic
+option rotations and paired IL variants are stored under `results/` and are not
+part of the 540 base items.
+
+Prepare or verify all frozen datasets:
+
+```bash
+python scripts/prepare_qwen_v4_1_followup.py
+```
+
+Run the three resumable Qwen experiments:
+
+```bash
+python scripts/run_qwen_v4_1_followup.py --experiment position_order --resume
+python scripts/run_qwen_v4_1_followup.py --experiment information_load --resume
+python scripts/run_qwen_v4_1_followup.py --experiment extension --resume
+python scripts/analyze_qwen_v4_1_followup.py
+```
+
+The frozen model and generation settings are in
+`config/qwen_v4_1_followup_config.json`. The base datasets are
+`data/multi_constraint_v4_1_prototype.jsonl`,
+`data/multi_constraint_v4_1_extension_360.jsonl`, and
+`data/multi_constraint_v4_1_total_540.jsonl`. Normalized content hashes and the
+development/validation split are recorded in
+`data/multi_constraint_v4_1_total_540_index.jsonl`.
+
+Follow-up outputs and the Chinese analysis report live under
+`results/qwen_v4_1_followup/`. Resume checks bind each output to its experiment
+ID and dataset/config/prompt/parser fingerprint. The name-aware scorer keeps
+strict A-D format compliance separate from semantic answer extraction; see
+`results/qwen_v4_1_followup/SCORING_PROTOCOL.md`.

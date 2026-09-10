@@ -1,0 +1,53 @@
+{
+  "model": {
+    "alias": "qwen",
+    "model_name": "Qwen3-8B",
+    "base_url": "http://127.0.0.1:8001/v1",
+    "api_key": "EMPTY",
+    "thinking_enabled": false,
+    "extra_body": {
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    },
+    "deployment": {
+      "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B",
+      "architecture": "Qwen3ForCausalLM",
+      "dtype": "bfloat16",
+      "quantization": null,
+      "revision": "unknown",
+      "service_framework": "vLLM",
+      "service_version": "0.11.2",
+      "max_model_len": 4096,
+      "gpu_index_for_this_run": 7,
+      "gpu_memory_utilization": 0.78
+    }
+  },
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "max_tokens": 1024,
+  "request_timeout_seconds": 120,
+  "max_retries": 2,
+  "retry_sleep_seconds": 2,
+  "max_concurrent_requests": 4,
+  "experiments": {
+    "position_order": {
+      "experiment_id": "qwen_v4_1_position_order_20260910",
+      "dataset": "results/qwen_v4_1_followup/position_order/variants.jsonl",
+      "results_dir": "results/qwen_v4_1_followup/position_order",
+      "seeds": [44, 55, 66]
+    },
+    "information_load": {
+      "experiment_id": "qwen_v4_1_information_load_pair_20260910",
+      "dataset": "results/qwen_v4_1_followup/information_load/variants.jsonl",
+      "results_dir": "results/qwen_v4_1_followup/information_load",
+      "seeds": [44, 55, 66]
+    },
+    "extension": {
+      "experiment_id": "qwen_v4_1_extension_360_20260910",
+      "dataset": "data/multi_constraint_v4_1_extension_360.jsonl",
+      "results_dir": "results/qwen_v4_1_followup/extension",
+      "seeds": [11, 22, 33]
+    }
+  }
+}
