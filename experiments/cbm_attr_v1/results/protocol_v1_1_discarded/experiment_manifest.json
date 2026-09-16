@@ -1,0 +1,59 @@
+{
+  "config": {
+    "experiment_id": "cbm_attr_v1_qwen3_8b_20260916",
+    "experiment_version": "cbm_attr_v1.0",
+    "generation": {
+      "max_concurrent_units": 4,
+      "max_retries": 2,
+      "max_tokens": 1024,
+      "request_timeout_seconds": 120,
+      "retry_sleep_seconds": 2,
+      "temperature": 0.7,
+      "top_p": 0.9
+    },
+    "model": {
+      "alias": "qwen",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "deployment": {
+        "architecture": "Qwen3ForCausalLM",
+        "dtype": "bfloat16",
+        "max_model_len": 4096,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "model_name": "Qwen3-8B",
+      "thinking_enabled": false
+    },
+    "schedule_seed": 20260916,
+    "seeds": [
+      11,
+      22,
+      33
+    ],
+    "selection_seed": 20260916,
+    "source_dataset": "data/multi_constraint_v4_1_extension_360.jsonl"
+  },
+  "config_sha256": "65bc1891d06687d8786772a4fe582e768dbc2f6cd71c4f4feaefb818a203e712",
+  "data_fingerprints": {
+    "episodes.jsonl": "79e20bbfb2559bc94c393bf43415cc0710e05706ec0df47b42ecf11c07ab6409",
+    "request_plan.jsonl": "5091027b6695d0dc97df938d99f867f391a5d2090acc62c681e1d2685fb9a2bb",
+    "selection_manifest.jsonl": "50f8e2cc347e06a224946cce40d074cd76fa35a7b36e75cc3e6906791671a7ab",
+    "snapshots.jsonl": "2fcb197839a691dbff1e3afe3245267ef199c877c31ab506b5d7274f7bc32e98",
+    "source_items.jsonl": "92802713049a6fd1ebf1608df97dbcfce02d460292e5374f545a7e83f737c474"
+  },
+  "expected_logical_requests": 5616,
+  "experiment_id": "cbm_attr_v1_qwen3_8b_20260916",
+  "experiment_version": "cbm_attr_v1.0",
+  "parser_version": "cbm_attr_parser_v1",
+  "prompt_sha256": "bed199dddb2b38853283db3c1241fa5c4736a86acdfbbc4eff2e54be725639a3",
+  "prompt_version": "cbm_attr_set_v1.1",
+  "reuse_policy": "preflight responses are reused only when request_id and all experiment fingerprints match"
+}
