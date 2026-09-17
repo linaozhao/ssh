@@ -1,0 +1,65 @@
+{
+  "config": {
+    "experiment_id": "mad_drift_pilot_v1_qwen3_8b_20260917",
+    "experiment_version": "mad_drift_pilot_v1.0",
+    "generation": {
+      "max_concurrent_units": 6,
+      "max_retries": 2,
+      "max_tokens": 1024,
+      "request_timeout_seconds": 180,
+      "retry_sleep_seconds": 2,
+      "temperature": 0.7,
+      "top_p": 0.9
+    },
+    "model": {
+      "alias": "qwen",
+      "base_urls": [
+        "http://127.0.0.1:8101/v1",
+        "http://127.0.0.1:8102/v1",
+        "http://127.0.0.1:8103/v1",
+        "http://127.0.0.1:8104/v1",
+        "http://127.0.0.1:8105/v1",
+        "http://127.0.0.1:8106/v1"
+      ],
+      "deployment": {
+        "architecture": "Qwen3ForCausalLM",
+        "dtype": "bfloat16",
+        "gpu_memory_utilization": 0.9,
+        "max_model_len": 16384,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "model_name": "Qwen3-8B",
+      "thinking_enabled": false
+    },
+    "selection_seed": 20260917,
+    "team_root_seeds": [
+      11,
+      22,
+      33
+    ]
+  },
+  "config_sha256": "750217fe6a4cbbd54fca550e8ed6c2bf71b9a555c5285ffc5637fc9b71babc35",
+  "data_fingerprints": {
+    "episodes.jsonl": "c65f4ebccf21e3d5d2cd43be1650d02f55fe7aed677bda6094ecdb5cce5d2cb7",
+    "protocol_request_plan.jsonl": "d021c7c11921cfc6cb5f88d49bc8f3a8e5ff8f5f9119fe8a31df62fcbc1e8914",
+    "selection_manifest.jsonl": "7388ae8e17369944e525351ed5845811abf069d2a7ca021779f60dd3f5262c06",
+    "snapshots.jsonl": "14a6a7545f087ee90aa4ce94da9ebf6cbae6fe7bfe10fe9d26f67c75773f0e13",
+    "source_items.jsonl": "5c9f365c028f3c0785faf832e801e4d08eeee76599889e8654a544d03a3ae46e"
+  },
+  "expected_logical_requests": 1404,
+  "experiment_id": "mad_drift_pilot_v1_qwen3_8b_20260917",
+  "experiment_version": "mad_drift_pilot_v1.0",
+  "parser_version": "cbm_attr_v1_conservative_parser",
+  "prompt_sha256": "bf600fd0505807ec533da4c22aaf6a95bb411768de6689434f2135eaad72a3f4",
+  "prompt_version": "candidate_set_v2_no_label_example",
+  "runner_kind": "protocol"
+}

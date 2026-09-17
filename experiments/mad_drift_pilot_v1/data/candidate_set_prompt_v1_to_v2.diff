@@ -1,0 +1,16 @@
+--- candidate_set_v1
++++ candidate_set_v2
+@@ -7,9 +7,10 @@
+ - If a required attribute has not been reported for a candidate, it is unknown. Unknown is not false and is not proof that the requirement is satisfied; the candidate remains not yet eliminated.
+ - A RESTATEMENT repeats an existing fact and does not change it.
+ - A CORRECTION withdraws the named earlier evidence and replaces it with the corrected fact.
+-- Use only evidence revealed up to the current round.
++- Use only formal evidence revealed up to the current round.
+ 
+-Return only valid JSON:
+-{"candidates": ["A", "C"], "reasoning": "Briefly explain the current exclusions."}
++Return only one valid JSON object with exactly two fields:
++- candidates: an array containing every retained candidate label exactly once; each label must be one of A, B, C, or D; array order does not matter.
++- reasoning: a short string explaining the current exclusions.
+ 
+-The candidates array must contain each retained label exactly once, using only A, B, C, or D. Its order does not matter. Do not include confidence or Markdown.+Do not include confidence, Markdown, or any additional fields.
