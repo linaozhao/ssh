@@ -782,6 +782,10 @@ class TokenPlanJudgeRunner:
             consecutive_infrastructure_errors = 0
             last_start = 0.0
             for job in jobs:
+                if (self.results / "STOP").exists():
+                    state["status"] = "stopped_by_user"
+                    self._save_state(state)
+                    break
                 elapsed = time.monotonic() - last_start
                 delay = float(self.config["minimum_request_start_interval_seconds"]) - elapsed
                 if last_start and delay > 0:
