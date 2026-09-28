@@ -1,0 +1,122 @@
+{
+  "config": {
+    "experiment_id": "cbm_drift_diagnostic_v2_qwen3_8b_20260923",
+    "experiment_version": "cbm_drift_diagnostic_v2.0",
+    "generation": {
+      "max_concurrent_trajectories": 2,
+      "max_retries": 2,
+      "max_tokens": 1024,
+      "request_timeout_seconds": 180,
+      "retry_sleep_seconds": 2,
+      "temperature": 0.7,
+      "top_p": 0.9
+    },
+    "judge": {
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "base_url": "https://api.deepseek.com",
+      "enabled": true,
+      "max_concurrency": 8,
+      "max_retries": 2,
+      "max_tokens": 2048,
+      "model_name": "deepseek-v4-pro",
+      "protocols": [
+        "direct",
+        "structured_assistance"
+      ],
+      "provider": "deepseek",
+      "request_timeout_seconds": 180,
+      "retry_sleep_seconds": 2,
+      "status": "configured_without_embedded_credentials",
+      "temperature": 0.0,
+      "thinking_enabled": false
+    },
+    "mad": {
+      "agents": [
+        "agent_1",
+        "agent_2",
+        "agent_3"
+      ],
+      "preflight_base_items": 2,
+      "rounds": [
+        0,
+        1,
+        2
+      ],
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "model": {
+      "alias": "qwen",
+      "base_urls": [
+        "http://127.0.0.1:8111/v1",
+        "http://127.0.0.1:8115/v1"
+      ],
+      "deployment": {
+        "architecture": "Qwen3ForCausalLM",
+        "dtype": "bfloat16",
+        "gpu_indices": [
+          1,
+          5
+        ],
+        "gpu_memory_utilization": 0.9,
+        "max_model_len": 16384,
+        "quantization": null,
+        "revision": "unknown",
+        "service_framework": "vLLM",
+        "service_version": "0.11.2",
+        "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "model_name": "Qwen3-8B",
+      "thinking_enabled": false
+    },
+    "protocol_check": {
+      "seeds": [
+        11,
+        22,
+        33
+      ],
+      "snapshots": [
+        "early_unknown",
+        "clean_t3",
+        "update_t4"
+      ]
+    },
+    "schedule_seed": 20260923,
+    "selection_seed": 20260923,
+    "source": {
+      "base_item_count": 12,
+      "episodes": "experiments/cbm_attr_v1/data/episodes.jsonl",
+      "items": "experiments/cbm_attr_v1/data/source_items.jsonl",
+      "version": "cbm_attr_v1.0"
+    },
+    "variants": [
+      "clean_stay",
+      "evidence_update",
+      "irrelevant_noise"
+    ]
+  },
+  "config_sha256": "e0e8b0cd8f3d0f341b1e782f2ce58c9f835f22338fcd0c1f18d9b4e76a676f97",
+  "data_fingerprints": {
+    "evidence_sequences.jsonl": "ff52f75fec02bb60f04e4aa963f369a0644d8e8d97c63f9455fca523651bd823",
+    "mad_request_plan.jsonl": "a52567795d9f34cb99f99ecc57c93bf1f99f5a0d02819206b80d7902692f6e34",
+    "selection_manifest.jsonl": "1b7b801d8f06158b0acb1887927151f4df6f8231e503673dfb9608b9d9a75eb9",
+    "source_items.jsonl": "5411dfaed00b50fdc628fb142033e3a64fb1484125eefd0aee1b0f2b7efecafb"
+  },
+  "expected_logical_requests": 1620,
+  "experiment_id": "cbm_drift_diagnostic_v2_qwen3_8b_20260923",
+  "experiment_version": "cbm_drift_diagnostic_v2.0",
+  "parser_sha256": "64f9b3e1f54fb8263b7324296b0ae841ba13dc29020872db438a7861be7beae4",
+  "prompt_sha256": "867707260ab3a709f9decb60c90b40b74e81b22fe5a9ff9e068259cb47146b5e",
+  "run_kind": "mad",
+  "runner_version": "cbm_drift_v2.runner.1"
+}

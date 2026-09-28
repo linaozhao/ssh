@@ -1,0 +1,73 @@
+{
+  "experiment_id": "cbm_drift_diagnostic_v2_qwen3_8b_20260923",
+  "experiment_version": "cbm_drift_diagnostic_v2.0",
+  "selection_seed": 20260923,
+  "schedule_seed": 20260923,
+  "source": {
+    "items": "experiments/cbm_attr_v1/data/source_items.jsonl",
+    "episodes": "experiments/cbm_attr_v1/data/episodes.jsonl",
+    "version": "cbm_attr_v1.0",
+    "base_item_count": 12
+  },
+  "variants": ["clean_stay", "evidence_update", "irrelevant_noise"],
+  "protocol_check": {
+    "seeds": [11, 22, 33],
+    "snapshots": ["early_unknown", "clean_t3", "update_t4"]
+  },
+  "mad": {
+    "agents": ["agent_1", "agent_2", "agent_3"],
+    "stages": [1, 2, 3, 4, 5],
+    "rounds": [0, 1, 2],
+    "preflight_base_items": 2
+  },
+  "model": {
+    "alias": "qwen",
+    "model_name": "Qwen3-8B",
+    "api_key": "EMPTY",
+    "thinking_enabled": false,
+    "base_urls": [
+      "http://127.0.0.1:8111/v1",
+      "http://127.0.0.1:8115/v1"
+    ],
+    "extra_body": {
+      "chat_template_kwargs": {"enable_thinking": false}
+    },
+    "deployment": {
+      "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B",
+      "architecture": "Qwen3ForCausalLM",
+      "dtype": "bfloat16",
+      "quantization": null,
+      "revision": "unknown",
+      "service_framework": "vLLM",
+      "service_version": "0.11.2",
+      "max_model_len": 16384,
+      "gpu_memory_utilization": 0.9,
+      "gpu_indices": [1, 5]
+    }
+  },
+  "generation": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 1024,
+    "request_timeout_seconds": 180,
+    "max_retries": 2,
+    "retry_sleep_seconds": 2,
+    "max_concurrent_trajectories": 2
+  },
+  "judge": {
+    "enabled": true,
+    "provider": "deepseek",
+    "model_name": "deepseek-v4-pro",
+    "base_url": "https://api.deepseek.com",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "thinking_enabled": false,
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "request_timeout_seconds": 180,
+    "max_retries": 2,
+    "retry_sleep_seconds": 2,
+    "max_concurrency": 8,
+    "protocols": ["direct", "structured_assistance"],
+    "status": "configured_without_embedded_credentials"
+  }
+}

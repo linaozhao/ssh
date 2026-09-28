@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1320" viewBox="0 0 900 1320" role="img" aria-labelledby="title desc">
+  <title id="title">MAD 约束漂移诊断流程</title>
+  <desc id="desc">从形式化依据、程序核对、Judge 内容分类、轨迹比较到同伴关联和可复核诊断的竖版流程图。</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#14213d" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#52606d"/>
+    </marker>
+    <style>
+      .title { font: 700 30px "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", sans-serif; fill: #17233c; }
+      .subtitle { font: 400 15px "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", sans-serif; fill: #637083; }
+      .step { font: 700 14px "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", sans-serif; fill: #ffffff; }
+      .head { font: 700 20px "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", sans-serif; fill: #17233c; }
+      .body { font: 400 15px "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", sans-serif; fill: #344054; }
+      .small { font: 400 13px "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", sans-serif; fill: #52606d; }
+      .pill { font: 600 13px "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", sans-serif; fill: #344054; }
+      .flow { fill: none; stroke: #52606d; stroke-width: 2.2; marker-end: url(#arrow); }
+      .soft-line { fill: none; stroke: #9aa5b1; stroke-width: 1.8; }
+    </style>
+  </defs>
+
+  <rect width="900" height="1320" fill="#f7f9fc"/>
+  <text x="450" y="48" text-anchor="middle" class="title">MAD 多约束任务：漂移诊断流程</text>
+  <text x="450" y="75" text-anchor="middle" class="subtitle">程序确定“哪里错”，Judge 判断“错在什么内容”，轨迹比较确定“何时发生”</text>
+
+  <!-- Step 1 -->
+  <g filter="url(#shadow)">
+    <rect x="170" y="105" width="560" height="105" rx="10" fill="#ffffff" stroke="#b8c7dc"/>
+    <rect x="170" y="105" width="82" height="105" rx="10" fill="#315b8a"/>
+    <path d="M242 105 H252 V210 H242" fill="#315b8a"/>
+    <text x="211" y="145" text-anchor="middle" class="step">步骤 1</text>
+    <text x="211" y="170" text-anchor="middle" class="step">依据</text>
+    <text x="280" y="142" class="head">建立当前形式化状态</text>
+    <text x="280" y="170" class="body">固定规则 + 当前有效证据 + 程序计算的 Gold 集合</text>
+    <text x="280" y="194" class="small">显式更正只覆盖被点名的旧证据；同伴意见不属于正式证据</text>
+  </g>
+  <path d="M450 210 V244" class="flow"/>
+
+  <!-- Step 2 -->
+  <g filter="url(#shadow)">
+    <rect x="170" y="246" width="560" height="94" rx="10" fill="#ffffff" stroke="#b8c7dc"/>
+    <rect x="170" y="246" width="82" height="94" rx="10" fill="#315b8a"/>
+    <path d="M242 246 H252 V340 H242" fill="#315b8a"/>
+    <text x="211" y="282" text-anchor="middle" class="step">步骤 2</text>
+    <text x="211" y="307" text-anchor="middle" class="step">程序</text>
+    <text x="280" y="282" class="head">核对回答与当前 Gold</text>
+    <text x="280" y="311" class="body">定位多选、漏选和错误候选人的 violation signature</text>
+  </g>
+  <path d="M450 340 V370" class="flow"/>
+
+  <!-- Decision -->
+  <polygon points="450,370 565,425 450,480 335,425" fill="#fff8e8" stroke="#d7a83e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="450" y="419" text-anchor="middle" class="head">回答正确？</text>
+  <text x="450" y="444" text-anchor="middle" class="small">仅判断结果，不推断原因</text>
+
+  <!-- Branches -->
+  <path d="M335 425 H225 V512" class="flow"/>
+  <path d="M565 425 H675 V512" class="flow"/>
+  <text x="278" y="414" text-anchor="middle" class="pill">一致</text>
+  <text x="622" y="414" text-anchor="middle" class="pill">不一致</text>
+
+  <g filter="url(#shadow)">
+    <rect x="85" y="514" width="280" height="86" rx="9" fill="#edf8f2" stroke="#5aa579"/>
+    <text x="225" y="548" text-anchor="middle" class="head" fill="#25633f">结果正确</text>
+    <text x="225" y="575" text-anchor="middle" class="body">仍检查解释是否含事实或规则错误</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="535" y="514" width="280" height="86" rx="9" fill="#fff1f0" stroke="#cf6a62"/>
+    <text x="675" y="548" text-anchor="middle" class="head" fill="#8e302a">结果偏离</text>
+    <text x="675" y="575" text-anchor="middle" class="body">明确错误候选人及违反的约束</text>
+  </g>
+  <path d="M225 600 V628 H450" class="soft-line"/>
+  <path d="M675 600 V628 H450" class="soft-line"/>
+  <path d="M450 628 V655" class="flow"/>
+
+  <!-- Step 3 -->
+  <g filter="url(#shadow)">
+    <rect x="130" y="657" width="640" height="176" rx="10" fill="#ffffff" stroke="#aebbd0"/>
+    <rect x="130" y="657" width="82" height="176" rx="10" fill="#6b4f8e"/>
+    <path d="M202 657 H212 V833 H202" fill="#6b4f8e"/>
+    <text x="171" y="700" text-anchor="middle" class="step">步骤 3</text>
+    <text x="171" y="725" text-anchor="middle" class="step">Judge</text>
+    <text x="240" y="694" class="head">读取原文，判断解释中的偏离内容</text>
+
+    <rect x="240" y="718" width="235" height="43" rx="7" fill="#f1eafa"/>
+    <text x="357" y="745" text-anchor="middle" class="pill">事实偏离：与有效证据冲突</text>
+    <rect x="495" y="718" width="235" height="43" rx="7" fill="#f1eafa"/>
+    <text x="612" y="745" text-anchor="middle" class="pill">规则偏离：删除、替换或放宽</text>
+    <rect x="240" y="774" width="235" height="43" rx="7" fill="#f1eafa"/>
+    <text x="357" y="801" text-anchor="middle" class="pill">推导错误：前提不支持结论</text>
+    <rect x="495" y="774" width="235" height="43" rx="7" fill="#f1eafa"/>
+    <text x="612" y="801" text-anchor="middle" class="pill">内容不确定：缺少细分证据</text>
+  </g>
+  <path d="M450 833 V864" class="flow"/>
+
+  <!-- Step 4 -->
+  <g filter="url(#shadow)">
+    <rect x="130" y="866" width="640" height="142" rx="10" fill="#ffffff" stroke="#aebbd0"/>
+    <rect x="130" y="866" width="82" height="142" rx="10" fill="#b06a32"/>
+    <path d="M202 866 H212 V1008 H202" fill="#b06a32"/>
+    <text x="171" y="907" text-anchor="middle" class="step">步骤 4</text>
+    <text x="171" y="932" text-anchor="middle" class="step">轨迹</text>
+    <text x="240" y="901" class="head">比较前后发言，确定过程类型</text>
+
+    <rect x="240" y="925" width="90" height="34" rx="17" fill="#fff0df"/><text x="285" y="947" text-anchor="middle" class="pill">新引入</text>
+    <rect x="340" y="925" width="120" height="34" rx="17" fill="#fff0df"/><text x="400" y="947" text-anchor="middle" class="pill">初始错误持续</text>
+    <rect x="470" y="925" width="90" height="34" rx="17" fill="#eaf6ef"/><text x="515" y="947" text-anchor="middle" class="pill">纠正</text>
+    <rect x="570" y="925" width="70" height="34" rx="17" fill="#fff0df"/><text x="605" y="947" text-anchor="middle" class="pill">复发</text>
+    <rect x="650" y="925" width="80" height="34" rx="17" fill="#eaf6ef"/><text x="690" y="947" text-anchor="middle" class="pill">合理更新</text>
+    <text x="240" y="988" class="small">同时检查事实是否变化，避免把正式证据更新误判为 drift</text>
+  </g>
+  <path d="M450 1008 V1039" class="flow"/>
+
+  <!-- Step 5 -->
+  <g filter="url(#shadow)">
+    <rect x="170" y="1041" width="560" height="92" rx="10" fill="#ffffff" stroke="#b8c7dc"/>
+    <rect x="170" y="1041" width="82" height="92" rx="10" fill="#315b8a"/>
+    <path d="M242 1041 H252 V1133 H242" fill="#315b8a"/>
+    <text x="211" y="1077" text-anchor="middle" class="step">步骤 5</text>
+    <text x="211" y="1102" text-anchor="middle" class="step">关联</text>
+    <text x="280" y="1077" class="head">检查当时可见的同伴发言</text>
+    <text x="280" y="1106" class="body">记录引用、复述或答案趋同；不直接声称存在因果</text>
+  </g>
+  <path d="M450 1133 V1164" class="flow"/>
+
+  <!-- Output -->
+  <g filter="url(#shadow)">
+    <rect x="130" y="1166" width="640" height="105" rx="10" fill="#17233c"/>
+    <text x="450" y="1200" text-anchor="middle" class="head" fill="#ffffff">输出一条可复核的诊断记录</text>
+    <text x="450" y="1230" text-anchor="middle" class="body" fill="#e6edf7">位置 + 原文引句 + 对照规则/证据 + 结果影响 + 过程类型</text>
+    <text x="450" y="1255" text-anchor="middle" class="body" fill="#e6edf7">+ 同伴文本关联 + 不确定性</text>
+  </g>
+
+  <text x="450" y="1302" text-anchor="middle" class="small">核心原则：答案改变不必然是 drift；同伴答案相同也不必然证明从众。</text>
+</svg>

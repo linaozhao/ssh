@@ -1,0 +1,57 @@
+{
+  "chat_template_kwargs": {
+    "enable_thinking": false
+  },
+  "credentials_recorded": false,
+  "deployment": {
+    "architecture": "Qwen3ForCausalLM",
+    "dtype": "bfloat16",
+    "gpu_indices": [
+      1,
+      5
+    ],
+    "gpu_memory_utilization": 0.9,
+    "max_model_len": 16384,
+    "quantization": null,
+    "revision": "unknown",
+    "service_framework": "vLLM",
+    "service_version": "0.11.2",
+    "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+  },
+  "effective_sampling_note": "request temperature=0.7 and top_p=0.9 override model defaults; top_k=20 is inherited from generation_config.json",
+  "identity_file_sha256": {
+    "config.json": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+    "generation_config.json": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2",
+    "model.safetensors.index.json": "f9fdbcb91c23971c13ec5d5f2573d2349e8f61f2f049371ec699281748fdb1bc",
+    "tokenizer_config.json": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101"
+  },
+  "inherited_model_generation_defaults": {
+    "bos_token_id": 151643,
+    "do_sample": true,
+    "eos_token_id": [
+      151645,
+      151643
+    ],
+    "pad_token_id": 151643,
+    "temperature": 0.6,
+    "top_k": 20,
+    "top_p": 0.95,
+    "transformers_version": "4.51.0"
+  },
+  "launch_script_sha256": "72cebab85c5c3b0cae5d11bced31658344d086a791f6b840ebba4972e6261682",
+  "model_name": "Qwen3-8B",
+  "requested_generation": {
+    "max_concurrent_trajectories": 2,
+    "max_retries": 2,
+    "max_tokens": 1024,
+    "request_timeout_seconds": 180,
+    "retry_sleep_seconds": 2,
+    "temperature": 0.7,
+    "top_p": 0.9
+  },
+  "service_endpoints": [
+    "http://127.0.0.1:8111/v1",
+    "http://127.0.0.1:8115/v1"
+  ],
+  "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B"
+}

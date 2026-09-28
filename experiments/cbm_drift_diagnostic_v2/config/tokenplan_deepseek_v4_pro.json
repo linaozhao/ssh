@@ -1,0 +1,35 @@
+{
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_pro_v3_16384_programmatic_offsets",
+  "provider": "command_code_tokenplan",
+  "base_url": "https://api.commandcode.ai/provider/v1",
+  "api_key_env": "TOKENPLAN_API_KEY",
+  "model_name": "deepseek/deepseek-v4-pro",
+  "endpoint": "/chat/completions",
+  "thinking": {
+    "type": "enabled"
+  },
+  "reasoning_effort": "low",
+  "max_tokens": 16384,
+  "response_format": {
+    "type": "json_object"
+  },
+  "request_timeout_seconds": 600,
+  "max_infrastructure_retries": 2,
+  "initial_retry_seconds": 10,
+  "max_concurrency": 1,
+  "minimum_request_start_interval_seconds": 5,
+  "paired_selection_seed": 20260928,
+  "preflight_selection_seed": 20260928,
+  "quota": {
+    "status": "unknown_no_documented_machine_readable_endpoint",
+    "max_attempts_per_unknown_window": 100,
+    "window_seconds": 18000,
+    "reserve_fraction_when_known": 0.2,
+    "automatic_top_up": false
+  },
+  "protocols": {
+    "structured_assistance": "all_1620_messages",
+    "direct": "one_deterministic_message_per_base_variant_stage"
+  },
+  "credentials_embedded": false
+}

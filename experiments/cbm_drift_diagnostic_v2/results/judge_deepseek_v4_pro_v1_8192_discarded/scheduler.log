@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "/data/zla/mad_attr_filter_generator/experiments/cbm_drift_diagnostic_v2/scripts/run_tokenplan_scheduler.py", line 110, in <module>
+    main()
+  File "/data/zla/mad_attr_filter_generator/experiments/cbm_drift_diagnostic_v2/scripts/run_tokenplan_scheduler.py", line 72, in main
+    summary = runner.run(phase, max_new=1 if paused_for_infra else None)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/zla/mad_attr_filter_generator/experiments/cbm_drift_diagnostic_v2/src/cbm_drift_v2/tokenplan_judge.py", line 821, in run
+    + dt.timedelta(seconds=float(self.config["quota"]["window_seconds"]) + 30)
+   ^^^^^^^^^^^^^^^^^^
+  File "/data/zla/mad_attr_filter_generator/experiments/cbm_drift_diagnostic_v2/src/cbm_drift_v2/tokenplan_judge.py", line 746, in materialize
+    "completed_at": utc_now(),
+       ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/zla/mad_attr_filter_generator/experiments/cbm_drift_diagnostic_v2/src/cbm_drift_v2/tokenplan_judge.py", line 78, in materialize_atomic_records
+    """Materialize deterministic JSONL and summary from crash-safe request files."""
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/zla/mad_attr_filter_generator/experiments/cbm_drift_diagnostic_v2/src/cbm_drift_v2/common.py", line 42, in read_json
+    with path.open(encoding="utf-8") as handle:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/share/anaconda/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/data/zla/mad_attr_filter_generator/experiments/cbm_drift_diagnostic_v2/results/judge_deepseek_v4_pro_v1/experiment_manifest.json'
