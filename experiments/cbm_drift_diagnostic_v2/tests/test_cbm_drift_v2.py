@@ -29,9 +29,11 @@ from cbm_drift_v2.tokenplan_judge import (
     _stream_body,
     build_paired_manifest,
     build_preflight_manifest,
+    effective_quota_cap,
     prepare_tokenplan_experiment,
     scheduler_lock,
 )
+from cbm_drift_v2.tokenplan_analysis import build_chinese_report
 from cbm_drift_v2.validation import validate_dataset
 
 
@@ -290,6 +292,37 @@ def test_tokenplan_transport_does_not_follow_redirects(monkeypatch: pytest.Monke
         assert TRANSPORT_VERSION.endswith("httpx-sse")
     finally:
         runner.client.close()
+
+
+def test_runtime_quota_override_does_not_modify_frozen_config(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    config = read_json(ROOT / "config/tokenplan_deepseek_v4_pro.json")
+    original = copy.deepcopy(config)
+    monkeypatch.delenv("TOKENPLAN_MAX_ATTEMPTS_PER_WINDOW", raising=False)
+    assert effective_quota_cap(config) == (100, "frozen_config_unknown_quota_default")
+    monkeypatch.setenv("TOKENPLAN_MAX_ATTEMPTS_PER_WINDOW", "1800")
+    monkeypatch.setenv("TOKENPLAN_QUOTA_OVERRIDE_SOURCE", "user_dashboard_authorization")
+    assert effective_quota_cap(config) == (1800, "user_dashboard_authorization")
+    assert config == original
+
+
+def test_runtime_quota_override_rejects_invalid_values(monkeypatch: pytest.MonkeyPatch) -> None:
+    config = read_json(ROOT / "config/tokenplan_deepseek_v4_pro.json")
+    monkeypatch.setenv("TOKENPLAN_MAX_ATTEMPTS_PER_WINDOW", "0")
+    with pytest.raises(ValueError, match="must be positive"):
+        effective_quota_cap(config)
+    monkeypatch.setenv("TOKENPLAN_MAX_ATTEMPTS_PER_WINDOW", "all")
+    with pytest.raises(ValueError, match="must be an integer"):
+        effective_quota_cap(config)
+
+
+def test_tokenplan_report_uses_frozen_max_tokens() -> None:
+    result = build_chinese_report(ROOT)
+    report = (ROOT / result["report"]).read_text(encoding="utf-8")
+    config = read_json(ROOT / "config/tokenplan_deepseek_v4_pro.json")
+    assert f"max_tokens {config['max_tokens']}" in report
+    assert "阶段性总结" in report
 
 
 def test_tokenplan_sse_aggregates_reasoning_final_json_and_usage() -> None:

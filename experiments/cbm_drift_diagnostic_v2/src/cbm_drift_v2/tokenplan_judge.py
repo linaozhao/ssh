@@ -33,11 +33,34 @@ TRANSPORT_VERSION = "cbm_drift_v2.tokenplan_transport.4-httpx-sse"
 RESULTS_RELATIVE = Path("results/judge_deepseek_v4_pro_v3")
 INFRASTRUCTURE_ERROR_CODES = {301, 302, 303, 307, 308, 408, 425, 429, 500, 502, 503, 504}
 AUTHORIZATION_ERROR_CODES = {401, 403}
+QUOTA_CAP_OVERRIDE_ENV = "TOKENPLAN_MAX_ATTEMPTS_PER_WINDOW"
+QUOTA_OVERRIDE_SOURCE_ENV = "TOKENPLAN_QUOTA_OVERRIDE_SOURCE"
 
 
 def utc_now() -> str:
     """Return a stable UTC timestamp."""
     return dt.datetime.now(dt.timezone.utc).isoformat()
+
+
+def effective_quota_cap(config: dict[str, Any]) -> tuple[int, str]:
+    """Return the runtime request cap without changing the frozen experiment config.
+
+    Quota scheduling is operational metadata rather than part of the model protocol.
+    A positive environment override lets an operator react to a provider dashboard
+    while preserving the frozen data, prompt, and generation fingerprints.
+    """
+    configured = int(config["quota"]["max_attempts_per_unknown_window"])
+    raw_override = os.environ.get(QUOTA_CAP_OVERRIDE_ENV)
+    if raw_override is None:
+        return configured, "frozen_config_unknown_quota_default"
+    try:
+        override = int(raw_override)
+    except ValueError as exc:
+        raise ValueError(f"{QUOTA_CAP_OVERRIDE_ENV} must be an integer") from exc
+    if override <= 0:
+        raise ValueError(f"{QUOTA_CAP_OVERRIDE_ENV} must be positive")
+    source = os.environ.get(QUOTA_OVERRIDE_SOURCE_ENV, "operator_runtime_override")
+    return override, source
 
 
 def atomic_write_json(path: Path, value: Any) -> None:
@@ -486,6 +509,7 @@ class TokenPlanJudgeRunner:
         self.root = root
         self.results = root / RESULTS_RELATIVE
         self.config = config
+        self.quota_cap, self.quota_cap_source = effective_quota_cap(config)
         self.manifest = read_json(self.results / "experiment_manifest.json")
         if sha256_json(config) != self.manifest["config_sha256"]:
             raise RuntimeError("TokenPlan Judge config fingerprint mismatch")
@@ -570,7 +594,7 @@ class TokenPlanJudgeRunner:
         started = time.monotonic()
         terminal_reason = None
         for attempt_index in range(int(self.config["max_infrastructure_retries"]) + 1):
-            cap = int(self.config["quota"]["max_attempts_per_unknown_window"])
+            cap = self.quota_cap
             if int(state["attempts_started_in_window"]) >= cap:
                 terminal_reason = "retry_deferred_quota_window"
                 break
@@ -766,7 +790,10 @@ class TokenPlanJudgeRunner:
             if state["window_started_epoch"] is None:
                 state["window_started_epoch"] = time.time()
                 state["window_started_at"] = utc_now()
-            cap = int(self.config["quota"]["max_attempts_per_unknown_window"])
+            cap = self.quota_cap
+            state["effective_max_attempts_per_window"] = cap
+            state["quota_cap_source"] = self.quota_cap_source
+            state["quota_override_active"] = bool(os.environ.get(QUOTA_CAP_OVERRIDE_ENV))
             available = max(cap - int(state["attempts_started_in_window"]), 0)
             jobs = [
                 row for row in self.queue

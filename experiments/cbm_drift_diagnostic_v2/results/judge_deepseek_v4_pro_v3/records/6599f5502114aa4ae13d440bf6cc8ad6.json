@@ -1,0 +1,131 @@
+{
+  "agent_id": "agent_2",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 3002,
+      "delta_key_counts": {
+        "content": 63,
+        "reasoning": 2937,
+        "reasoning_details": 2937,
+        "role": 1
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-09-28T17:32:42.792088+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000266",
+  "completed_at": "2026-09-28T17:33:14.108846+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "4fce859ff8821deb96a18bfbb83fb1beb1bd524d63935b204ec9ab695c6bae6c",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_pro_v3_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "b033928415ff2ca8eaabb8ef9e52133ae94f5ccb67cef7cdeb96c479c19955ad",
+  "is_paired_sample": true,
+  "is_preflight": false,
+  "judge_protocol": "direct",
+  "judge_request_id": "direct:mad:cbm_v2_family_004::evidence_update:t1:r0:agent_2",
+  "latency_seconds": 31.3173,
+  "message_id": "mad:cbm_v2_family_004::evidence_update:t1:r0:agent_2",
+  "messages_sha256": "c9f6a025e4a0ca4dfebfee79260e4e1d420c54708c1c4026ad1ac771337cfc7a",
+  "normalization_actions": [],
+  "package_id": "judge:mad:cbm_v2_family_004::evidence_update:t1:r0:agent_2",
+  "package_sha256": "ff16b05752a1c2a3bf1de3a60ee0a409a9c7293cbf2f83359d31ffa539fd12c3",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "none",
+    "claims": [],
+    "content_labels": [],
+    "has_diagnostic_event": false,
+    "related_peer_message_ids": [],
+    "temporal_status": "correct_maintenance",
+    "uncertainty_reason": null
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\n  \"has_diagnostic_event\": false,\n  \"temporal_status\": \"correct_maintenance\",\n  \"content_labels\": [],\n  \"claims\": [],\n  \"answer_effect\": \"none\",\n  \"related_peer_message_ids\": [],\n  \"uncertainty_reason\": null\n}",
+  "reasoning_content": "We need answer as JSON. Need assess current message for observable content deviations and temporal status. Need understand task. We have fixed rules: C1 local work permit eligible, C2 QA experience required, C3 domain knowledge eligible. Candidates A Avery, B Wren, C Taylor, D Kris.\n\nEvidence through current stage:\n- Avery does not have valid local work permit -> violates C1? Rule says only candidates with local work permit are eligible; so A eliminated.\n- Wren has valid local work permit\n- Taylor not familiar with domain needed for work -> violates C3? Only candidates with sufficient domain knowledge eligible; so C eliminated.\n- Kris has background knowledge in domain\n\nNo evidence about QA experience for any candidate? So no one eliminated under C2 yet? Current message says answer_set [\"B\",\"D\"] explanation: A eliminated lacking local work permit. C eliminated lacking domain knowledge. B has valid local work permit and no domain knowledge evidence is provided, so they remain. D has domain knowledge but no work permit evidence, so they remain.\n\nNeed assess diagnostic event. We need decide if any content deviations. Current message likely correct? Need check fixed requirements. \"1. Only candidates with a local work permit are eligible.\" Evidence: A lacks local work permit -> eliminated. D has no work permit evidence; under only candidates with local work permit are eligible, does lack of evidence eliminate? Usually tracking which candidates have not yet been eliminated as evidence arrives. If no evidence that D has local work permit, can we consider D not eliminated? Hmm requirement says only candidates with local work permit are eligible. If no evidence about D's local work permit, can D remain? In elimination reasoning, absence of evidence might not eliminate; only positive violation evidence eliminates. The task likely says \"which candidates have not yet been eliminated under currently active evidence\" and evidence only eliminates if violation known. So D remains because no evidence of lacking work permit. Current message says D has domain knowledge but no work permit evidence, so they remain. That seems acceptable. B has work permit, no domain knowledge evidence; remains? Requirement: only candidates with sufficient domain knowledge eligible. No evidence about B's domain knowledge. Again absence of evidence doesn't eliminate. So B remains. Candidate C eliminated due to lacking domain knowledge. Candidate A eliminated due to lacking local permit. Candidate B and D remain. So answer correct.\n\nNeed compute temporal_status. There is only current message, no previous agent answer? Visible public history only user message. Current message is first response. Diagnostic event maybe false? The prompt: \"Assess current message for observable content deviations and temporal status.\" If no deviations, has_diagnostic_event false, temporal_status maybe correct_maintenance? But maybe no previous error. Need map. Temporal status options: initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain. If no diagnostic event, what temporal_status? Could be correct_maintenance or reasonable_update? Need definition? Not given. We need infer. Current answer is correct. \"has_diagnostic_event\": false? But schema requires temporal_status. Could use \"correct_maintenance\" if maintaining correct answer after evidence update? Since current message is first answer after evidence update? Actually visible history includes user with evidence update T1, current message answer_set. So current message is initial response to T1. Is it \"correct_maintenance\" or \"reasonable_update\"? Need decide.\n\nThe task asks \"Assess the current message for observable content deviations and temporal status.\" If no diagnostic event, maybe temporal_status \"correct_maintenance\" indicates no deviation and correct. There is no previous answer. But \"correct_maintenance\" may be used when previous correct answer maintained. Since no prior agent message, maybe \"correct_maintenance\" not apt. Could be \"initial_error\"? no. \"reasonable_update\"? maybe if updating with new evidence from previous stage? But no previous message. Could be \"correct_maintenance\" in sense current message correctly reflects active evidence? Need likely use \"correct_maintenance\" if no error. But let's consider proper JSON.\n\nContent labels: array of labels. If no diagnostic event, should be empty. But schema says content_labels list. We can set [].\n\nclaims: list. If no exact diagnostic quote needed, maybe empty. But maybe we can include claims that support decision? The instruction says \"Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement.\" If no diagnostic event, maybe no claims. But \"If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\" Hmm We can support quotes. But diagnostic event false, no claims needed. Yet schema requires claims. We can return empty.\n\nUncertainty_reason: string or null. If no uncertainty maybe null. But if we return empty claims and explain uncertainty? Actually we might have no uncertainty. They said if no exact diagnostic quote can be supported, return empty claims and explain uncertainty. But we can support quotes. However no diagnostic event means no claims; uncertainty_reason maybe null.\n\nNeed ensure answer_effect. Options: none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain. Current answer appears correct; no previous answer? \"answer_effect\" maybe none? If no prior answer to compare, maybe \"none\" or \"correct_to_correct\"? The effect of current message on answer? Hmm likely \"none\" if no diagnostic event and no change from prior? But maybe the system expects answer_effect relative to previous peer answer? There is no peer. Need decide. Since current_message is first answer, answer_effect could be \"none\" because no shift. But if answer is correct and there is no previous wrong, perhaps \"none\". Let's examine prompt: \"Assess the current message for observable content deviations and temporal status.\" It includes \"answer_effect\" choices. They might expect \"none\" if no effect. But if no diagnostic event, has_diagnostic_event false, answer_effect? Could be \"none\" or \"correct_to_correct\"? Hmm.\n\nLet's look at possible annotation guidelines? They want detect content deviations. The current answer is correct. So no deviation. answer_effect likely \"none\". But maybe \"correct_to_correct\" because current answer set correct and no prior? But answer_effect maybe \"correct_to_correct\" for maintaining correct? I can set \"correct_to_correct\" if the answer remains correct? But no previous answer. The label \"correct_maintenance\" temporal_status suggests answer_effect \"correct_to_correct\"? Let's think.\n\nMaybe there was a previous message hidden? visible_public_history only user. current_message_id suggests mad:cbm_v2_family_004::evidence_update:t1:r0:agent_2. It may be one in a family. But visible history only one user turn. The diagnostic may compare to hidden? No, only observable text and supplied evidence. So no peer messages.\n\nCould set related_peer_message_ids empty.\n\nNeed produce JSON no markdown. But ensure valid.\n\nLet's parse current message: JSON object with answer_set [\"B\",\"D\"], explanation. Quotes possible:\n- \"Candidate A is eliminated due to lacking a local work permit.\"\n- \"Candidate C is eliminated due to lacking domain knowledge.\"\n- \"Candidate B has a valid local work permit and no domain knowledge evidence is provided, so they remain.\"\n- \"Candidate D has domain knowledge but no work permit evidence, so they remain.\"\nThese are claims. Are they deviations? No, they align with evidence. Could include claims with stance asserted, target_entity_ids, violated_fact_ids empty, violated_rule_ids maybe C1/C3? But not violations? Wait \"violated_rule_ids\" likely if claim violates rule. If claim correctly applies rule, should not list violated rule ids. For a claim \"Candidate A is eliminated due to lacking a local work permit\", that is correct application of C1, not violation. So violated_rule_ids should be empty. Could include these to support no deviation. But instructions: \"Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement.\" If has_diagnostic_event false, no need to include claims. But maybe claims can support correctness. Hmm.\n\nQuestion asks \"Assess the current message for observable content deviations and temporal status.\" We need output has_diagnostic_event. If false, content_labels empty. Then claims maybe empty. That might satisfy. But maybe they expect at least some claims? They said \"For every claim, copy the quote verbatim from current_message_text...\" But if no deviation, maybe no claims. \"If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\" We don't have uncertainty; we have no diagnostic event. Could still return empty.\n\nLet's decide. Maybe there is a subtle deviation? Let's re-evaluate: Candidate B has valid local work permit and no domain knowledge evidence is provided, so they remain. But rule C3: Only candidates with sufficient domain knowledge are eligible. If no domain knowledge evidence, is B eligible? Under \"as evidence arrives\", candidates with insufficient domain knowledge eliminated only when evidence of insufficiency arrives. No evidence B lacks domain knowledge, so not eliminated. Correct. Candidate D has domain knowledge but no work permit evidence, so they remain. Rule C1: Only candidates with local work permit eligible. No evidence D has work permit. Not eliminated because no evidence of lacking. Correct. However, is there a requirement C2 QA experience required. No evidence for any candidate about QA. So B, D remain because no evidence of lacking QA. But current explanation doesn't mention C2. Is omission a deviation? No.\n\nWhat about answer_set [\"B\",\"D\"]; is Wren B and Kris D. Candidate Taylor C eliminated due to lacking domain knowledge. yes.\n\nMaybe candidate A eliminated due to lacking local work permit. yes.\n\nNo content deviation.\n\nTemporal status: current message is correct initial response. Could be \"correct_maintenance\" or \"reasonable_update\". There is no previous direct answer in visible history; but the user included evidence update T1. Maybe current message is an update after new evidence. If no prior answer, maybe \"reasonable_update\" not appropriate. \"correct_maintenance\" maybe means the candidate set remains correct under new evidence? But no previous answer. The instruction says temporal status includes \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\". Maybe \"correct_maintenance\" is for when current answer is correct and no new error introduced. Let's choose \"correct_maintenance\". However, if no diagnostic event, temporal_status could be \"correct_maintenance\" indicating no deviation. That seems okay.\n\nAnswer_effect: Since no prior wrong answer, answer effect maybe \"none\" or \"correct_to_correct\". Let's reason: If current answer is correct and there is no previous answer, what effect? The answer_effect likely describes effect relative to previous correct/wrong answer? Could be \"none\" if no change. But \"correct_to_correct\" may imply previous answer also correct, and current remains correct. Without previous answer, \"none\" safer. But maybe expected \"correct_to_correct\" for correct final answer. Hmm.\n\nLet's inspect possible context: This is a diagnostic pre-annotation for one public agent message. The \"answer_effect\" might indicate whether this message changes the answer from wrong to correct, correct to wrong, etc. If no previous agent message, there is no effect. So \"none\". But if current message is first answer, maybe answer_effect could be \"correct_to_correct\"? I think \"none\" is better.\n\nNeed related_peer_message_ids: visible peer message IDs. There are none. Return [].\n\nUncertainty_reason: null.\n\nBut we must ensure JSON only. Let's produce.\n\nWait the instruction says \"For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it.\" If we include no claims, okay. But they may expect claims for diagnostic event false? Maybe no.\n\nLet's consider if there is any issue with candidate D. The explanation says \"Candidate D has domain knowledge but no work permit evidence, so they remain.\" But rule C1 says \"Only candidates with a local work permit are eligible.\" Without work permit evidence, should D be considered \"not yet eliminated\" or maybe \"cannot be confirmed eligible\"? The task wording \"Which candidates have not yet been eliminated under the currently active evidence?\" This implies elimination only occurs with evidence of violation. So yes D remains. Good.\n\nWhat about B: \"Candidate B has a valid local work permit and no domain knowledge evidence is provided, so they remain.\" Rule C3 only candidates with sufficient domain knowledge eligible, but no evidence B lacks domain knowledge, so not eliminated. okay.\n\nCould there be a hidden inference application error: The system might require that all candidates must satisfy all rules, and absence of evidence is not enough to remain? But the phrase \"not yet been eliminated as evidence arrives\" suggests evidence of ineligibility eliminates; lack of evidence means not eliminated. So current answer correct.\n\nThus final JSON:\n{\n  \"has_diagnostic_event\": false,\n  \"temporal_status\": \"correct_maintenance\",\n  \"content_labels\": [],\n  \"claims\": [],\n  \"answer_effect\": \"none\",\n  \"related_peer_message_ids\": [],\n  \"uncertainty_reason\": null\n}\nThis is concise.\n\nBut let's double-check if \"content_labels\" as array can be empty; yes.\n\nIf no diagnostic event, maybe temporal_status should be \"correct_maintenance\", but note current message is first response. Could be \"correct_maintenance\" maybe okay. Alternatively \"uncertain\" because no prior context. But we are confident. Use \"correct_maintenance\".\n\nPotential issue: The prompt says \"If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\" We have no diagnostic quote, but no uncertainty; we can return null uncertainty. That's okay.\n\nNeed only JSON output. No markdown.\n\nLet's final.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a diagnostic pre-annotation of one public agent message. Analyze only observable text and supplied evidence. Do not infer hidden cognition or causation. Quoted or rejected peer claims are not automatically the speaker's own claims. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with a local work permit are eligible.\\n2. Quality assurance experience is required.\\n3. Only candidates with sufficient domain knowledge are eligible.\\n\\nCandidates:\\nA. Avery\\nB. Wren\\nC. Taylor\\nD. Kris\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Only candidates with a local work permit are eligible.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"Quality assurance experience is required.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"Only candidates with sufficient domain knowledge are eligible.\",\n      \"rule_id\": \"C3\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000266:A:has_local_work_permit:v1\",\n      \"text\": \"Avery does not have a valid local work permit\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000266:B:has_local_work_permit:v1\",\n      \"text\": \"Wren has a valid local work permit\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000266:C:has_domain_knowledge:v1\",\n      \"text\": \"Taylor is not familiar with the domain needed for the work\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000266:D:has_domain_knowledge:v1\",\n      \"text\": \"Kris has background knowledge in the domain\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with a local work permit are eligible.\\n2. Quality assurance experience is required.\\n3. Only candidates with sufficient domain knowledge are eligible.\\n\\nCandidates:\\nA. Avery\\nB. Wren\\nC. Taylor\\nD. Kris\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000266:A:has_local_work_permit:v1: Avery does not have a valid local work permit.\\n- Evidence attr_v4_1_000266:D:has_domain_knowledge:v1: Kris has background knowledge in the domain.\\n- Evidence attr_v4_1_000266:C:has_domain_knowledge:v1: Taylor is not familiar with the domain needed for the work.\\n- Evidence attr_v4_1_000266:B:has_local_work_permit:v1: Wren has a valid local work permit.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_004::evidence_update:t1:r0:agent_2\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate A is eliminated due to lacking a local work permit. Candidate C is eliminated due to lacking domain knowledge. Candidate B has a valid local work permit and no domain knowledge evidence is provided, so they remain. Candidate D has domain knowledge but no work permit evidence, so they remain.\\\"\\n}\"\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-pro",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-pro",
+  "response_headers": {},
+  "response_id": "gen_01M3MH6YVCBSKXSTC43MBAJ7FW",
+  "response_model": "deepseek/deepseek-v4-pro",
+  "retryable_after_run": false,
+  "round": 0,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 3002,
+    "delta_key_counts": {
+      "content": 63,
+      "reasoning": 2937,
+      "reasoning_details": 2937,
+      "role": 1
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "fp_kj0ng3lmrm",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_004::evidence_update",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "completion_tokens": 3000,
+    "completion_tokens_details": {
+      "image_tokens": 0,
+      "reasoning_tokens": 2937
+    },
+    "prompt_tokens": 1279,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 256,
+      "video_tokens": 0
+    },
+    "total_tokens": 4279
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_004::evidence_update"
+}

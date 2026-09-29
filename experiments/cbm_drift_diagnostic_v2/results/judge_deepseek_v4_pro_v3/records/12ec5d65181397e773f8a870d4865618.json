@@ -1,0 +1,131 @@
+{
+  "agent_id": "agent_2",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 2215,
+      "delta_key_counts": {
+        "content": 63,
+        "reasoning": 2150,
+        "reasoning_details": 2150,
+        "role": 1
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-09-29T01:35:05.095838+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000229",
+  "completed_at": "2026-09-29T01:35:29.135087+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "4fce859ff8821deb96a18bfbb83fb1beb1bd524d63935b204ec9ab695c6bae6c",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_pro_v3_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "7c490f929479713b0e9918cfe9a1471bc12ac13c9e94858e1dbbe776f3ff39e3",
+  "is_paired_sample": false,
+  "is_preflight": false,
+  "judge_protocol": "structured_assistance",
+  "judge_request_id": "structured_assistance:mad:cbm_v2_family_003::clean_stay:t1:r0:agent_2",
+  "latency_seconds": 24.0399,
+  "message_id": "mad:cbm_v2_family_003::clean_stay:t1:r0:agent_2",
+  "messages_sha256": "317bba4ff0beeed55e4379d6f80174e65554b9ed6f0e7e33b83bee99507a3413",
+  "normalization_actions": [],
+  "package_id": "judge:mad:cbm_v2_family_003::clean_stay:t1:r0:agent_2",
+  "package_sha256": "e2af6d8c477476b46a81549d92bb006113d86dd7f1c33c627265f363c860b504",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "none",
+    "claims": [],
+    "content_labels": [],
+    "has_diagnostic_event": false,
+    "related_peer_message_ids": [],
+    "temporal_status": "correct_maintenance",
+    "uncertainty_reason": null
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\n  \"has_diagnostic_event\": false,\n  \"temporal_status\": \"correct_maintenance\",\n  \"content_labels\": [],\n  \"claims\": [],\n  \"answer_effect\": \"none\",\n  \"related_peer_message_ids\": [],\n  \"uncertainty_reason\": null\n}",
+  "reasoning_content": "We need answer JSON only. Need assess current message for observable content deviations and temporal status. We have reference. Need follow schema. Need inspect current message text: JSON with answer_set [\"A\",\"C\"], explanation: \"Candidates A (Rowan) and C (Quinn) have met the requirements of independent work ability. Candidate B (Blair) lacks public speaking experience, and Candidate D (Jordan) cannot work independently, so they are eliminated.\"\n\nWe need determine has_diagnostic_event boolean? Temporal status likely correct_maintenance per program_check. Content labels empty? Need decide if any observable content deviations. The answer is correct. Explanation states A and C met independent work ability. That is supported: A Rowan can complete tasks independently; C Quinn can work without close guidance. B lacks public speaking experience; supported. D cannot work independently; supported. It does not mention domain knowledge for A,C? But no evidence about domain knowledge in active evidence, maybe all eligible? Wait rules include C1 sufficient domain knowledge, but no evidence for any candidate's domain knowledge in formal evidence. Oracle includes A,C, exclusions only B,D. The explanation says \"met the requirements of independent work ability\" not \"all requirements\"; maybe they haven't demonstrated domain knowledge or public speaking for A,C? But requirements? Only active evidence has independent work ability for A,C and B lacks public speaking, D cannot independent. Domain knowledge not assessed. So answer correct. Content label? No deviations. Need claims maybe include quotes for statements? The prompt says \"For every claim, copy the quote verbatim... Include only claims needed to support or qualify the diagnostic decision, not inventory.\" If no content deviation, claims maybe empty. But maybe we need include diagnostic quotes to support correct maintenance? It says \"Assess current message for observable content deviations and temporal status. An incorrect answer alone does not determine content label. For every claim, copy quote verbatim...\" We can include claims that are asserted and not violating? Need maybe quote \"Candidates A (Rowan) and C (Quinn) have met the requirements of independent work ability.\" and \"Candidate B (Blair) lacks public speaking experience\" \"Candidate D (Jordan) cannot work independently\" to show they align. But claims list in schema includes violated_fact_ids/violated_rule_ids. If no violations, those arrays empty. Could include assertions with target entities, no violations. The requirement: \"Include only claims needed to support or qualify the diagnostic decision.\" Since diagnostic is no deviation, maybe include the key claims showing no factual dev. But \"If no exact diagnostic quote can be supported, return empty claims list and explain uncertainty.\" We can quote exact. We need ensure exact quotes from current_message_text. current_message_text includes newline and escaped? Actually it's a JSON string with content:\n\"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"C\\\"],\\n  \\\"explanation\\\": \\\"Candidates A (Rowan) and C (Quinn) have met the requirements of independent work ability. Candidate B (Blair) lacks public speaking experience, and Candidate D (Jordan) cannot work independently, so they are eliminated.\\\"\\n}\"\n\nWe can use substring from explanation. Need exact. For quote, maybe \"Candidates A (Rowan) and C (Quinn) have met the requirements of independent work ability.\" It is exact substring. Another: \"Candidate B (Blair) lacks public speaking experience, and Candidate D (Jordan) cannot work independently, so they are eliminated.\" Also exact.\n\nNeed temporal_status: program_check says \"correct_maintenance\". So use \"correct_maintenance\".\n\nhas_diagnostic_event? Let's understand: The output schema asks has_diagnostic_event: boolean. Could mean whether the message contains a diagnostic event (content deviation, etc). Since no error, likely false. But perhaps any message has diagnostic event? Need infer. In program_check outcome valid_correct, temporal_status correct_maintenance, answer_effect none, error_objects empty. So has_diagnostic_event false. Content labels empty list. Answer_effect \"none\" (program_check answer_effect none). related_peer_message_ids empty list. uncertainty_reason null.\n\nNeed include claims maybe? If has_diagnostic_event false, perhaps claims empty? The prompt says \"Include only claims needed to support or qualify the diagnostic decision\". If no deviation, maybe no claims needed. But \"For every claim, copy the quote...\" not \"must include\". We can decide to include claims that support the decision? The schema allows claims, but if no diagnostic event, maybe empty is better. But the instruction: \"Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize...\" This suggests every claim we consider, likely include claims that could be relevant. In this case, the explanation makes claims about candidates. They are accurate. If we include them, their violated_fact_ids and violated_rule_ids are empty. That could support no deviation. But does the evaluator expect claims only for content deviations? The \"content_labels\" would be empty, so claims maybe empty. But schema includes claims anyway. We can include the accurate claims? However the prompt specifically says \"Include only claims needed to support or qualify the diagnostic decision\". To support correct_maintenance, we might need to show the claims align with evidence. But the reference structure assistance already provides program_check. The diagnostic decision could be supported by observing no violations. I think it's safer to include claims that are part of explanation and align, with empty violated arrays, to show exact quotes assessed. But if the evaluator expects claims only where there is a violation? It says \"If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\" That implies claims are used when diagnostic quote exists. Since there is no deviation, maybe no exact diagnostic quote (a quote that indicates violation) can be supported, so claims empty. But the phrase \"diagnostic quote\" maybe means claims relevant to diagnosis. Hmm.\n\nLet's parse user instruction:\n\"Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\"\n\nThis suggests we should identify claims in current message that are relevant to diagnosis. If answer correct, the claims are correct; they do not violate. But \"If no exact diagnostic quote can be supported\" means maybe if there's no violation/relevant quote, empty claims. For correct message, there may be no diagnostic quote, so empty claims. But then we don't quote explanation. The decision is correct_maintenance. I can set claims empty and uncertainty_reason null? That might be accepted. However the instruction says \"For every claim...\" maybe if no claims, fine. I think for no deviation, empty claims is clean.\n\nBut need check answer_effect from program_check: \"none\". That indicates initial answer? likely none because first round? Actually answer_effect none maybe means no change from previous? program_check has answer_effect none and temporal_status correct_maintenance, this is initial clean stay. So answer_effect \"none\". Good.\n\nNeed output JSON only.\n\nLet's ensure content_labels: [] if no content deviation. The possible content_labels list includes \"factual_deviation/rule_deviation/inference_application_error/unresolved\". So empty list.\n\nhas_diagnostic_event: false.\n\ntemporal_status: \"correct_maintenance\".\n\nclaims: [].\n\nrelated_peer_message_ids: [].\n\nuncertainty_reason: null? But if claims empty, maybe we need explain uncertainty? The instruction says if no exact diagnostic quote can be supported, return empty claims list and explain uncertainty. But here we are certain no deviation? Maybe uncertainty_reason could be null. But maybe they want explain \"No diagnostic quote required; answer aligns with oracle and evidence.\" But field is \"string or null\". Could set null. However final should just JSON.\n\nLet's double-check current message text includes answer_set [\"A\",\"C\"], explanation. We might need quote to show answer? The answer set could be considered a claim? It's not a natural language claim, but could be quote. If we include claims, maybe quote \"\\\"answer_set\\\": [\\\"A\\\", \\\"C\\\"]\" from current message. But claim stance asserted? It asserts candidates A,C not eliminated. Could include. But if no violations, okay. Yet the \"claims\" schema expects quote, stance, target_entity_ids, violated_fact_ids, violated_rule_ids. We can include:\n{\n quote: \"\\\"answer_set\\\": [\\\"A\\\", \\\"C\\\"]\",\n stance: \"asserted\",\n target_entity_ids: [\"A\",\"C\"],\n violated_fact_ids: [],\n violated_rule_ids: []\n}\nThis is an assertion of answer. Would this be considered needed? Maybe yes to support diagnostic decision (correct answer). But if the evaluator expects claims only for deviations, including correct answer may be unnecessary. But \"An incorrect answer alone does not determine a content label\" means we don't label incorrect answer as deviation automatically? Here answer is correct, so no content label. We can decide not to include claims.\n\nThe prompt: \"Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement.\" The diagnostic decision is no deviation, correct maintenance. Claims aren't needed to support no deviation; the absence of violating claims suffices. So claims empty.\n\nThus final:\n{\n  \"has_diagnostic_event\": false,\n  \"temporal_status\": \"correct_maintenance\",\n  \"content_labels\": [],\n  \"claims\": [],\n  \"answer_effect\": \"none\",\n  \"related_peer_message_ids\": [],\n  \"uncertainty_reason\": null\n}\n\nNeed ensure JSON valid. That's it.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a reference-structure-assisted diagnostic pre-annotation of one public agent message. The supplied formal state is authoritative reference information for this analysis. Analyze observable text only; do not infer hidden cognition or causation. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with sufficient domain knowledge are eligible.\\n2. Independent work ability is required.\\n3. Only candidates with prior public presentation experience are eligible.\\n\\nCandidates:\\nA. Rowan\\nB. Blair\\nC. Quinn\\nD. Jordan\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Only candidates with sufficient domain knowledge are eligible.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"Independent work ability is required.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"Only candidates with prior public presentation experience are eligible.\",\n      \"rule_id\": \"C3\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000229:A:can_work_independently:v1\",\n      \"text\": \"Rowan can complete tasks independently\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000229:B:has_public_speaking_experience:v1\",\n      \"text\": \"Blair lacks experience speaking to an audience\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000229:C:can_work_independently:v1\",\n      \"text\": \"Quinn can work without close guidance\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000229:D:can_work_independently:v1\",\n      \"text\": \"Jordan is not able to make progress independently\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with sufficient domain knowledge are eligible.\\n2. Independent work ability is required.\\n3. Only candidates with prior public presentation experience are eligible.\\n\\nCandidates:\\nA. Rowan\\nB. Blair\\nC. Quinn\\nD. Jordan\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000229:C:can_work_independently:v1: Quinn can work without close guidance.\\n- Evidence attr_v4_1_000229:B:has_public_speaking_experience:v1: Blair lacks experience speaking to an audience.\\n- Evidence attr_v4_1_000229:A:can_work_independently:v1: Rowan can complete tasks independently.\\n- Evidence attr_v4_1_000229:D:can_work_independently:v1: Jordan is not able to make progress independently.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_003::clean_stay:t1:r0:agent_2\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"C\\\"],\\n  \\\"explanation\\\": \\\"Candidates A (Rowan) and C (Quinn) have met the requirements of independent work ability. Candidate B (Blair) lacks public speaking experience, and Candidate D (Jordan) cannot work independently, so they are eliminated.\\\"\\n}\",\n  \"reference_structure_assistance\": {\n    \"active_evidence\": [\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"can_work_independently\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Rowan\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000229:A:can_work_independently:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Rowan can complete tasks independently\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_public_speaking_experience\",\n        \"candidate_id\": \"B\",\n        \"candidate_name\": \"Blair\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000229:B:has_public_speaking_experience:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Blair lacks experience speaking to an audience\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"can_work_independently\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Quinn\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000229:C:can_work_independently:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Quinn can work without close guidance\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"can_work_independently\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Jordan\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000229:D:can_work_independently:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Jordan is not able to make progress independently\",\n        \"value\": false,\n        \"version\": 1\n      }\n    ],\n    \"exclusions\": {\n      \"B\": [\n        {\n          \"attribute\": \"has_public_speaking_experience\",\n          \"candidate_id\": \"B\",\n          \"evidence_id\": \"attr_v4_1_000229:B:has_public_speaking_experience:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C3\"\n        }\n      ],\n      \"D\": [\n        {\n          \"attribute\": \"can_work_independently\",\n          \"candidate_id\": \"D\",\n          \"evidence_id\": \"attr_v4_1_000229:D:can_work_independently:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C2\"\n        }\n      ]\n    },\n    \"oracle\": [\n      \"A\",\n      \"C\"\n    ],\n    \"program_check\": {\n      \"agent_id\": \"agent_2\",\n      \"answer_effect\": \"none\",\n      \"base_item_id\": \"attr_v4_1_000229\",\n      \"comparison_scope\": \"initial\",\n      \"continued_error_objects\": [],\n      \"diagnostic_version\": \"cbm_drift_v2.program_diagnostic.1\",\n      \"error_objects\": [],\n      \"evidence_stage\": 1,\n      \"extra_candidate_violations\": {},\n      \"extra_candidates\": [],\n      \"family_id\": \"cbm_v2_family_003\",\n      \"formal_oracle_changed_since_previous_output\": false,\n      \"message_id\": \"mad:cbm_v2_family_003::clean_stay:t1:r0:agent_2\",\n      \"new_error_objects\": [],\n      \"omitted_candidates\": [],\n      \"oracle\": [\n        \"A\",\n        \"C\"\n      ],\n      \"outcome\": \"valid_correct\",\n      \"prediction\": [\n        \"A\",\n        \"C\"\n      ],\n      \"related_peer_message_ids_by_answer_alignment\": [],\n      \"request_id\": \"mad:cbm_v2_family_003::clean_stay:t1:r0:agent_2\",\n      \"resolved_error_objects\": [],\n      \"round\": 0,\n      \"temporal_status\": \"correct_maintenance\",\n      \"trajectory_id\": \"cbm_v2_family_003::clean_stay\",\n      \"variant_id\": \"cbm_v2_family_003::clean_stay\",\n      \"variant_type\": \"clean_stay\"\n    },\n    \"rules\": [\n      {\n        \"attribute\": \"has_domain_knowledge\",\n        \"id\": \"C1\",\n        \"natural_language\": \"Only candidates with sufficient domain knowledge are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"can_work_independently\",\n        \"id\": \"C2\",\n        \"natural_language\": \"Independent work ability is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_public_speaking_experience\",\n        \"id\": \"C3\",\n        \"natural_language\": \"Only candidates with prior public presentation experience are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      }\n    ]\n  }\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-pro",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-pro",
+  "response_headers": {},
+  "response_id": "gen_01M3NCT7HZGXZTJNWQXBF40J29",
+  "response_model": "deepseek/deepseek-v4-pro",
+  "retryable_after_run": false,
+  "round": 0,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 2215,
+    "delta_key_counts": {
+      "content": 63,
+      "reasoning": 2150,
+      "reasoning_details": 2150,
+      "role": 1
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "fp_legotrprbt",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_003::clean_stay",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "completion_tokens": 2213,
+    "completion_tokens_details": {
+      "image_tokens": 0,
+      "reasoning_tokens": 2150
+    },
+    "prompt_tokens": 2615,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 896,
+      "video_tokens": 0
+    },
+    "total_tokens": 4828
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_003::clean_stay"
+}

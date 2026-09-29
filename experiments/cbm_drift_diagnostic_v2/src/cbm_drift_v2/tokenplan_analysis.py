@@ -194,6 +194,8 @@ def build_chinese_report(root: Path) -> dict[str, Any]:
     """Build a dynamic Chinese report for complete or interrupted Judge progress."""
     results = root / RESULTS_RELATIVE
     summary = analyze_tokenplan_judge(root)
+    manifest = read_json(results / "experiment_manifest.json")
+    judge_config = manifest["config"]
     resume = read_json(root / "manifests/resume_audit.json")
     program = read_json(root / "results/program/summary.json")
     diagnostics = read_jsonl(root / "results/program/message_diagnostics.jsonl")
@@ -204,10 +206,18 @@ def build_chinese_report(root: Path) -> dict[str, Any]:
         f"- Qwen MAD 公开发言复用：{resume['qwen_mad']['records']}/1620。",
         f"- 程序状态诊断复用：{program['messages']} 条消息、{program['events']} 个候选级连续错误事件。",
         f"- 本轮 Judge：已完成 {summary['coverage']['completed']}/{summary['coverage']['expected']}，剩余 {summary['coverage']['remaining']}。",
+        f"- API 成功 {sum(value['api_success'] for value in summary['by_protocol'].values())}，"
+        f"未成功 {summary['coverage']['completed'] - sum(value['api_success'] for value in summary['by_protocol'].values())}；"
+        f"解析成功 {sum(value['parse_success'] for value in summary['by_protocol'].values())}，"
+        f"schema/引文/对象校验通过 {sum(value['schema_valid'] for value in summary['by_protocol'].values())}。",
         f"- 当前调度状态：`{summary['scheduler'].get('status', 'unknown')}`。",
+        "- 本报告是周额度停止点的阶段性总结，不代表 1800 次 Judge 已全部完成。",
         "- 独立人工参考标签尚未产生，因此检测与内容分类准确率为：**尚未评估**。", "",
         "## Judge 配置", "",
-        "固定使用 Command Code TokenPlan 的 `deepseek/deepseek-v4-pro`，thinking enabled、reasoning effort low、max_tokens 4096。未发送 temperature、top_p、惩罚参数或工具；每条目标发言独立判断。凭证仅从环境变量读取。", "",
+        f"固定使用 Command Code TokenPlan 的 `{judge_config['model_name']}`，"
+        f"thinking {judge_config['thinking']['type']}、reasoning effort {judge_config['reasoning_effort']}、"
+        f"max_tokens {judge_config['max_tokens']}。未发送 temperature、top_p、惩罚参数或工具；"
+        "每条目标发言独立判断。凭证仅从环境变量读取。", "",
         "结构化辅助模式覆盖全部 1620 条有效发言；直接模式仅覆盖预先冻结的 180 条配对样本。配对抽样按 12 个基础题 × 3 个证据版本 × 5 个阶段各取一条，不依据 Qwen 正误或 Judge 输出。", "",
         "## Qwen 与程序诊断", "",
         f"程序结果状态为：{program['outcomes']}。过程状态为：{program['temporal_status']}。这些是答案集合的确定性比较，不是事实/规则/推导内容类别。", "",
