@@ -1,0 +1,138 @@
+{
+  "agent_id": "agent_3",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 508,
+      "delta_key_counts": {
+        "content": 20,
+        "reasoning_content": 486,
+        "role": 507
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T11:30:57.844346+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000417",
+  "completed_at": "2026-10-15T11:31:09.946444+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "9c722ab18f68c11de719d8e78b7fe2220681b722d56fef3b1a7ac53f19fa7005",
+  "is_paired_sample": false,
+  "is_preflight": false,
+  "judge_protocol": "structured_assistance",
+  "judge_request_id": "structured_assistance:mad:cbm_v2_family_008::evidence_update:t1:r0:agent_3",
+  "latency_seconds": 12.1024,
+  "message_id": "mad:cbm_v2_family_008::evidence_update:t1:r0:agent_3",
+  "messages_sha256": "e1b15f13c49c940422ecf1691af55c8886e38758733a629974b93d2363bdf367",
+  "normalization_actions": [],
+  "package_id": "judge:mad:cbm_v2_family_008::evidence_update:t1:r0:agent_3",
+  "package_sha256": "07246f6853a802d305fbc53c8c6c21416f5783aa457314dcba6983b7dc62910e",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "none",
+    "claims": [],
+    "content_labels": [],
+    "has_diagnostic_event": false,
+    "related_peer_message_ids": [],
+    "temporal_status": "correct_maintenance",
+    "uncertainty_reason": "No exact diagnostic quote can be supported; the answer set and explanation align with the active evidence and fixed rules, so no observable content deviation is identified."
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\"has_diagnostic_event\":false,\"temporal_status\":\"correct_maintenance\",\"content_labels\":[],\"claims\":[],\"answer_effect\":\"none\",\"related_peer_message_ids\":[],\"uncertainty_reason\":\"No exact diagnostic quote can be supported; the answer set and explanation align with the active evidence and fixed rules, so no observable content deviation is identified.\"}",
+  "reasoning_content": "We need answer only JSON. Need analyze current message. It's agent answer with answer_set A,D and explanation. Reference oracle A,D, outcome valid_correct, temporal correct_maintenance. Need assess observable content deviations and temporal status. Incorrect answer alone doesn't determine content label. Here answer matches oracle. Explanation may contain some inaccuracies? Let's inspect.\n\nCurrent message: JSON with answer_set [\"A\",\"D\"], explanation: \"Candidate A (Sawyer) has machine learning experience and a local work permit, but no evidence of team collaboration or Monday availability. Candidate D (Arden) has machine learning experience and is available on Monday, but no evidence of team collaboration or programming experience. Candidates B and C have been eliminated due to lack of programming experience and machine learning experience, respectively.\"\n\nNeed check claims. Requirements: candidates must have teamwork, local permit, Monday availability, programming, ML. Evidence: A has permit true, ML true. No evidence for A teamwork or Monday. So A has not been eliminated? Wait if only candidates who have not yet been eliminated under active evidence. If no evidence of meeting requirement, are they eliminated? The task likely \"not yet eliminated\" means candidates not ruled out by evidence; lack of evidence means still possible? Let's infer: B has no programming -> eliminated by C4. C no ML -> eliminated by C5. A and D have no disqualifying evidence, so remain. So answer A,D correct. Explanation says A \"but no evidence of team collaboration or Monday availability\" — that's true, but maybe not a deviation? It notes missing evidence, but candidate A remains because no negative evidence. It might be acceptable. D similarly no evidence of teamwork or programming. That's true. So no factual deviation? Let's check reference exclusions: B excluded due C4, C excluded due C5. So explanation matches.\n\nHowever need look for potential rule_deviation/inference_application_error? The explanation says \"Candidates B and C have been eliminated due to lack of programming experience and machine learning experience, respectively.\" That's correct: B lacks programming, C lacks ML. It doesn't mention C's teamwork positive? Fine.\n\nBut there might be subtle issue: For A and D, the explanation says \"but no evidence of team collaboration or Monday availability\" for A, and D \"no evidence of team collaboration or programming experience\". Since no evidence, they remain. That's not a deviation. The answer_set matches oracle. So likely no diagnostic event. temporal_status correct_maintenance. content_labels maybe empty or [\"unresolved\"]? Schema requires content_labels array of strings. If no diagnostic event, maybe empty. The instruction: \"Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim... Include only claims needed...\" If no exact diagnostic quote can be supported, return empty claims and explain uncertainty. But here no diagnostic. We can return has_diagnostic_event false, temporal_status correct_maintenance, content_labels [] or maybe [\"unresolved\"]? Since no deviation, labels empty. But schema says content_labels: [\"factual_deviation/rule_deviation/inference_application_error/unresolved\"] as list of possible values? Usually if no labels, empty. I think empty list is acceptable. But maybe they expect content_labels with \"unresolved\" if uncertain? Here certain.\n\nNeed ensure claims list empty? Or could include claim for answer_set? But no violations. Claims should include only claims needed to support diagnostic decision. Since no diagnostic, empty claims list. But maybe to show no deviation, could include quotes of answer? However \"Include only claims needed to support or qualify the diagnostic decision, not an inventory...\" If no diagnostic, empty. But the required output schema says claims array. We can leave empty.\n\nNeed provide answer_effect: \"none\" or \"correct_to_correct\"? Program check says answer_effect \"none\" and outcome valid_correct. The schema answer_effect values: none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain. Since no change? It says answer_effect none in program_check. We can set \"none\". But temporal_status correct_maintenance. Related peer IDs none. Uncertainty reason null.\n\nBut wait: There might be a subtle content deviation: The explanation states \"Candidate A (Sawyer) has machine learning experience and a local work permit, but no evidence of team collaboration or Monday availability.\" In formal evidence, A has ML and permit; no evidence for teamwork or Monday. That's accurate. For D: \"has machine learning experience and is available on Monday, but no evidence of team collaboration or programming experience.\" Accurate. \"Candidates B and C have been eliminated due to lack of programming experience and machine learning experience, respectively.\" B eliminated due lack programming; C due lack ML. Accurate. So no deviations.\n\nNeed consider if \"lack of programming experience\" for B is from evidence \"Kris has no practical programming background\" -> yes. \"lack of ... machine learning experience\" for C from \"Sage has no prior exposure to machine learning projects\" -> yes.\n\nSo final JSON.\n\nBut the instruction: \"For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\"\n\nSo if no diagnostic quote, claims empty and explain uncertainty? But no uncertainty. The uncertainty_reason can be null. They say explain uncertainty if empty claims. But maybe if no diagnostic event, empty claims and uncertainty_reason \"No observable content deviation; answer matches oracle and explanation aligns with active evidence.\" That might be appropriate.\n\nNeed decide content_labels. If no diagnostic event, content_labels should be empty array. But schema type says content_labels: [\"factual_deviation/rule_deviation/inference_application_error/unresolved\"] meaning an array of those strings. Empty is fine.\n\nLet's craft JSON:\n\n{\n  \"has_diagnostic_event\": false,\n  \"temporal_status\": \"correct_maintenance\",\n  \"content_labels\": [],\n  \"claims\": [],\n  \"answer_effect\": \"none\",\n  \"related_peer_message_ids\": [],\n  \"uncertainty_reason\": \"No exact diagnostic quote; answer set and explanation align with active evidence and fixed rules, so no content deviation is supported.\"\n}\n\nBut wait answer_effect \"none\" maybe not in schema? It is. Program check says answer_effect none. Good.\n\nNeed ensure \"temporal_status\" value exactly one of allowed. \"correct_maintenance\" is allowed. Good.\n\nDouble-check if there could be an \"inference_application_error\" because explanation calls absence of evidence as reason for not eliminated? It doesn't say eliminated. It says A has no evidence of team collaboration or Monday availability, but still includes A and D. Under strict rule, if requirement must have evidence of meeting, then lack of evidence might mean eliminated? But task says \"not yet been eliminated as evidence arrives\" likely candidates remain unless contradicted. Oracle confirms A,D. So fine.\n\nThus final.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a reference-structure-assisted diagnostic pre-annotation of one public agent message. The supplied formal state is authoritative reference information for this analysis. Analyze observable text only; do not infer hidden cognition or causation. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Candidates must have experience collaborating with a team.\\n2. A local work permit is required.\\n3. Only candidates who can participate on Monday are eligible.\\n4. Programming experience is required.\\n5. Previous machine learning experience is required.\\n\\nCandidates:\\nA. Sawyer\\nB. Kris\\nC. Sage\\nD. Arden\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Candidates must have experience collaborating with a team.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"A local work permit is required.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"Only candidates who can participate on Monday are eligible.\",\n      \"rule_id\": \"C3\"\n    },\n    {\n      \"natural_language\": \"Programming experience is required.\",\n      \"rule_id\": \"C4\"\n    },\n    {\n      \"natural_language\": \"Previous machine learning experience is required.\",\n      \"rule_id\": \"C5\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000417:A:has_local_work_permit:v1\",\n      \"text\": \"Sawyer meets the local work permit requirement\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000417:A:has_ml_experience:v1\",\n      \"text\": \"Sawyer has hands-on experience with machine learning systems\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000417:B:has_programming_experience:v1\",\n      \"text\": \"Kris has no practical programming background\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000417:C:has_ml_experience:v1\",\n      \"text\": \"Sage has no prior exposure to machine learning projects\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000417:C:has_teamwork_experience:v1\",\n      \"text\": \"Sage has collaborated on team projects\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000417:D:available_monday:v1\",\n      \"text\": \"Arden can participate on Monday\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000417:D:has_ml_experience:v1\",\n      \"text\": \"Arden has worked on machine learning projects\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Candidates must have experience collaborating with a team.\\n2. A local work permit is required.\\n3. Only candidates who can participate on Monday are eligible.\\n4. Programming experience is required.\\n5. Previous machine learning experience is required.\\n\\nCandidates:\\nA. Sawyer\\nB. Kris\\nC. Sage\\nD. Arden\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000417:C:has_teamwork_experience:v1: Sage has collaborated on team projects.\\n- Evidence attr_v4_1_000417:D:has_ml_experience:v1: Arden has worked on machine learning projects.\\n- Evidence attr_v4_1_000417:A:has_ml_experience:v1: Sawyer has hands-on experience with machine learning systems.\\n- Evidence attr_v4_1_000417:B:has_programming_experience:v1: Kris has no practical programming background.\\n- Evidence attr_v4_1_000417:A:has_local_work_permit:v1: Sawyer meets the local work permit requirement.\\n- Evidence attr_v4_1_000417:C:has_ml_experience:v1: Sage has no prior exposure to machine learning projects.\\n- Evidence attr_v4_1_000417:D:available_monday:v1: Arden can participate on Monday.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_008::evidence_update:t1:r0:agent_3\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate A (Sawyer) has machine learning experience and a local work permit, but no evidence of team collaboration or Monday availability. Candidate D (Arden) has machine learning experience and is available on Monday, but no evidence of team collaboration or programming experience. Candidates B and C have been eliminated due to lack of programming experience and machine learning experience, respectively.\\\"\\n}\",\n  \"reference_structure_assistance\": {\n    \"active_evidence\": [\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_local_work_permit\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Sawyer\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000417:A:has_local_work_permit:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Sawyer meets the local work permit requirement\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_ml_experience\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Sawyer\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000417:A:has_ml_experience:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Sawyer has hands-on experience with machine learning systems\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_programming_experience\",\n        \"candidate_id\": \"B\",\n        \"candidate_name\": \"Kris\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000417:B:has_programming_experience:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Kris has no practical programming background\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_ml_experience\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Sage\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000417:C:has_ml_experience:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Sage has no prior exposure to machine learning projects\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_teamwork_experience\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Sage\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000417:C:has_teamwork_experience:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Sage has collaborated on team projects\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_monday\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Arden\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000417:D:available_monday:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Arden can participate on Monday\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_ml_experience\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Arden\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000417:D:has_ml_experience:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Arden has worked on machine learning projects\",\n        \"value\": true,\n        \"version\": 1\n      }\n    ],\n    \"exclusions\": {\n      \"B\": [\n        {\n          \"attribute\": \"has_programming_experience\",\n          \"candidate_id\": \"B\",\n          \"evidence_id\": \"attr_v4_1_000417:B:has_programming_experience:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C4\"\n        }\n      ],\n      \"C\": [\n        {\n          \"attribute\": \"has_ml_experience\",\n          \"candidate_id\": \"C\",\n          \"evidence_id\": \"attr_v4_1_000417:C:has_ml_experience:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C5\"\n        }\n      ]\n    },\n    \"oracle\": [\n      \"A\",\n      \"D\"\n    ],\n    \"program_check\": {\n      \"agent_id\": \"agent_3\",\n      \"answer_effect\": \"none\",\n      \"base_item_id\": \"attr_v4_1_000417\",\n      \"comparison_scope\": \"initial\",\n      \"continued_error_objects\": [],\n      \"diagnostic_version\": \"cbm_drift_v2.program_diagnostic.1\",\n      \"error_objects\": [],\n      \"evidence_stage\": 1,\n      \"extra_candidate_violations\": {},\n      \"extra_candidates\": [],\n      \"family_id\": \"cbm_v2_family_008\",\n      \"formal_oracle_changed_since_previous_output\": false,\n      \"message_id\": \"mad:cbm_v2_family_008::evidence_update:t1:r0:agent_3\",\n      \"new_error_objects\": [],\n      \"omitted_candidates\": [],\n      \"oracle\": [\n        \"A\",\n        \"D\"\n      ],\n      \"outcome\": \"valid_correct\",\n      \"prediction\": [\n        \"A\",\n        \"D\"\n      ],\n      \"related_peer_message_ids_by_answer_alignment\": [],\n      \"request_id\": \"mad:cbm_v2_family_008::evidence_update:t1:r0:agent_3\",\n      \"resolved_error_objects\": [],\n      \"round\": 0,\n      \"temporal_status\": \"correct_maintenance\",\n      \"trajectory_id\": \"cbm_v2_family_008::evidence_update\",\n      \"variant_id\": \"cbm_v2_family_008::evidence_update\",\n      \"variant_type\": \"evidence_update\"\n    },\n    \"rules\": [\n      {\n        \"attribute\": \"has_teamwork_experience\",\n        \"id\": \"C1\",\n        \"natural_language\": \"Candidates must have experience collaborating with a team.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_local_work_permit\",\n        \"id\": \"C2\",\n        \"natural_language\": \"A local work permit is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"available_monday\",\n        \"id\": \"C3\",\n        \"natural_language\": \"Only candidates who can participate on Monday are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_programming_experience\",\n        \"id\": \"C4\",\n        \"natural_language\": \"Programming experience is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_ml_experience\",\n        \"id\": \"C5\",\n        \"natural_language\": \"Previous machine learning experience is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      }\n    ]\n  }\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "e48eb36b3afdb99d4a81e6c5b70a7aca",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 0,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 508,
+    "delta_key_counts": {
+      "content": 20,
+      "reasoning_content": 486,
+      "role": 507
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_008::evidence_update",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 1628,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 1550,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 3458,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 5086
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_008::evidence_update"
+}

@@ -1,0 +1,138 @@
+{
+  "agent_id": "agent_2",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 500,
+      "delta_key_counts": {
+        "content": 12,
+        "reasoning_content": 486,
+        "role": 499
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T13:48:59.599035+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000372",
+  "completed_at": "2026-10-15T13:49:15.122018+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "fe95471e6444aecc4f7de3aa647258d662513d48655b3e6abc8791b40715f2a1",
+  "is_paired_sample": false,
+  "is_preflight": false,
+  "judge_protocol": "structured_assistance",
+  "judge_request_id": "structured_assistance:mad:cbm_v2_family_006::irrelevant_noise:t1:r0:agent_2",
+  "latency_seconds": 15.5236,
+  "message_id": "mad:cbm_v2_family_006::irrelevant_noise:t1:r0:agent_2",
+  "messages_sha256": "3335868c66a311660d3b0ea033f668bed65232432a0dda03a73f61d645dc4612",
+  "normalization_actions": [],
+  "package_id": "judge:mad:cbm_v2_family_006::irrelevant_noise:t1:r0:agent_2",
+  "package_sha256": "6d8c38a247d774a4986c23ecb7c630e449745df4cc404b36b024f2df32d10c59",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "none",
+    "claims": [],
+    "content_labels": [],
+    "has_diagnostic_event": false,
+    "related_peer_message_ids": [],
+    "temporal_status": "correct_maintenance",
+    "uncertainty_reason": null
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\"has_diagnostic_event\": false, \"temporal_status\": \"correct_maintenance\", \"content_labels\": [], \"claims\": [], \"answer_effect\": \"none\", \"related_peer_message_ids\": [], \"uncertainty_reason\": null}",
+  "reasoning_content": "We need answer assess current message. Need determine observable content deviations and temporal status. We have current_message_text JSON with answer_set [\"B\",\"D\"] and explanation. Formal evidence through stage, oracle B,D. Program check says outcome valid_correct, temporal_status correct_maintenance, answer_effect none. Need produce JSON schema.\n\nWe need inspect explanation for any content deviations? The answer set correct. Explanation says Candidate B meets all requirements: available during weekend, no mention of morning availability or remote work capability, but since those are not required to be confirmed, they are not eliminated. Candidate D meets requirements for remote work and morning availability. Candidate A has conflicts with next month availability and schedule conflict, eliminated. Candidate C has morning availability issue, eliminated.\n\nWait requirements: C5 candidates with scheduling conflict ineligible. For B Jamie, evidence only available_weekend true. No evidence for morning, remote, next month, schedule conflict. Under \"not yet eliminated\" maybe if no evidence of violation, remain? The rule \"Only candidates who can work during weekend are eligible\" and required positive attributes C1,C2,C3,C4 and negative C5. If a candidate has no evidence of required attributes, are they not eliminated? The task asks \"which candidates have not yet been eliminated under currently active evidence?\" Possibly only eliminate when evidence proves violation. So B not eliminated because no negative evidence? But the oracle B,D confirms. Explanation's claim \"meets all requirements: available during weekend, no mention of morning availability or remote work capability, but since those are not required to be confirmed, they are not eliminated.\" This may be an inference: treating absence of evidence as not eliminating. Is that a deviation? The formal program says valid_correct; no errors. So likely no diagnostic event. temporal_status correct_maintenance. content_labels maybe empty? But schema requires content_labels array maybe empty. claims? We can include claims about B no mention etc? But need only claims needed to support diagnostic decision. If no diagnostic event, maybe claims empty and uncertainty_reason null? Need ensure if no exact diagnostic quote supported, empty claims. But here current message is valid correct. We can state has_diagnostic_event false, temporal_status correct_maintenance, content_labels [], claims [], answer_effect none. But maybe there is an observable deviation: The explanation says \"Candidate B (Jamie) meets all requirements: available during the weekend, no mention of morning availability or remote work capability, but since those are not required to be confirmed, they are not eliminated.\" This might be a rule deviation? Actually it misstates requirements? It says \"no mention of morning availability or remote work capability, but since those are not required to be confirmed, they are not eliminated.\" The fixed requirements require morning availability and remote work capability. But under \"not yet eliminated\" the candidate isn't eliminated if no conflicting evidence? However \"meets all requirements\" is not exactly true because not confirmed. But formal oracle lists B as not eliminated. The explanation's reasoning is acceptable? The program diagnostic says no error objects. So likely no diagnostic event.\n\nNeed assess temporal status. Program check temporal_status correct_maintenance. So output temporal_status \"correct_maintenance\". has_diagnostic_event false. content_labels empty? Schema content_labels array of strings from options; can be empty? It says list, likely can be empty if no labels. answer_effect \"none\". related_peer_message_ids empty. uncertainty_reason maybe null or string. If no diagnostic event, maybe no uncertainty reason. But instruction: \"If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\" Here we can support quotes but no diagnostic. We can put uncertainty_reason null? Or explain no claim of deviation. The schema says string or null. Could say \"No observable content deviation; answer_set matches formal oracle.\" But that is not uncertainty. Hmm.\n\nNeed maybe include claims that quote exact diagnostic quotes? The current message has factual statements:\n- \"Candidate B (Jamie) meets all requirements: available during the weekend, no mention of morning availability or remote work capability, but since those are not required to be confirmed, they are not eliminated.\"\n- \"Candidate D (Briar) meets requirements for remote work and morning availability.\"\n- \"Candidate A (Blair) has conflicts with next month availability and schedule conflict, so they are eliminated.\"\n- \"Candidate C (Quinn) has a morning availability issue, so they are eliminated.\"\n\nThese are correct? Let's verify:\nA: evidence: cannot join next month (C4 violation), schedule conflicts (C5 violation). eliminated. Explanation \"has conflicts with next month availability and schedule conflict\" correct.\nC: cannot participate during morning (C1 violation). eliminated. Explanation \"morning availability issue\" correct.\nD: can participate morning, can work remote. But no evidence for weekend, next month, schedule conflict. However oracle says D not eliminated. Explanation says \"meets requirements for remote work and morning availability\" not falsely says all. okay.\nB: available weekend. No other evidence. Explanation says no mention of morning availability or remote work capability, but since those are not required to be confirmed, they are not eliminated. This is an inference about burdens of proof. In formal model, missing evidence doesn't eliminate? The active evidence only facts; absent attributes not in exclusions. So not eliminated. The phrase \"those are not required to be confirmed\" might conflict with requirements? But the task's elimination logic likely requires positive elimination evidence. The program says no error.\n\nThus no content deviation.\n\nBut maybe there is \"unresolved\" because explanation doesn't mention weekend for D or next month? Not a deviation though.\n\nNeed output JSON exactly. No markdown. We'll craft with empty claims. But maybe evaluator expects claims? The instructions say \"Include only claims needed to support or qualify the diagnostic decision.\" If no diagnostic event, no claims. \"If no exact diagnostic quote can be supported, return empty claims list...\" Here we could support exact quotes but they aren't diagnostic. So empty claims okay. has_diagnostic_event false. temporal_status \"correct_maintenance\". content_labels []. answer_effect \"none\". related_peer_message_ids []. uncertainty_reason maybe null. But maybe because no content labels, uncertainty reason null.\n\nNeed ensure content_labels options include factual_deviation/rule_deviation/inference_application_error/unresolved. Empty is fine.\n\nLet's respond.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a reference-structure-assisted diagnostic pre-annotation of one public agent message. The supplied formal state is authoritative reference information for this analysis. Analyze observable text only; do not infer hidden cognition or causation. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. The selected candidate must be available in the morning.\\n2. Remote work capability is required.\\n3. Only candidates who can work during the weekend are eligible.\\n4. Availability next month is required.\\n5. Candidates with a scheduling conflict are ineligible.\\n\\nCandidates:\\nA. Blair\\nB. Jamie\\nC. Quinn\\nD. Briar\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"The selected candidate must be available in the morning.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"Remote work capability is required.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"Only candidates who can work during the weekend are eligible.\",\n      \"rule_id\": \"C3\"\n    },\n    {\n      \"natural_language\": \"Availability next month is required.\",\n      \"rule_id\": \"C4\"\n    },\n    {\n      \"natural_language\": \"Candidates with a scheduling conflict are ineligible.\",\n      \"rule_id\": \"C5\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000372:A:available_next_month:v1\",\n      \"text\": \"Blair cannot join the project next month\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:A:has_schedule_conflict:v1\",\n      \"text\": \"Blair's current schedule conflicts with the required timing\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:B:available_weekend:v1\",\n      \"text\": \"Jamie can participate on the weekend\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:C:available_morning:v1\",\n      \"text\": \"Quinn cannot participate during the morning\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:C:has_schedule_conflict:v1\",\n      \"text\": \"Quinn has no scheduling conflict with the project\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:D:available_morning:v1\",\n      \"text\": \"Briar can participate during the morning\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:D:can_work_remote:v1\",\n      \"text\": \"Briar can work remotely\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. The selected candidate must be available in the morning.\\n2. Remote work capability is required.\\n3. Only candidates who can work during the weekend are eligible.\\n4. Availability next month is required.\\n5. Candidates with a scheduling conflict are ineligible.\\n\\nCandidates:\\nA. Blair\\nB. Jamie\\nC. Quinn\\nD. Briar\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000372:C:available_morning:v1: Quinn cannot participate during the morning.\\n- Evidence attr_v4_1_000372:A:available_next_month:v1: Blair cannot join the project next month.\\n- Evidence attr_v4_1_000372:A:has_schedule_conflict:v1: Blair's current schedule conflicts with the required timing.\\n- Evidence attr_v4_1_000372:D:available_morning:v1: Briar can participate during the morning.\\n- Evidence attr_v4_1_000372:D:can_work_remote:v1: Briar can work remotely.\\n- Evidence attr_v4_1_000372:B:available_weekend:v1: Jamie can participate on the weekend.\\n- Evidence attr_v4_1_000372:C:has_schedule_conflict:v1: Quinn has no scheduling conflict with the project.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_006::irrelevant_noise:t1:r0:agent_2\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Jamie) meets all requirements: available during the weekend, no mention of morning availability or remote work capability, but since those are not required to be confirmed, they are not eliminated. Candidate D (Briar) meets requirements for remote work and morning availability. Candidate A (Blair) has conflicts with next month availability and schedule conflict, so they are eliminated. Candidate C (Quinn) has a morning availability issue, so they are eliminated.\\\"\\n}\",\n  \"reference_structure_assistance\": {\n    \"active_evidence\": [\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_next_month\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Blair\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:A:available_next_month:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Blair cannot join the project next month\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_schedule_conflict\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Blair\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:A:has_schedule_conflict:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Blair's current schedule conflicts with the required timing\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_weekend\",\n        \"candidate_id\": \"B\",\n        \"candidate_name\": \"Jamie\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:B:available_weekend:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Jamie can participate on the weekend\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_morning\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Quinn\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:C:available_morning:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Quinn cannot participate during the morning\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_schedule_conflict\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Quinn\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:C:has_schedule_conflict:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Quinn has no scheduling conflict with the project\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_morning\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Briar\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:D:available_morning:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Briar can participate during the morning\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"can_work_remote\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Briar\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:D:can_work_remote:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Briar can work remotely\",\n        \"value\": true,\n        \"version\": 1\n      }\n    ],\n    \"exclusions\": {\n      \"A\": [\n        {\n          \"attribute\": \"available_next_month\",\n          \"candidate_id\": \"A\",\n          \"evidence_id\": \"attr_v4_1_000372:A:available_next_month:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C4\"\n        },\n        {\n          \"attribute\": \"has_schedule_conflict\",\n          \"candidate_id\": \"A\",\n          \"evidence_id\": \"attr_v4_1_000372:A:has_schedule_conflict:v1\",\n          \"observed_value\": true,\n          \"required_value\": false,\n          \"rule_id\": \"C5\"\n        }\n      ],\n      \"C\": [\n        {\n          \"attribute\": \"available_morning\",\n          \"candidate_id\": \"C\",\n          \"evidence_id\": \"attr_v4_1_000372:C:available_morning:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C1\"\n        }\n      ]\n    },\n    \"oracle\": [\n      \"B\",\n      \"D\"\n    ],\n    \"program_check\": {\n      \"agent_id\": \"agent_2\",\n      \"answer_effect\": \"none\",\n      \"base_item_id\": \"attr_v4_1_000372\",\n      \"comparison_scope\": \"initial\",\n      \"continued_error_objects\": [],\n      \"diagnostic_version\": \"cbm_drift_v2.program_diagnostic.1\",\n      \"error_objects\": [],\n      \"evidence_stage\": 1,\n      \"extra_candidate_violations\": {},\n      \"extra_candidates\": [],\n      \"family_id\": \"cbm_v2_family_006\",\n      \"formal_oracle_changed_since_previous_output\": false,\n      \"message_id\": \"mad:cbm_v2_family_006::irrelevant_noise:t1:r0:agent_2\",\n      \"new_error_objects\": [],\n      \"omitted_candidates\": [],\n      \"oracle\": [\n        \"B\",\n        \"D\"\n      ],\n      \"outcome\": \"valid_correct\",\n      \"prediction\": [\n        \"B\",\n        \"D\"\n      ],\n      \"related_peer_message_ids_by_answer_alignment\": [],\n      \"request_id\": \"mad:cbm_v2_family_006::irrelevant_noise:t1:r0:agent_2\",\n      \"resolved_error_objects\": [],\n      \"round\": 0,\n      \"temporal_status\": \"correct_maintenance\",\n      \"trajectory_id\": \"cbm_v2_family_006::irrelevant_noise\",\n      \"variant_id\": \"cbm_v2_family_006::irrelevant_noise\",\n      \"variant_type\": \"irrelevant_noise\"\n    },\n    \"rules\": [\n      {\n        \"attribute\": \"available_morning\",\n        \"id\": \"C1\",\n        \"natural_language\": \"The selected candidate must be available in the morning.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"can_work_remote\",\n        \"id\": \"C2\",\n        \"natural_language\": \"Remote work capability is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"available_weekend\",\n        \"id\": \"C3\",\n        \"natural_language\": \"Only candidates who can work during the weekend are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"available_next_month\",\n        \"id\": \"C4\",\n        \"natural_language\": \"Availability next month is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_schedule_conflict\",\n        \"id\": \"C5\",\n        \"natural_language\": \"Candidates with a scheduling conflict are ineligible.\",\n        \"required_value\": false,\n        \"type\": \"required_negative_attribute\"\n      }\n    ]\n  }\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "772cac217768165b382b57574319057d",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 0,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 500,
+    "delta_key_counts": {
+      "content": 12,
+      "reasoning_content": 486,
+      "role": 499
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_006::irrelevant_noise",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 1378,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 1324,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 3494,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 4872
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_006::irrelevant_noise"
+}

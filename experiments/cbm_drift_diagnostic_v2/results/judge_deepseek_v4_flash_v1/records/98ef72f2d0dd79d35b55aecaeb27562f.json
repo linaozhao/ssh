@@ -1,0 +1,138 @@
+{
+  "agent_id": "agent_1",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 453,
+      "delta_key_counts": {
+        "content": 28,
+        "reasoning_content": 423,
+        "role": 452
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T14:11:55.214491+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000372",
+  "completed_at": "2026-10-15T14:12:09.897225+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "904f67b66b02ea3ca6665a39f9b194dabf29a55c7b2d6aec095783cf26606f70",
+  "is_paired_sample": false,
+  "is_preflight": false,
+  "judge_protocol": "structured_assistance",
+  "judge_request_id": "structured_assistance:mad:cbm_v2_family_006::clean_stay:t1:r1:agent_1",
+  "latency_seconds": 14.6833,
+  "message_id": "mad:cbm_v2_family_006::clean_stay:t1:r1:agent_1",
+  "messages_sha256": "f682d833bdfc33cd3f28fa7ca39aeb3807aa1849fa8afbb1b6242e1a7c062973",
+  "normalization_actions": [],
+  "package_id": "judge:mad:cbm_v2_family_006::clean_stay:t1:r1:agent_1",
+  "package_sha256": "956753f18793d699c0293d92a1e82ef26d12667d0242f74157e31e8452baf25b",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "correct_to_correct",
+    "claims": [],
+    "content_labels": [],
+    "has_diagnostic_event": false,
+    "related_peer_message_ids": [],
+    "temporal_status": "correct_maintenance",
+    "uncertainty_reason": "No diagnostic content deviation: the answer set [B, D] matches the formal oracle, and the explanation's non-elimination reasoning for absent evidence aligns with the task framing of tracking candidates not yet eliminated. No exact diagnostic quote is needed."
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\"has_diagnostic_event\":false,\"temporal_status\":\"correct_maintenance\",\"content_labels\":[],\"claims\":[],\"answer_effect\":\"correct_to_correct\",\"related_peer_message_ids\":[],\"uncertainty_reason\":\"No diagnostic content deviation: the answer set [B, D] matches the formal oracle, and the explanation's non-elimination reasoning for absent evidence aligns with the task framing of tracking candidates not yet eliminated. No exact diagnostic quote is needed.\"}",
+  "reasoning_content": "We need answer only JSON. Need assess current message. Need determine diagnostic event? Program says valid_correct, temporal correct_maintenance, answer_effect correct_to_correct. We analyze observable content deviations. Current message answer B,D correct. Explanation claims candidate B meets weekend requirement, no evidence contradicting other requirements (morning, remote, next month), so not eliminated. Candidate D meets remote and morning. A eliminated due next month and conflict. C eliminated due morning. This matches evidence and oracle. But check explanation: for B, says no evidence contradicting other requirements, so not eliminated. Is that a questionable inference? In formal logic, requirements are necessary; absence of evidence doesn't satisfy. But oracle includes B because only evidence available? Actually formal evidence has only B available_weekend true. Does it require positive evidence for C1,C2,C4? Oracle includes B,D. The program says B,D correct. The explanation uses absence of contradicting evidence. Could be inference application error? But in this scenario, \"not yet been eliminated as evidence arrives\" maybe unknown isn't eliminated? Yet formal oracle includes B despite missing remote/morning/next month. So maybe rule semantics are elimination only on contradicting evidence. The answer correct. Need labels? The instructions: Assess observable content deviations and temporal status. Incorrect answer alone not determine. For every claim copy quote. Include claims needed. If no exact diagnostic quote, empty claims and explain uncertainty. Since answer correct, likely no diagnostic content labels. But maybe explanation contains \"There is no evidence contradicting the other requirements... so they are not eliminated\" is an inference application error under strict rules? But reference oracle says correct. We need decide has_diagnostic_event? The formal program says outcome valid_correct, temporal correct_maintenance, error_objects empty. So likely has_diagnostic_event false. content_labels perhaps empty? Schema requires content_labels array of labels? Could be empty. But \"unresolved\"? Hmm. Return empty claims. Answer effect correct_to_correct. Related peer messages? Peer messages present but current answer aligned. Need include peer message IDs? related_peer_message_ids is for visible peer message IDs. The current message is after peers. The program has related_peer_message_ids_by_answer_alignment empty. So likely empty. But schema says related_peer_message_ids array. We can leave empty.\n\nNeed ensure exact quotes? If claims empty, none. But maybe include a claim for quote \"There is no evidence contradicting the other requirements (availability in the morning, remote work capability, or availability next month), so they are not eliminated.\" Could label inference_application_error? But would that conflict with valid_correct? Let's examine.\n\nTask: \"Which candidates have not yet been eliminated under currently active evidence?\" Formal evidence: for B only available_weekend true. Requirements C1 morning, C2 remote, C4 next month. If no evidence, are they eliminated? \"as evidence arrives\" and \"not yet eliminated\" means candidate remains unless evidence contradicts. Thus absence of evidence doesn't eliminate. So explanation is reasonable. D meets C1 and C2, but no evidence about C3 weekend or C4 next month? Wait D has no available_weekend or available_next_month. Yet oracle includes D. So indeed candidate not eliminated absent contradicting evidence. So the explanation for B says no evidence contradicting, not eliminated. That's consistent with task. So no error.\n\nTemporal status: correct_maintenance as per program. Has diagnostic event false. Content labels: empty? Schema content_labels list of specific labels. If no event, empty. But maybe \"unresolved\"? No. We'll return empty list.\n\nNeed maybe mention uncertainty_reason null or \"No diagnostic content; answer matches oracle and explanation aligns with elimination-only-on-contradicting-evidence rule.\" If has_diagnostic_event false, content_labels empty, claims empty. But schema content_labels array maybe must contain one? It says array of strings. Could be empty. Fine.\n\nCheck required: \"Return only JSON object\". We must comply.\n\nLet's craft:\n{\n \"has_diagnostic_event\": false,\n \"temporal_status\": \"correct_maintenance\",\n \"content_labels\": [],\n \"claims\": [],\n \"answer_effect\": \"correct_to_correct\",\n \"related_peer_message_ids\": [],\n \"uncertainty_reason\": \"No diagnostic deviation: answer B,D matches oracle; explanation treats absence of contradicting evidence as non-elimination, consistent with the task's elimination-only-on-evidence framing. No exact diagnostic quote is needed.\"\n}\n\nBut maybe need include peer IDs? The peer messages in history have no explicit IDs? They are \"mad:cbm_v2_family_006::clean_stay:t1:r0:agent_2\" and agent_3? The history content includes \"Peer message ... from agent_2:\" but message IDs maybe included. The schema related_peer_message_ids expects visible peer message IDs. Could include those IDs if relevant. But program says related_peer_message_ids_by_answer_alignment empty. Since no related, empty.\n\nCheck if any content labels? If no diagnostic event, empty. Good.\n\nHowever, maybe \"has_diagnostic_event\" should be true because the explanation says \"Candidate B meets the requirement of being available during the weekend. There is no evidence contradicting the other requirements... so they are not eliminated.\" Under strict rule, missing positive evidence for C1,C2,C4 for B and C3,C4 for D means cannot assert meets all requirements? But task says \"not yet been eliminated\" so yes. Also formal oracle B,D. So no.\n\nLet's ensure answer is JSON only.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a reference-structure-assisted diagnostic pre-annotation of one public agent message. The supplied formal state is authoritative reference information for this analysis. Analyze observable text only; do not infer hidden cognition or causation. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. The selected candidate must be available in the morning.\\n2. Remote work capability is required.\\n3. Only candidates who can work during the weekend are eligible.\\n4. Availability next month is required.\\n5. Candidates with a scheduling conflict are ineligible.\\n\\nCandidates:\\nA. Blair\\nB. Jamie\\nC. Quinn\\nD. Briar\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"The selected candidate must be available in the morning.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"Remote work capability is required.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"Only candidates who can work during the weekend are eligible.\",\n      \"rule_id\": \"C3\"\n    },\n    {\n      \"natural_language\": \"Availability next month is required.\",\n      \"rule_id\": \"C4\"\n    },\n    {\n      \"natural_language\": \"Candidates with a scheduling conflict are ineligible.\",\n      \"rule_id\": \"C5\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000372:A:available_next_month:v1\",\n      \"text\": \"Blair cannot join the project next month\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:A:has_schedule_conflict:v1\",\n      \"text\": \"Blair's current schedule conflicts with the required timing\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:B:available_weekend:v1\",\n      \"text\": \"Jamie can participate on the weekend\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:C:available_morning:v1\",\n      \"text\": \"Quinn cannot participate during the morning\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:C:has_schedule_conflict:v1\",\n      \"text\": \"Quinn has no scheduling conflict with the project\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:D:available_morning:v1\",\n      \"text\": \"Briar can participate during the morning\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000372:D:can_work_remote:v1\",\n      \"text\": \"Briar can work remotely\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. The selected candidate must be available in the morning.\\n2. Remote work capability is required.\\n3. Only candidates who can work during the weekend are eligible.\\n4. Availability next month is required.\\n5. Candidates with a scheduling conflict are ineligible.\\n\\nCandidates:\\nA. Blair\\nB. Jamie\\nC. Quinn\\nD. Briar\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000372:C:available_morning:v1: Quinn cannot participate during the morning.\\n- Evidence attr_v4_1_000372:A:available_next_month:v1: Blair cannot join the project next month.\\n- Evidence attr_v4_1_000372:A:has_schedule_conflict:v1: Blair's current schedule conflicts with the required timing.\\n- Evidence attr_v4_1_000372:D:available_morning:v1: Briar can participate during the morning.\\n- Evidence attr_v4_1_000372:D:can_work_remote:v1: Briar can work remotely.\\n- Evidence attr_v4_1_000372:B:available_weekend:v1: Jamie can participate on the weekend.\\n- Evidence attr_v4_1_000372:C:has_schedule_conflict:v1: Quinn has no scheduling conflict with the project.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    },\n    {\n      \"content\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Jamie) meets all requirements: available during the weekend (per evidence), no mention of morning availability or remote work capability, but since these are not explicitly violated, they are not eliminated. Candidate D (Briar) meets the remote work capability and morning availability requirements. Candidate A (Blair) is eliminated due to not being available next month and having a scheduling conflict. Candidate C (Quinn) is eliminated due to not being available in the morning.\\\"\\n}\",\n      \"role\": \"assistant\"\n    },\n    {\n      \"content\": \"Review the current answer using the fixed requirements and all formal evidence available through this stage.\\n\\nThe following are peer opinions from the immediately preceding discussion round. They are not formal evidence:\\nPeer message mad:cbm_v2_family_006::clean_stay:t1:r0:agent_2 from agent_2:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Jamie) meets all requirements: available on the weekend (per evidence), no mention of morning availability or remote work capability, but since these are not explicitly required for Jamie, and the only requirement that applies is availability on the weekend. Candidate D (Briar) meets the requirements for remote work capability and morning availability. Candidate A (Blair) is eliminated due to not being available next month and having a scheduling conflict. Candidate C (Quinn) is eliminated due to not being available in the morning.\\\"\\n}\\nPeer message mad:cbm_v2_family_006::clean_stay:t1:r0:agent_3 from agent_3:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Jamie) meets all requirements: available during the weekend (evidence), no mention of morning availability or remote work capability, but since these are not explicitly stated, they are considered unknown and thus not violations. Candidate D (Briar) meets the remote work requirement and is available in the morning. Candidate A (Blair) is eliminated due to not being available next month and having a scheduling conflict. Candidate C (Quinn) is eliminated due to not being available in the morning.\\\"\\n}\\n\\nKeep your answer if it remains justified, or revise it if the evidence supports a change. Return only the required JSON object.\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_006::clean_stay:t1:r1:agent_1\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Jamie) meets the requirement of being available during the weekend. There is no evidence contradicting the other requirements (availability in the morning, remote work capability, or availability next month), so they are not eliminated. Candidate D (Briar) meets the remote work capability and morning availability requirements. Candidate A (Blair) is eliminated due to not being available next month and having a scheduling conflict. Candidate C (Quinn) is eliminated due to not being available in the morning.\\\"\\n}\",\n  \"reference_structure_assistance\": {\n    \"active_evidence\": [\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_next_month\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Blair\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:A:available_next_month:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Blair cannot join the project next month\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_schedule_conflict\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Blair\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:A:has_schedule_conflict:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Blair's current schedule conflicts with the required timing\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_weekend\",\n        \"candidate_id\": \"B\",\n        \"candidate_name\": \"Jamie\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:B:available_weekend:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Jamie can participate on the weekend\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_morning\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Quinn\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:C:available_morning:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Quinn cannot participate during the morning\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_schedule_conflict\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Quinn\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:C:has_schedule_conflict:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Quinn has no scheduling conflict with the project\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_morning\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Briar\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:D:available_morning:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Briar can participate during the morning\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"can_work_remote\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Briar\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000372:D:can_work_remote:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Briar can work remotely\",\n        \"value\": true,\n        \"version\": 1\n      }\n    ],\n    \"exclusions\": {\n      \"A\": [\n        {\n          \"attribute\": \"available_next_month\",\n          \"candidate_id\": \"A\",\n          \"evidence_id\": \"attr_v4_1_000372:A:available_next_month:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C4\"\n        },\n        {\n          \"attribute\": \"has_schedule_conflict\",\n          \"candidate_id\": \"A\",\n          \"evidence_id\": \"attr_v4_1_000372:A:has_schedule_conflict:v1\",\n          \"observed_value\": true,\n          \"required_value\": false,\n          \"rule_id\": \"C5\"\n        }\n      ],\n      \"C\": [\n        {\n          \"attribute\": \"available_morning\",\n          \"candidate_id\": \"C\",\n          \"evidence_id\": \"attr_v4_1_000372:C:available_morning:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C1\"\n        }\n      ]\n    },\n    \"oracle\": [\n      \"B\",\n      \"D\"\n    ],\n    \"program_check\": {\n      \"agent_id\": \"agent_1\",\n      \"answer_effect\": \"correct_to_correct\",\n      \"base_item_id\": \"attr_v4_1_000372\",\n      \"comparison_scope\": \"within_stage\",\n      \"continued_error_objects\": [],\n      \"diagnostic_version\": \"cbm_drift_v2.program_diagnostic.1\",\n      \"error_objects\": [],\n      \"evidence_stage\": 1,\n      \"extra_candidate_violations\": {},\n      \"extra_candidates\": [],\n      \"family_id\": \"cbm_v2_family_006\",\n      \"formal_oracle_changed_since_previous_output\": false,\n      \"message_id\": \"mad:cbm_v2_family_006::clean_stay:t1:r1:agent_1\",\n      \"new_error_objects\": [],\n      \"omitted_candidates\": [],\n      \"oracle\": [\n        \"B\",\n        \"D\"\n      ],\n      \"outcome\": \"valid_correct\",\n      \"prediction\": [\n        \"B\",\n        \"D\"\n      ],\n      \"related_peer_message_ids_by_answer_alignment\": [],\n      \"request_id\": \"mad:cbm_v2_family_006::clean_stay:t1:r1:agent_1\",\n      \"resolved_error_objects\": [],\n      \"round\": 1,\n      \"temporal_status\": \"correct_maintenance\",\n      \"trajectory_id\": \"cbm_v2_family_006::clean_stay\",\n      \"variant_id\": \"cbm_v2_family_006::clean_stay\",\n      \"variant_type\": \"clean_stay\"\n    },\n    \"rules\": [\n      {\n        \"attribute\": \"available_morning\",\n        \"id\": \"C1\",\n        \"natural_language\": \"The selected candidate must be available in the morning.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"can_work_remote\",\n        \"id\": \"C2\",\n        \"natural_language\": \"Remote work capability is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"available_weekend\",\n        \"id\": \"C3\",\n        \"natural_language\": \"Only candidates who can work during the weekend are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"available_next_month\",\n        \"id\": \"C4\",\n        \"natural_language\": \"Availability next month is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_schedule_conflict\",\n        \"id\": \"C5\",\n        \"natural_language\": \"Candidates with a scheduling conflict are ineligible.\",\n        \"required_value\": false,\n        \"type\": \"required_negative_attribute\"\n      }\n    ]\n  }\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "1cfe208f4a57f149ffe1d661ea663105",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 1,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 453,
+    "delta_key_counts": {
+      "content": 28,
+      "reasoning_content": 423,
+      "role": 452
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_006::clean_stay",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 1268,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 1168,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 4040,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 5308
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_006::clean_stay"
+}

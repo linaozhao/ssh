@@ -1,0 +1,156 @@
+{
+  "agent_id": "agent_3",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 1003,
+      "delta_key_counts": {
+        "content": 23,
+        "reasoning_content": 978,
+        "role": 1002
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T08:56:59.287678+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000229",
+  "completed_at": "2026-10-15T08:57:24.794907+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "11f751477613699a653ef23b6888c6b7094d4b96b12e0f691765d799ca02c6d1",
+  "is_paired_sample": true,
+  "is_preflight": false,
+  "judge_protocol": "structured_assistance",
+  "judge_request_id": "structured_assistance:mad:cbm_v2_family_003::clean_stay:t1:r0:agent_3",
+  "latency_seconds": 25.5075,
+  "message_id": "mad:cbm_v2_family_003::clean_stay:t1:r0:agent_3",
+  "messages_sha256": "3f00b87ad8fc812e5c38e2d8717489c0757984ff01527ef3c873ce7ea116ef37",
+  "normalization_actions": [
+    "claim 0 offsets derived from unique exact quote"
+  ],
+  "package_id": "judge:mad:cbm_v2_family_003::clean_stay:t1:r0:agent_3",
+  "package_sha256": "a0e7ffb8f6d814b3dd5295b72e6be1fe863841a67d29f2e10c0ec1b6be9dfdb6",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "none",
+    "claims": [
+      {
+        "end": 33,
+        "quote": "\"answer_set\": [\"A\", \"B\", \"C\"]",
+        "stance": "asserted",
+        "start": 4,
+        "target_entity_ids": [
+          "B"
+        ],
+        "violated_fact_ids": [],
+        "violated_rule_ids": [
+          "C3"
+        ]
+      }
+    ],
+    "content_labels": [
+      "rule_deviation"
+    ],
+    "has_diagnostic_event": true,
+    "related_peer_message_ids": [],
+    "temporal_status": "initial_error",
+    "uncertainty_reason": null
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\"has_diagnostic_event\":true,\"temporal_status\":\"initial_error\",\"content_labels\":[\"rule_deviation\"],\"claims\":[{\"quote\":\"\\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\"]\",\"stance\":\"asserted\",\"target_entity_ids\":[\"B\"],\"violated_fact_ids\":[],\"violated_rule_ids\":[\"C3\"]}],\"answer_effect\":\"none\",\"related_peer_message_ids\":[],\"uncertainty_reason\":null}",
+  "reasoning_content": "We need answer diagnostic pre-annotation. Need parse current message. We must output JSON only.\n\nWe need assess observable content deviations and temporal status. Current message is agent answer: answer_set [\"A\",\"B\",\"C\"], explanation says Candidate A meets independent work, Candidate B lacks public speaking experience, which is a requirement, so they are eliminated. Candidate C meets independent work. Candidate D does not meet independent work, so eliminated.\n\nWait answer_set includes B but explanation says B eliminated. So inconsistency within message: answer_set includes B while explanation eliminates B. The oracle is [\"A\",\"C\"]. Program check says prediction [\"A\",\"B\",\"C\"], extra:B, outcome valid_wrong, temporal_status initial_error, error_objects extra:B. But note the answer_set contains B incorrectly. The explanation correctly eliminates B due C3. So content deviation: answer_set includes B (extra) contrary to C3? Actually B lacks public speaking, so not eligible by C3. Answer set includes B, which is a rule deviation (C3) / factual deviation? Evidence says Blair lacks experience speaking to audience, value false for has_public_speaking_experience. Rule C3 requires true. So including B violates C3. Also maybe violates C1? No evidence about domain knowledge. C2? B's independent work unknown. So only C3.\n\nAlso explanation has B eliminated but answer_set includes B. So there's an internal inconsistency. The diagnostic should label content deviation. We need list claims with exact quotes.\n\nWe need decide has_diagnostic_event true. temporal_status: reference program check says temporal_status \"initial_error\". So use initial_error. The schema allowed: initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain. So initial_error.\n\nContent labels: factual_deviation/rule_deviation/inference_application_error/unresolved. The incorrect inclusion of B is rule deviation (violates C3). Is there factual deviation? B evidence says lacks public speaking, message says \"lacks public speaking experience, which is a requirement, so they are eliminated\" that's correct. The answer_set includes B despite explanation. That's rule deviation. Could be inference_application_error? Possibly the error is applying rules? But \"rule_deviation\" likely appropriate. Maybe also \"unresolved\"? Not needed. We can include content_labels [\"rule_deviation\"].\n\nClaims: Need exact quotes from current_message_text. We can quote:\n- \"answer_set\": [\"A\", \"B\", \"C\"]? But exact substring from current_message_text includes JSON. Need quote verbatim. Could quote `\"answer_set\": [\"A\", \"B\", \"C\"]`? That's not contiguous? In text: `{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\"],\\n  \\\"explanation\\\": ...` The raw current_message_text contains escaped quotes? The field is a string: \"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\"],\\n  \\\"explanation\\\": \\\"...\\\"}\" So actual characters include backslashes? The text shown: \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\"],\\n  \\\"explanation\\\": \\\"Candidate A (Rowan) meets ...\" In JSON representation, backslashes are escapes. In the actual message text, it's a JSON string? Wait current_message_text value is a string containing JSON. So the actual content of that string includes `{ \"answer_set\": [\"A\", \"B\", \"C\"], \"explanation\": \"...\" }` with actual double quotes? The display uses escaped \\n and \\\" to represent newline and quotes inside string. So actual current_message_text is:\n{\n  \"answer_set\": [\"A\", \"B\", \"C\"],\n  \"explanation\": \"Candidate A (Rowan) meets the independent work ability requirement. Candidate B (Blair) lacks public speaking experience, which is a requirement, so they are eliminated. Candidate C (Quinn) meets the independent work ability requirement. Candidate D (Jordan) does not meet the independent work ability requirement, so they are eliminated.\"\n}\nBut as a string, it has newlines and quotes. For exact quote, we need provide substring from that string. In our output, we need quote field with exact substring. The evaluator will derive offsets. We can quote parts like `\"answer_set\": [\"A\", \"B\", \"C\"]`? The substring includes double quotes around answer_set and around array elements. Since the message text itself contains those double quotes, to represent as JSON string in our output we need escape them. That's fine.\n\nBut maybe quoting just `[\"A\", \"B\", \"C\"]`? That includes B. But need target_entity_ids. Better quote the whole answer_set array? But the inclusion of B is the deviation. Could quote `\"B\"`? But \"B\" appears in multiple places. Need unique exact quote? They said \"copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote.\" If quote \"B\" appears multiple times? It appears in answer_set and in explanation \"Candidate B (Blair)\". Unique exact quote might be ambiguous but they derive from each unique exact quote? They probably match first? Better quote a larger unique substring that contains B in answer_set: `[\"A\", \"B\", \"C\"]` is unique. That is exact substring. It asserts B included. Target entity B. Violated rule C3. But the array as a whole includes A and C too, but the problematic part is B. The claim's target_entity_ids can be [\"B\"]. Could include violated_rule_ids [\"C3\"]. But what about the explanation quote \"Candidate B (Blair) lacks public speaking experience, which is a requirement, so they are eliminated.\" That is correct elimination. But it contradicts answer_set. Should we include as claim? It supports that B should be eliminated, so the answer_set inclusion is deviation. But the instruction: include only claims needed to support or qualify diagnostic decision. The deviation is including B in answer_set. We can quote the answer_set array. Also maybe quote the explanation's elimination of B to show contradiction? Stance asserted? The explanation asserts B eliminated. That's correct per C3. But it's relevant to show inconsistency. However, the claim schema has violated_* for claims that violate rules/facts. The explanation's B elimination doesn't violate; it aligns. So not a violation claim. But could be a claim with stance asserted and no violated IDs? That might be okay but not necessary. The diagnostic decision is about answer_set including B. So one claim sufficient.\n\nBut content labels: rule_deviation. Could also be factual_deviation because B's observed value is false for public speaking, but the message actually acknowledges that. The answer_set contradicts. The error is rule deviation: including an ineligible candidate. The program error object \"extra:B\" and extra_candidate_violations C3. So rule_deviation.\n\nanswer_effect: program says \"none\". Wait answer_effect in program_check: \"none\". That seems because maybe no prior? But schema expects answer_effect. In reference program_check, answer_effect: \"none\". So set \"none\". But is that correct? For valid_wrong initial error, answer_effect maybe none because no prior correct? The schema allowed values. Use \"none\".\n\nrelated_peer_message_ids: none in program check (empty). So [].\n\nuncertainty_reason: null.\n\nNeed ensure temporal_status \"initial_error\".\n\nNeed quote exact from current_message_text. Let's construct quote: `\\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\"]`? Actually in our output JSON string, to include the literal double quotes, we need escape them. The current_message_text string contains: `\"answer_set\": [\"A\", \"B\", \"C\"]` (with actual double quote characters). In our JSON, we write `\"quote\": \"\\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\"]\"`. That will be parsed to `\"answer_set\": [\"A\", \"B\", \"C\"]`. Good. But is that exactly substring? The current_message_text starts with `{\\n  \"answer_set\": [\"A\", \"B\", \"C\"],\\n  \"explanation\": ...`. Yes substring `\"answer_set\": [\"A\", \"B\", \"C\"]` is exact. It includes B. Target entity B. Violated rule C3. But wait C3 is \"Only candidates with prior public presentation experience are eligible.\" B lacks that, so violating C3. Good.\n\nShould we also quote explanation part about B? Could add a second claim to show contradiction: quote `\"Candidate B (Blair) lacks public speaking experience, which is a requirement, so they are eliminated.\"` stance asserted, target B, violated_rule_ids [] because it correctly applies. But the schema asks claims needed to support or qualify diagnostic decision. This claim supports that the agent knows B should be eliminated but answer_set includes B. It qualifies the inconsistency. However, it's not a violation. Including it might be okay but could confuse. The instruction: \"Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement.\" The explanation's B elimination is diagnostic because it shows the answer_set error. I think include it as a claim with stance asserted, target B, violated_rule_ids []? But claims schema has violated_fact_ids and violated_rule_ids; can be empty. But is a claim without violation a \"claim\"? It's an observable assertion. It supports the diagnostic by showing contradiction. However, maybe not necessary. The deviation is the answer_set including B. The explanation actually correct. So one claim is enough.\n\nBut there's also answer_set includes B while explanation says B eliminated—this is an internal inconsistency. Could label as \"inference_application_error\"? The error is that the agent applied rule C3 in explanation but included B in answer_set. That's an application error. Program check labels \"extra:B\" as extra candidate violation. The content label options: factual_deviation, rule_deviation, inference_application_error, unresolved. Which is most appropriate? The error is including a candidate who fails a required rule. That's rule_deviation. Could also be inference_application_error because the answer_set doesn't follow from the explanation. But the program check focuses on extra candidate violation of C3. I'd use rule_deviation. Maybe include both rule_deviation and inference_application_error? The schema says content_labels array. We can include multiple. But let's not overdo. The observable content deviation is the answer_set includes B despite B not meeting C3. That's a rule deviation. The internal inconsistency could be inference application error. But the evaluator likely expects rule_deviation. Program check error_objects extra:B, extra_candidate_violations C3. So rule_deviation.\n\nWe should check if there is any factual deviation. The message says \"Candidate A (Rowan) meets the independent work ability requirement.\" Evidence: Rowan can complete tasks independently -> true. C2 required true. Correct. \"Candidate C (Quinn) meets the independent work ability requirement.\" Evidence true. Correct. \"Candidate D (Jordan) does not meet the independent work ability requirement, so they are eliminated.\" Evidence false. Correct. So explanation is correct. The only error is answer_set includes B. So one claim.\n\nBut wait: answer_set also includes B, which is not eliminated per explanation. So the answer_set is inconsistent. The oracle is A,C. So B is extra. So rule deviation C3.\n\nNow temporal_status: program says initial_error. So \"initial_error\".\n\nhas_diagnostic_event: true.\n\nanswer_effect: program says \"none\". So \"none\".\n\nrelated_peer_message_ids: [].\n\nuncertainty_reason: null.\n\nNow output JSON. Ensure schema exactly.\n\nLet's craft claims array with one claim:\n{\n  \"quote\": \"\\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\"]\",\n  \"stance\": \"asserted\",\n  \"target_entity_ids\": [\"B\"],\n  \"violated_fact_ids\": [],\n  \"violated_rule_ids\": [\"C3\"]\n}\nWait violated_fact_ids: evidence ID for B? The evidence says B lacks public speaking, which is a fact. But the claim doesn't violate the evidence; it violates the rule that requires public speaking. The evidence is consistent with rule violation. The claim's inclusion of B violates C3. So violated_rule_ids C3. violated_fact_ids maybe [] because the fact is B lacks public speaking, which supports violation, not violated. The field \"violated_fact_ids\" might mean facts that are contradicted. The message doesn't contradict the fact; it just includes B despite the fact. So empty.\n\nBut maybe the fact ID `attr_v4_1_000229:B:has_public_speaking_experience:v1` should be in violated_fact_ids? The message doesn't say B has public speaking; it says lacks. So no. So empty.\n\nTarget entity IDs: candidate labels. They said \"candidate labels\" maybe \"B\" or \"Blair\"? The schema says target_entity_ids: [\"candidate labels\"]. In examples? We have candidate IDs A,B,C,D. The program uses B. I'll use [\"B\"].\n\nNow quote exact: The current_message_text has `\"answer_set\": [\"A\", \"B\", \"C\"]`. In our JSON output, we need escape double quotes. So `\"quote\": \"\\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\"]\"`. That will be a JSON string containing `\"answer_set\": [\"A\", \"B\", \"C\"]`. Good.\n\nBut is that exactly substring? The raw current_message_text string includes `{\\n  \"answer_set\": [\"A\", \"B\", \"C\"],\\n  ...`. Yes.\n\nCould there be an issue that the current_message_text is a JSON object string, and the actual answer_set array is `[\"A\", \"B\", \"C\"]`. We quote that part.\n\nNow content_labels: [\"rule_deviation\"].\n\ntemporal_status: \"initial_error\".\n\nhas_diagnostic_event: true.\n\nanswer_effect: \"none\".\n\nrelated_peer_message_ids: [].\n\nuncertainty_reason: null.\n\nDouble-check: The program check says \"temporal_status\": \"initial_error\". So use that.\n\nOutput only JSON. No markdown.\n\nLet's produce.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a reference-structure-assisted diagnostic pre-annotation of one public agent message. The supplied formal state is authoritative reference information for this analysis. Analyze observable text only; do not infer hidden cognition or causation. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with sufficient domain knowledge are eligible.\\n2. Independent work ability is required.\\n3. Only candidates with prior public presentation experience are eligible.\\n\\nCandidates:\\nA. Rowan\\nB. Blair\\nC. Quinn\\nD. Jordan\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Only candidates with sufficient domain knowledge are eligible.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"Independent work ability is required.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"Only candidates with prior public presentation experience are eligible.\",\n      \"rule_id\": \"C3\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000229:A:can_work_independently:v1\",\n      \"text\": \"Rowan can complete tasks independently\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000229:B:has_public_speaking_experience:v1\",\n      \"text\": \"Blair lacks experience speaking to an audience\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000229:C:can_work_independently:v1\",\n      \"text\": \"Quinn can work without close guidance\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000229:D:can_work_independently:v1\",\n      \"text\": \"Jordan is not able to make progress independently\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with sufficient domain knowledge are eligible.\\n2. Independent work ability is required.\\n3. Only candidates with prior public presentation experience are eligible.\\n\\nCandidates:\\nA. Rowan\\nB. Blair\\nC. Quinn\\nD. Jordan\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000229:C:can_work_independently:v1: Quinn can work without close guidance.\\n- Evidence attr_v4_1_000229:B:has_public_speaking_experience:v1: Blair lacks experience speaking to an audience.\\n- Evidence attr_v4_1_000229:A:can_work_independently:v1: Rowan can complete tasks independently.\\n- Evidence attr_v4_1_000229:D:can_work_independently:v1: Jordan is not able to make progress independently.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_003::clean_stay:t1:r0:agent_3\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\"],\\n  \\\"explanation\\\": \\\"Candidate A (Rowan) meets the independent work ability requirement. Candidate B (Blair) lacks public speaking experience, which is a requirement, so they are eliminated. Candidate C (Quinn) meets the independent work ability requirement. Candidate D (Jordan) does not meet the independent work ability requirement, so they are eliminated.\\\"\\n}\",\n  \"reference_structure_assistance\": {\n    \"active_evidence\": [\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"can_work_independently\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Rowan\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000229:A:can_work_independently:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Rowan can complete tasks independently\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_public_speaking_experience\",\n        \"candidate_id\": \"B\",\n        \"candidate_name\": \"Blair\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000229:B:has_public_speaking_experience:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Blair lacks experience speaking to an audience\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"can_work_independently\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Quinn\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000229:C:can_work_independently:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Quinn can work without close guidance\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"can_work_independently\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Jordan\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000229:D:can_work_independently:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Jordan is not able to make progress independently\",\n        \"value\": false,\n        \"version\": 1\n      }\n    ],\n    \"exclusions\": {\n      \"B\": [\n        {\n          \"attribute\": \"has_public_speaking_experience\",\n          \"candidate_id\": \"B\",\n          \"evidence_id\": \"attr_v4_1_000229:B:has_public_speaking_experience:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C3\"\n        }\n      ],\n      \"D\": [\n        {\n          \"attribute\": \"can_work_independently\",\n          \"candidate_id\": \"D\",\n          \"evidence_id\": \"attr_v4_1_000229:D:can_work_independently:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C2\"\n        }\n      ]\n    },\n    \"oracle\": [\n      \"A\",\n      \"C\"\n    ],\n    \"program_check\": {\n      \"agent_id\": \"agent_3\",\n      \"answer_effect\": \"none\",\n      \"base_item_id\": \"attr_v4_1_000229\",\n      \"comparison_scope\": \"initial\",\n      \"continued_error_objects\": [],\n      \"diagnostic_version\": \"cbm_drift_v2.program_diagnostic.1\",\n      \"error_objects\": [\n        \"extra:B\"\n      ],\n      \"evidence_stage\": 1,\n      \"extra_candidate_violations\": {\n        \"B\": [\n          {\n            \"attribute\": \"has_public_speaking_experience\",\n            \"candidate_id\": \"B\",\n            \"evidence_id\": \"attr_v4_1_000229:B:has_public_speaking_experience:v1\",\n            \"observed_value\": false,\n            \"required_value\": true,\n            \"rule_id\": \"C3\"\n          }\n        ]\n      },\n      \"extra_candidates\": [\n        \"B\"\n      ],\n      \"family_id\": \"cbm_v2_family_003\",\n      \"formal_oracle_changed_since_previous_output\": false,\n      \"message_id\": \"mad:cbm_v2_family_003::clean_stay:t1:r0:agent_3\",\n      \"new_error_objects\": [\n        \"extra:B\"\n      ],\n      \"omitted_candidates\": [],\n      \"oracle\": [\n        \"A\",\n        \"C\"\n      ],\n      \"outcome\": \"valid_wrong\",\n      \"prediction\": [\n        \"A\",\n        \"B\",\n        \"C\"\n      ],\n      \"related_peer_message_ids_by_answer_alignment\": [],\n      \"request_id\": \"mad:cbm_v2_family_003::clean_stay:t1:r0:agent_3\",\n      \"resolved_error_objects\": [],\n      \"round\": 0,\n      \"temporal_status\": \"initial_error\",\n      \"trajectory_id\": \"cbm_v2_family_003::clean_stay\",\n      \"variant_id\": \"cbm_v2_family_003::clean_stay\",\n      \"variant_type\": \"clean_stay\"\n    },\n    \"rules\": [\n      {\n        \"attribute\": \"has_domain_knowledge\",\n        \"id\": \"C1\",\n        \"natural_language\": \"Only candidates with sufficient domain knowledge are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"can_work_independently\",\n        \"id\": \"C2\",\n        \"natural_language\": \"Independent work ability is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_public_speaking_experience\",\n        \"id\": \"C3\",\n        \"natural_language\": \"Only candidates with prior public presentation experience are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      }\n    ]\n  }\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "bfb4bb2770b73302ae9650b228b48d9b",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 0,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 1003,
+    "delta_key_counts": {
+      "content": 23,
+      "reasoning_content": 978,
+      "role": 1002
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_003::clean_stay",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 3173,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 3070,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 2693,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 5866
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_003::clean_stay"
+}

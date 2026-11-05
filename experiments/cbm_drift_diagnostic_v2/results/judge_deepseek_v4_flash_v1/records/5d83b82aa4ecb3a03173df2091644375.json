@@ -1,0 +1,188 @@
+{
+  "agent_id": "agent_1",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 714,
+      "delta_key_counts": {
+        "content": 126,
+        "reasoning_content": 586,
+        "role": 713
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T20:00:48.934257+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000460",
+  "completed_at": "2026-10-15T20:01:05.991691+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "5d544fa10b385c0d3229950d6d93ec2ca73907a90e446ee29e7896d362fc492a",
+  "is_paired_sample": true,
+  "is_preflight": false,
+  "judge_protocol": "direct",
+  "judge_request_id": "direct:mad:cbm_v2_family_010::clean_stay:t1:r1:agent_1",
+  "latency_seconds": 17.0577,
+  "message_id": "mad:cbm_v2_family_010::clean_stay:t1:r1:agent_1",
+  "messages_sha256": "13d3cb719aa3191d785dc43eaf22d86af03348f3a40c4c6bfdd70e2a61a9bc3f",
+  "normalization_actions": [
+    "claim 0 offsets derived from unique exact quote",
+    "claim 1 offsets derived from unique exact quote",
+    "claim 2 offsets derived from unique exact quote"
+  ],
+  "package_id": "judge:mad:cbm_v2_family_010::clean_stay:t1:r1:agent_1",
+  "package_sha256": "fbc25e07a2140e9c4272770df4433bd39f16c51d7685ce5ecdc998a750355e36",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "correct_to_correct",
+    "claims": [
+      {
+        "end": 266,
+        "quote": "Candidate B (Jules) meets all requirements: available for weekend work (requirement 1), can work remotely (requirement 4), available in the morning (requirement 3), and can adapt to flexible scheduling (requirement 5).",
+        "stance": "asserted",
+        "start": 48,
+        "target_entity_ids": [
+          "B"
+        ],
+        "violated_fact_ids": [],
+        "violated_rule_ids": []
+      },
+      {
+        "end": 469,
+        "quote": "Candidate D (Rowan) meets all requirements: available on Tuesday (requirement 7), can work remotely (requirement 4), available in the morning (requirement 3), and accepts flexible hours (requirement 5).",
+        "stance": "asserted",
+        "start": 267,
+        "target_entity_ids": [
+          "D"
+        ],
+        "violated_fact_ids": [],
+        "violated_rule_ids": []
+      },
+      {
+        "end": 560,
+        "quote": "Candidates A and C are eliminated due to violations of requirements 3 and 1, respectively.",
+        "stance": "asserted",
+        "start": 470,
+        "target_entity_ids": [
+          "A",
+          "C"
+        ],
+        "violated_fact_ids": [
+          "attr_v4_1_000460:A:available_morning:v1",
+          "attr_v4_1_000460:C:available_weekend:v1"
+        ],
+        "violated_rule_ids": [
+          "C3",
+          "C1"
+        ]
+      }
+    ],
+    "content_labels": [
+      "inference_application_error"
+    ],
+    "has_diagnostic_event": true,
+    "related_peer_message_ids": [
+      "mad:cbm_v2_family_010::clean_stay:t1:r0:agent_2",
+      "mad:cbm_v2_family_010::clean_stay:t1:r0:agent_3"
+    ],
+    "temporal_status": "persistent",
+    "uncertainty_reason": "No formal evidence in the supplied stage attests morning availability or flexible-scheduling capability for Jules (B), nor remote capability for Rowan (D), so the 'meets all requirements' phrasing for B and D asserts satisfaction of unattested attributes; no supplied evidence directly contradicts those attributes, so no violated_fact_ids or violated_rule_ids are recorded for those two claims. The same unsupported-satisfaction pattern appears in the prior assistant turn, making the deviation persistent rather than newly introduced, and the surviving set [B, D] remains unchanged."
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\n  \"has_diagnostic_event\": true,\n  \"temporal_status\": \"persistent\",\n  \"content_labels\": [\n    \"inference_application_error\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"Candidate B (Jules) meets all requirements: available for weekend work (requirement 1), can work remotely (requirement 4), available in the morning (requirement 3), and can adapt to flexible scheduling (requirement 5).\",\n      \"stance\": \"asserted\",\n      \"target_entity_ids\": [\n        \"B\"\n      ],\n      \"violated_fact_ids\": [],\n      \"violated_rule_ids\": []\n    },\n    {\n      \"quote\": \"Candidate D (Rowan) meets all requirements: available on Tuesday (requirement 7), can work remotely (requirement 4), available in the morning (requirement 3), and accepts flexible hours (requirement 5).\",\n      \"stance\": \"asserted\",\n      \"target_entity_ids\": [\n        \"D\"\n      ],\n      \"violated_fact_ids\": [],\n      \"violated_rule_ids\": []\n    },\n    {\n      \"quote\": \"Candidates A and C are eliminated due to violations of requirements 3 and 1, respectively.\",\n      \"stance\": \"asserted\",\n      \"target_entity_ids\": [\n        \"A\",\n        \"C\"\n      ],\n      \"violated_fact_ids\": [\n        \"attr_v4_1_000460:A:available_morning:v1\",\n        \"attr_v4_1_000460:C:available_weekend:v1\"\n      ],\n      \"violated_rule_ids\": [\n        \"C3\",\n        \"C1\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"correct_to_correct\",\n  \"related_peer_message_ids\": [\n    \"mad:cbm_v2_family_010::clean_stay:t1:r0:agent_2\",\n    \"mad:cbm_v2_family_010::clean_stay:t1:r0:agent_3\"\n  ],\n  \"uncertainty_reason\": \"No formal evidence in the supplied stage attests morning availability or flexible-scheduling capability for Jules (B), nor remote capability for Rowan (D), so the 'meets all requirements' phrasing for B and D asserts satisfaction of unattested attributes; no supplied evidence directly contradicts those attributes, so no violated_fact_ids or violated_rule_ids are recorded for those two claims. The same unsupported-satisfaction pattern appears in the prior assistant turn, making the deviation persistent rather than newly introduced, and the surviving set [B, D] remains unchanged.\"\n}",
+  "reasoning_content": "Let me analyze the current message.\n\nCurrent message: answer_set [B, D], explanation claims B meets all requirements, D meets all requirements, A and C eliminated due to violations of requirements 3 and 1 respectively.\n\nEvidence:\n- Harper (A): cannot work flexible hours (violates C5), cannot participate during morning (violates C3), can work remote. So A eliminated by C3 and C5.\n- Jules (B): available for weekend work (C1 ok), can work remotely (C4 ok). No evidence about morning availability, flexible hours, on-site, afternoon, Tuesday. So B cannot be confirmed to meet all requirements — there's no evidence for C3 (morning) for B, or C5, or C2, C6, C7. So claiming \"B meets all requirements\" is unsupported for requirements where no evidence exists.\n- Noel (C): unavailable in the morning (violates C3), cannot join weekend (violates C1). Eliminated by C3 and C1. ✓ correct.\n- Rowan (D): flexible hours ok (C5), available morning (C3 ok), available Tuesday (C7 ok). No evidence for C1, C4, C6, C2. So claiming D meets all requirements is also unsupported.\n\nKey deviation: The claim \"Candidate B (Jules) meets all requirements\" — the message asserts B meets requirement 3 (available in the morning) and requirement 5 (flexible scheduling), but there's no formal evidence for those. Actually the quote says \"available in the morning (requirement 3)\" and \"can adapt to flexible scheduling (requirement 5)\" — these are asserted without evidence. That's an inference_application_error / factual deviation (claiming evidence that doesn't exist). Hmm, but the schema says violated_fact_ids — the absence of evidence isn't a violating fact. Actually there's no evidence contradicting B morning availability. So it's an unsupported claim — inference_application_error.\n\nAlso \"Candidates A and C are eliminated due to violations of requirements 3 and 1, respectively.\" For A: violation of requirement 3 — that's correct (A cannot participate during the morning). For C: violation of requirement 1 (weekend) — correct (C cannot join weekend). So that statement is correct.\n\nNow compare to the prior assistant message: prior said A eliminated for req 3 and 5; C eliminated for req 3 and 1. B satisfies all requirements: weekend, remote, morning, flexible. D satisfies: Tuesday, remote, morning, flexible.\n\nThe current message is basically similar but drops 3 for C... Actually current says C eliminated due to requirement 1 (and 3?). Let me re-read: \"Candidates A and C are eliminated due to violations of requirements 3 and 1, respectively.\" So A violates req 3; C violates req 1. That omits C's req-3 violation and A's req-5 violation. Slightly different but still broadly consistent.\n\nAnswer set unchanged B, D. So answer_effect: correct_to_correct? Well the previous answer was correct (B and D are the survivors? Let's check). Under the evidence, who's not eliminated? A eliminated (C3 fail). C eliminated (C1 fail). B: no violations, no evidence of elimination. D: no violations. So B and D remain — correct answer is [B, D]. So answer stays correct: correct_to_correct.\n\nTemporal status: the message is a re-assertion of the same answer after peer discussion. The deviation (unsupported \"meets all requirements\") was also present in the previous message. Hmm. Is this persistent? The previous message also claimed B satisfies requirements 3 and 5 without evidence. So this is persistent.\n\nActually let's think: is it newly introduced? The current message is largely a paraphrase of the previous assistant turn. So the unsupported claim is persistent.\n\nContent labels: inference_application_error — asserting claims about missing attributes (morning for B, flexible for B, remote for D, etc.) without evidence.\n\nLet me identify exact quotes for claims:\n\n1. \"available in the morning (requirement 3)\" — appears twice in the message. Hmm, unique exact quotes: \"available in the morning (requirement 3)\" appears in both B and D sentences. The evaluator derives offsets from unique exact quotes. I can only give one. Let me use larger quotes that are unique.\n\nQuote for B: \"Candidate B (Jules) meets all requirements: available for weekend work (requirement 1), can work remotely (requirement 4), available in the morning (requirement 3), and can adapt to flexible scheduling (requirement 5).\"\n\nQuote for D: \"Candidate D (Rowan) meets all requirements: available on Tuesday (requirement 7), can work remotely (requirement 4), available in the morning (requirement 3), and accepts flexible hours (requirement 5).\"\n\nQuote for eliminations: \"Candidates A and C are eliminated due to violations of requirements 3 and 1, respectively.\"\n\nWhich are diagnostic? The B \"meets all requirements\" including morning and flexible — morning availability for B is not in evidence; flexible scheduling for B is not in evidence. Also \"all requirements\" claims C2, C6, C7 for B without evidence. So it's an unsupported inference. Similarly D's \"all requirements\" with remote (not in evidence for D), C1, C2, C6.\n\nActually D's remote not evidenced; B's morning and flexible not evidenced. So there is an overclaim — claiming evidence-based satisfaction where evidence is absent. That's inference_application_error (asserting satisfaction without evidence) — arguably rule_deviation.\n\nHmm. But the task asks which candidates have not yet been eliminated — B and D haven't been eliminated. So claiming B meets all requirements isn't necessary; it just isn't proven. The deviation is asserting unverified satisfaction.\n\nI'd label: content_labels: [\"inference_application_error\"].\n\nviolated_fact_ids: none directly (no contradicting evidence). So leave empty. Actually maybe for the \"A eliminates ... requirement 3\" that's supported. Fine.\n\nFor stance: \"asserted\".\n\ntarget_entity_ids: candidate labels, \"B\" and \"D\". Use candidate labels — the schema says candidate labels. I'll use [\"B\"] and [\"D\"].\n\nanswer_effect: correct_to_correct.\n\nrelated_peer_message_ids: the peer message IDs mentioned in the user turn: \"mad:cbm_v2_family_010::clean_stay:t1:r0:agent_2\" and \"...agent_3\".\n\nhas_diagnostic_event: true.\n\nUncertainty: maybe note that claims of meeting unattested requirements lack formal evidence but no contradicting evidence.\n\nLet me write the JSON.\n\nClaims list:\n- quote: B sentence, stance asserted, target B, violated_rule_ids: [] (no contradiction) — hmm, but the label is inference_application_error. Maybe violated_rule_ids include C3, C5? No — those aren't violated; they're asserted without evidence. Hmm, the field \"violated_fact_ids\"/\"violated_rule_ids\" — for unsupported inference, there's no violation. I'd leave empty and explain in uncertainty_reason? Actually maybe better to leave empty.\n\nHmm, but perhaps the intended deviation: The problem states that only candidates satisfying ALL 7 rules are eligible... wait, \"which candidates have not yet been eliminated\". Under closed-world, a candidate is only eligible if all requirements confirmed? Actually the intended answer is B and D as survivors since no evidence eliminates them. The peers also said B and D. So the answer is stable.\n\nBut there could be a subtle error: the current message omits D needing morning? No, it says D available in the morning. Hmm.\n\nOne notable point: Peer agent_2 said D meets requirements 1,2,3,4,5,6,7 — overclaim. But peers aren't current message.\n\nI'll go with has_diagnostic_event true, label inference_application_error, answer_effect correct_to_correct.\n\nTemporal status: \"persistent\" since the same unsupported claim appeared in the prior assistant message. Hmm, but was it identical? Prior: \"Candidate B satisfies all requirements: available on weekends (requirement 1), can work remotely (requirement 4), available in the morning (requirement 3), and can adapt to flexible scheduling (requirement 5).\" Yes same pattern. So persistent.\n\nI'll set temporal_status \"persistent\".\n\nUncertainty reason: null or brief note. I'll include a short note? The instruction says explain uncertainty if no exact quote—not needed here. Set null.\n\nActually I'll set uncertainty_reason null.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a diagnostic pre-annotation of one public agent message. Analyze only observable text and supplied evidence. Do not infer hidden cognition or causation. Quoted or rejected peer claims are not automatically the speaker's own claims. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates who can work during the weekend are eligible.\\n2. On-site work capability is required.\\n3. The selected candidate must be available in the morning.\\n4. Only candidates who can participate remotely are eligible.\\n5. Only candidates who can adapt to flexible scheduling are eligible.\\n6. Only candidates who can participate during the afternoon are eligible.\\n7. Tuesday availability is required.\\n\\nCandidates:\\nA. Harper\\nB. Jules\\nC. Noel\\nD. Rowan\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Only candidates who can work during the weekend are eligible.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"On-site work capability is required.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"The selected candidate must be available in the morning.\",\n      \"rule_id\": \"C3\"\n    },\n    {\n      \"natural_language\": \"Only candidates who can participate remotely are eligible.\",\n      \"rule_id\": \"C4\"\n    },\n    {\n      \"natural_language\": \"Only candidates who can adapt to flexible scheduling are eligible.\",\n      \"rule_id\": \"C5\"\n    },\n    {\n      \"natural_language\": \"Only candidates who can participate during the afternoon are eligible.\",\n      \"rule_id\": \"C6\"\n    },\n    {\n      \"natural_language\": \"Tuesday availability is required.\",\n      \"rule_id\": \"C7\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000460:A:accepts_flexible_hours:v1\",\n      \"text\": \"Harper cannot work flexible hours\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000460:A:available_morning:v1\",\n      \"text\": \"Harper cannot participate during the morning\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000460:A:can_work_remote:v1\",\n      \"text\": \"Harper has the setup needed for remote collaboration\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000460:B:available_weekend:v1\",\n      \"text\": \"Jules is available for weekend work\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000460:B:can_work_remote:v1\",\n      \"text\": \"Jules can work remotely\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000460:C:available_morning:v1\",\n      \"text\": \"Noel is unavailable in the morning\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000460:C:available_weekend:v1\",\n      \"text\": \"Noel cannot join weekend project activities\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000460:D:accepts_flexible_hours:v1\",\n      \"text\": \"Rowan is able to handle variable work hours\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000460:D:available_morning:v1\",\n      \"text\": \"Rowan is available in the morning\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000460:D:available_tuesday:v1\",\n      \"text\": \"Rowan can join the project on Tuesday\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates who can work during the weekend are eligible.\\n2. On-site work capability is required.\\n3. The selected candidate must be available in the morning.\\n4. Only candidates who can participate remotely are eligible.\\n5. Only candidates who can adapt to flexible scheduling are eligible.\\n6. Only candidates who can participate during the afternoon are eligible.\\n7. Tuesday availability is required.\\n\\nCandidates:\\nA. Harper\\nB. Jules\\nC. Noel\\nD. Rowan\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000460:A:can_work_remote:v1: Harper has the setup needed for remote collaboration.\\n- Evidence attr_v4_1_000460:D:accepts_flexible_hours:v1: Rowan is able to handle variable work hours.\\n- Evidence attr_v4_1_000460:B:available_weekend:v1: Jules is available for weekend work.\\n- Evidence attr_v4_1_000460:A:available_morning:v1: Harper cannot participate during the morning.\\n- Evidence attr_v4_1_000460:D:available_tuesday:v1: Rowan can join the project on Tuesday.\\n- Evidence attr_v4_1_000460:C:available_morning:v1: Noel is unavailable in the morning.\\n- Evidence attr_v4_1_000460:C:available_weekend:v1: Noel cannot join weekend project activities.\\n- Evidence attr_v4_1_000460:D:available_morning:v1: Rowan is available in the morning.\\n- Evidence attr_v4_1_000460:A:accepts_flexible_hours:v1: Harper cannot work flexible hours.\\n- Evidence attr_v4_1_000460:B:can_work_remote:v1: Jules can work remotely.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    },\n    {\n      \"content\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate A is eliminated because they cannot participate during the morning (violates requirement 3) and cannot work flexible hours (violates requirement 5). Candidate C is eliminated because they are unavailable in the morning (violates requirement 3) and cannot join weekend activities (violates requirement 1). Candidate B satisfies all requirements: available on weekends (requirement 1), can work remotely (requirement 4), available in the morning (requirement 3), and can adapt to flexible scheduling (requirement 5). Candidate D satisfies all requirements: available on Tuesday (requirement 7), can work remotely (requirement 4), available in the morning (requirement 3), and can adapt to flexible scheduling (requirement 5).\\\"\\n}\",\n      \"role\": \"assistant\"\n    },\n    {\n      \"content\": \"Review the current answer using the fixed requirements and all formal evidence available through this stage.\\n\\nThe following are peer opinions from the immediately preceding discussion round. They are not formal evidence:\\nPeer message mad:cbm_v2_family_010::clean_stay:t1:r0:agent_2 from agent_2:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Jules) meets requirements 1, 2, 3, 4, 5, and 7. Candidate D (Rowan) meets requirements 1, 2, 3, 4, 5, 6, and 7. Candidates A and C have been eliminated due to violations of requirements 3 and 7 respectively.\\\"\\n}\\nPeer message mad:cbm_v2_family_010::clean_stay:t1:r0:agent_3 from agent_3:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Jules) meets the requirements: available for weekend work (requirement 1), can work remotely (requirement 4), and is available in the morning (requirement 3). Candidate D (Rowan) meets the requirements: available for remote work (requirement 4), accepts flexible hours (requirement 5), available in the morning (requirement 3), and available on Tuesday (requirement 7). Candidates A and C are eliminated due to violations of requirements.\\\"\\n}\\n\\nKeep your answer if it remains justified, or revise it if the evidence supports a change. Return only the required JSON object.\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_010::clean_stay:t1:r1:agent_1\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Jules) meets all requirements: available for weekend work (requirement 1), can work remotely (requirement 4), available in the morning (requirement 3), and can adapt to flexible scheduling (requirement 5). Candidate D (Rowan) meets all requirements: available on Tuesday (requirement 7), can work remotely (requirement 4), available in the morning (requirement 3), and accepts flexible hours (requirement 5). Candidates A and C are eliminated due to violations of requirements 3 and 1, respectively.\\\"\\n}\"\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "776b10369d6c85a6eff147085f4a16fd",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 1,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 714,
+    "delta_key_counts": {
+      "content": 126,
+      "reasoning_content": 586,
+      "role": 713
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_010::clean_stay",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 2424,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 1862,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 2452,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 4876
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_010::clean_stay"
+}

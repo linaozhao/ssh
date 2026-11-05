@@ -1,0 +1,138 @@
+{
+  "agent_id": "agent_3",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 447,
+      "delta_key_counts": {
+        "content": 13,
+        "reasoning_content": 432,
+        "role": 446
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T20:18:58.712903+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000266",
+  "completed_at": "2026-10-15T20:19:09.577850+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "d92f96e04925a8c436b7557b59b3811fdfa05bece7821874e2a17b0d0bad83ae",
+  "is_paired_sample": false,
+  "is_preflight": false,
+  "judge_protocol": "structured_assistance",
+  "judge_request_id": "structured_assistance:mad:cbm_v2_family_004::clean_stay:t1:r2:agent_3",
+  "latency_seconds": 10.8655,
+  "message_id": "mad:cbm_v2_family_004::clean_stay:t1:r2:agent_3",
+  "messages_sha256": "acdb3b531bbf7e4138de9fbbf4ad9710059157704aa75c0d43421654942cac8c",
+  "normalization_actions": [],
+  "package_id": "judge:mad:cbm_v2_family_004::clean_stay:t1:r2:agent_3",
+  "package_sha256": "91d8a01b3cf2a13dd4dfdd10505114c2c2384c6d61c63b65411f76b18fb10ded",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "correct_to_correct",
+    "claims": [],
+    "content_labels": [],
+    "has_diagnostic_event": false,
+    "related_peer_message_ids": [],
+    "temporal_status": "correct_maintenance",
+    "uncertainty_reason": null
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\"has_diagnostic_event\": false, \"temporal_status\": \"correct_maintenance\", \"content_labels\": [], \"claims\": [], \"answer_effect\": \"correct_to_correct\", \"related_peer_message_ids\": [], \"uncertainty_reason\": null}",
+  "reasoning_content": "We need answer JSON only. Need assess current message. Need determine diagnostic event? Current message is agent_3 after round 2, same answer B,D explanation. Reference says outcome valid_correct, temporal_status correct_maintenance, answer_effect correct_to_correct. No errors. Need produce schema. Need claims? Since no deviations, claims empty? We need assess observable content deviations. Current message text exact: JSON with answer_set B,D explanation. It asserts A eliminated due lacking local work permit. This matches evidence A no permit C1. C eliminated due lacking domain knowledge matches C no domain C3. B has valid local work permit and no domain knowledge evidence provided, remain. D has domain knowledge but no work permit evidence provided, remain. But careful: rule C2 required QA experience. There is no evidence about QA for any. Under \"not yet eliminated\" as evidence arrives, absence of disqualifying evidence doesn't eliminate; but fixed requirements include required QA. The standard interpretation is open-world? Formal evidence only has four evidence items. Oracle says B,D remain. So explanation \"no domain knowledge evidence is provided\" for B and \"no work permit evidence is provided\" for D are accurate given no formal evidence. But C2 quality assurance experience required, no evidence for any, and B/D remain despite no QA evidence. That's consistent with oracle. No content deviation. So has_diagnostic_event false, temporal_status correct_maintenance, content_labels maybe []? Schema content_labels array can include labels, but if none perhaps empty. answer_effect correct_to_correct. claims: include only claims needed to support or qualify diagnostic decision. Could include asserted quotes? But diagnostic decision is no deviation; maybe claims empty? Instruction: \"If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\" But here we can support no deviation maybe not needed. Since has_diagnostic_event false, claims maybe empty. But maybe need quote to show no violation? It says include only claims needed to support or qualify diagnostic decision. For no deviation, empty claims plus uncertainty_reason null? The schema requires claims array; can be empty. We need maybe set uncertainty_reason null because no uncertainty. But if claims empty and no diagnostic event, maybe explain? The instruction says \"If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\" That applies when no exact diagnostic quote. Here we don't need claims. Could still empty claims, uncertainty_reason null. But perhaps should include claims with quotes and target_entity_ids for each statement to show they align. Hmm.\n\nLet's parse exact current_message_text: \n{\\n  \"answer_set\": [\"B\", \"D\"],\\n  \"explanation\": \"Candidate A is eliminated due to lacking a local work permit. Candidate C is eliminated due to lacking domain knowledge. Candidate B has a valid local work permit and no domain knowledge evidence is provided, so they remain. Candidate D has domain knowledge but no work permit evidence is provided, so they remain.\"\\n}\n\nWe could include quotes:\n- \"Candidate A is eliminated due to lacking a local work permit.\" asserted, target A, violated_fact_ids [attr_v4_1_000266:A:has_local_work_permit:v1], violated_rule_ids [C1]. But stance? It's asserted about A lacking permit. It is a correct application, not a violation. \"violated_fact_ids\" maybe means facts violated by claim? This claim does not violate fact; it aligns. In schema violated_fact_ids is for claims that contradict evidence. So if no deviations, don't include. For a non-diagnostic claim, no. So claims empty.\n\nBut maybe evaluator expects claims for diagnostic event only. Since none, empty.\n\nNeed answer_effect correct_to_correct. temporal_status correct_maintenance. has_diagnostic_event false. content_labels [] likely.\n\nRelated peer message ids: visible peer messages in previous user message? The current message is after peer messages from r1: mad:cbm_v2_family_004::clean_stay:t1:r1:agent_1 and agent_2. The current message doesn't reference them. related_peer_message_ids maybe [] because no related? Program check related_peer_message_ids_by_answer_alignment empty. So [].\n\nNeed ensure JSON. Use exact labels. content_labels can be []? The schema says content_labels: [\"factual_deviation/...\"]. Maybe empty array. temporal_status \"correct_maintenance\". answer_effect \"correct_to_correct\". uncertainty_reason null.\n\nBut let's double-check if there is any content deviation: Explanation says \"Candidate B has a valid local work permit and no domain knowledge evidence is provided, so they remain.\" But requirement C2 quality assurance experience is required. No evidence of QA for B, yet remains. This is a potential subtle issue: If requirements are \"required\", and no evidence of QA, should B be eliminated? However the task says \"tracking which candidates have not yet been eliminated as evidence arrives.\" Fixed requirements include QA required. But formal evidence has no QA for anyone. The oracle says B,D. The formal reference structure only excludes A and C. So system's semantics: Only eliminate if evidence contradicts required attribute; no evidence means not eliminated. So explanation mentioning no domain knowledge for B is accurate; it doesn't mention QA, but not a deviation. For D, \"no work permit evidence is provided\" accurate. So no deviation.\n\nCould there be a temporal issue? The current message is identical to earlier assistant message (round 0? actually previous assistant at r1? It is same). It's a correct maintenance. Program says correct_maintenance.\n\nThus final JSON.\n\nNeed include uncertainty_reason? null. Could maybe \"No diagnostic content deviations; answer set and explanation align with formal evidence and rules.\" But schema says string or null. If no uncertainty, null.\n\nLet's craft.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a reference-structure-assisted diagnostic pre-annotation of one public agent message. The supplied formal state is authoritative reference information for this analysis. Analyze observable text only; do not infer hidden cognition or causation. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with a local work permit are eligible.\\n2. Quality assurance experience is required.\\n3. Only candidates with sufficient domain knowledge are eligible.\\n\\nCandidates:\\nA. Avery\\nB. Wren\\nC. Taylor\\nD. Kris\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Only candidates with a local work permit are eligible.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"Quality assurance experience is required.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"Only candidates with sufficient domain knowledge are eligible.\",\n      \"rule_id\": \"C3\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000266:A:has_local_work_permit:v1\",\n      \"text\": \"Avery does not have a valid local work permit\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000266:B:has_local_work_permit:v1\",\n      \"text\": \"Wren has a valid local work permit\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000266:C:has_domain_knowledge:v1\",\n      \"text\": \"Taylor is not familiar with the domain needed for the work\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000266:D:has_domain_knowledge:v1\",\n      \"text\": \"Kris has background knowledge in the domain\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with a local work permit are eligible.\\n2. Quality assurance experience is required.\\n3. Only candidates with sufficient domain knowledge are eligible.\\n\\nCandidates:\\nA. Avery\\nB. Wren\\nC. Taylor\\nD. Kris\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000266:A:has_local_work_permit:v1: Avery does not have a valid local work permit.\\n- Evidence attr_v4_1_000266:D:has_domain_knowledge:v1: Kris has background knowledge in the domain.\\n- Evidence attr_v4_1_000266:C:has_domain_knowledge:v1: Taylor is not familiar with the domain needed for the work.\\n- Evidence attr_v4_1_000266:B:has_local_work_permit:v1: Wren has a valid local work permit.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    },\n    {\n      \"content\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate A is eliminated due to lacking a local work permit. Candidate C is eliminated due to lacking domain knowledge. Candidate B has a valid local work permit and no domain knowledge evidence is provided, so they remain. Candidate D has domain knowledge but no work permit evidence is provided, so they remain.\\\"\\n}\",\n      \"role\": \"assistant\"\n    },\n    {\n      \"content\": \"Review the current answer using the fixed requirements and all formal evidence available through this stage.\\n\\nThe following are peer opinions from the immediately preceding discussion round. They are not formal evidence:\\nPeer message mad:cbm_v2_family_004::clean_stay:t1:r0:agent_1 from agent_1:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Wren) has a valid local work permit and no domain knowledge evidence is provided, so they are not eliminated. Candidate D (Kris) has domain knowledge but no work permit evidence is provided, so they are not eliminated. Candidates A and C are eliminated due to lack of work permit and domain knowledge, respectively.\\\"\\n}\\nPeer message mad:cbm_v2_family_004::clean_stay:t1:r0:agent_2 from agent_2:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Wren) has a valid local work permit and no information about domain knowledge or quality assurance experience, so they are not eliminated. Candidate D (Kris) has domain knowledge but no information about a work permit or quality assurance experience, so they are not eliminated. Candidates A and C have been eliminated due to lacking a local work permit and domain knowledge, respectively.\\\"\\n}\\n\\nKeep your answer if it remains justified, or revise it if the evidence supports a change. Return only the required JSON object.\",\n      \"role\": \"user\"\n    },\n    {\n      \"content\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate A is eliminated due to lacking a local work permit. Candidate C is eliminated due to lacking domain knowledge. Candidate B has a valid local work permit and no domain knowledge evidence is provided, so they remain. Candidate D has domain knowledge but no work permit evidence is provided, so they remain.\\\"\\n}\",\n      \"role\": \"assistant\"\n    },\n    {\n      \"content\": \"Review the current answer using the fixed requirements and all formal evidence available through this stage.\\n\\nThe following are peer opinions from the immediately preceding discussion round. They are not formal evidence:\\nPeer message mad:cbm_v2_family_004::clean_stay:t1:r1:agent_1 from agent_1:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Wren) has a valid local work permit, and no evidence contradicts the other requirements, so they are not eliminated. Candidate D (Kris) has domain knowledge, and no evidence contradicts the other requirements, so they are not eliminated. Candidates A and C are eliminated due to lack of a local work permit and domain knowledge, respectively.\\\"\\n}\\nPeer message mad:cbm_v2_family_004::clean_stay:t1:r1:agent_2 from agent_2:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Wren) has a valid local work permit, satisfying requirement 1, and no evidence contradicts requirements 2 or 3. Candidate D (Kris) has domain knowledge, satisfying requirement 3, and no evidence contradicts requirements 1 or 2. Candidates A and C are eliminated due to lacking a local work permit and domain knowledge, respectively.\\\"\\n}\\n\\nKeep your answer if it remains justified, or revise it if the evidence supports a change. Return only the required JSON object.\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_004::clean_stay:t1:r2:agent_3\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate A is eliminated due to lacking a local work permit. Candidate C is eliminated due to lacking domain knowledge. Candidate B has a valid local work permit and no domain knowledge evidence is provided, so they remain. Candidate D has domain knowledge but no work permit evidence is provided, so they remain.\\\"\\n}\",\n  \"reference_structure_assistance\": {\n    \"active_evidence\": [\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_local_work_permit\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Avery\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000266:A:has_local_work_permit:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Avery does not have a valid local work permit\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_local_work_permit\",\n        \"candidate_id\": \"B\",\n        \"candidate_name\": \"Wren\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000266:B:has_local_work_permit:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Wren has a valid local work permit\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_domain_knowledge\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Taylor\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000266:C:has_domain_knowledge:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Taylor is not familiar with the domain needed for the work\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_domain_knowledge\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Kris\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000266:D:has_domain_knowledge:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Kris has background knowledge in the domain\",\n        \"value\": true,\n        \"version\": 1\n      }\n    ],\n    \"exclusions\": {\n      \"A\": [\n        {\n          \"attribute\": \"has_local_work_permit\",\n          \"candidate_id\": \"A\",\n          \"evidence_id\": \"attr_v4_1_000266:A:has_local_work_permit:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C1\"\n        }\n      ],\n      \"C\": [\n        {\n          \"attribute\": \"has_domain_knowledge\",\n          \"candidate_id\": \"C\",\n          \"evidence_id\": \"attr_v4_1_000266:C:has_domain_knowledge:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C3\"\n        }\n      ]\n    },\n    \"oracle\": [\n      \"B\",\n      \"D\"\n    ],\n    \"program_check\": {\n      \"agent_id\": \"agent_3\",\n      \"answer_effect\": \"correct_to_correct\",\n      \"base_item_id\": \"attr_v4_1_000266\",\n      \"comparison_scope\": \"within_stage\",\n      \"continued_error_objects\": [],\n      \"diagnostic_version\": \"cbm_drift_v2.program_diagnostic.1\",\n      \"error_objects\": [],\n      \"evidence_stage\": 1,\n      \"extra_candidate_violations\": {},\n      \"extra_candidates\": [],\n      \"family_id\": \"cbm_v2_family_004\",\n      \"formal_oracle_changed_since_previous_output\": false,\n      \"message_id\": \"mad:cbm_v2_family_004::clean_stay:t1:r2:agent_3\",\n      \"new_error_objects\": [],\n      \"omitted_candidates\": [],\n      \"oracle\": [\n        \"B\",\n        \"D\"\n      ],\n      \"outcome\": \"valid_correct\",\n      \"prediction\": [\n        \"B\",\n        \"D\"\n      ],\n      \"related_peer_message_ids_by_answer_alignment\": [],\n      \"request_id\": \"mad:cbm_v2_family_004::clean_stay:t1:r2:agent_3\",\n      \"resolved_error_objects\": [],\n      \"round\": 2,\n      \"temporal_status\": \"correct_maintenance\",\n      \"trajectory_id\": \"cbm_v2_family_004::clean_stay\",\n      \"variant_id\": \"cbm_v2_family_004::clean_stay\",\n      \"variant_type\": \"clean_stay\"\n    },\n    \"rules\": [\n      {\n        \"attribute\": \"has_local_work_permit\",\n        \"id\": \"C1\",\n        \"natural_language\": \"Only candidates with a local work permit are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_quality_assurance_experience\",\n        \"id\": \"C2\",\n        \"natural_language\": \"Quality assurance experience is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_domain_knowledge\",\n        \"id\": \"C3\",\n        \"natural_language\": \"Only candidates with sufficient domain knowledge are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      }\n    ]\n  }\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "53036304dfc4e9707a67c5c3399eac2a",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 2,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 447,
+    "delta_key_counts": {
+      "content": 13,
+      "reasoning_content": 432,
+      "role": 446
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_004::clean_stay",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 1279,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 1222,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 3465,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 4744
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_004::clean_stay"
+}

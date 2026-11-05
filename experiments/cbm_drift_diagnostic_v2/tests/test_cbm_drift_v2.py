@@ -317,9 +317,21 @@ def test_runtime_quota_override_rejects_invalid_values(monkeypatch: pytest.Monke
         effective_quota_cap(config)
 
 
-def test_tokenplan_report_uses_frozen_max_tokens() -> None:
-    result = build_chinese_report(ROOT)
-    report = (ROOT / result["report"]).read_text(encoding="utf-8")
+def test_tokenplan_report_uses_frozen_max_tokens(tmp_path: Path) -> None:
+    for name in (
+        "results/judge_deepseek_v4_pro_v3/experiment_manifest.json",
+        "results/judge_deepseek_v4_pro_v3/request_queue.jsonl",
+        "results/judge_deepseek_v4_pro_v3/judge_outputs.jsonl",
+        "results/judge_deepseek_v4_pro_v3/scheduler_state.json",
+        "manifests/resume_audit.json",
+        "results/program/summary.json",
+        "results/program/message_diagnostics.jsonl",
+    ):
+        destination = tmp_path / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.symlink_to(ROOT / name)
+    result = build_chinese_report(tmp_path)
+    report = (tmp_path / result["report"]).read_text(encoding="utf-8")
     config = read_json(ROOT / "config/tokenplan_deepseek_v4_pro.json")
     assert f"max_tokens {config['max_tokens']}" in report
     assert "阶段性总结" in report

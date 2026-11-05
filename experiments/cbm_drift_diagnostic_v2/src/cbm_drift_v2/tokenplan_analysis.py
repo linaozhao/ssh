@@ -1,13 +1,16 @@
-"""Descriptive analysis for TokenPlan DeepSeek-V4-Pro Judge predictions."""
+"""Descriptive analysis and matched comparisons for configured TokenPlan Judges."""
 
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+import json
 from pathlib import Path
+import re
+from statistics import mean, median
 from typing import Any
 
 from cbm_drift_v2.common import read_json, read_jsonl, write_json, write_jsonl
-from cbm_drift_v2.tokenplan_judge import RESULTS_RELATIVE, atomic_write_json, utc_now
+from cbm_drift_v2.tokenplan_judge import atomic_write_json, results_directory, utc_now
 
 
 def _ratio(numerator: int, denominator: int) -> float | None:
@@ -34,7 +37,8 @@ def _prediction_events(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         claims = prediction.get("claims") or []
         events.append({
             "event_id": "tokenplan:" + row["judge_request_id"],
-            "label_source": "deepseek_v4_pro_model_preannotation",
+            "label_source": re.sub(r"[^a-z0-9]+", "_", row.get("requested_model", "deepseek-v4-pro").split("/")[-1].lower()) + "_model_preannotation",
+            "judge_model": row.get("requested_model"),
             "judge_protocol": row["judge_protocol"],
             "message_id": row["message_id"],
             "base_item_id": row["base_item_id"],
@@ -64,9 +68,116 @@ def _prediction_events(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return events
 
 
-def analyze_tokenplan_judge(root: Path) -> dict[str, Any]:
+def _performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Summarize observed resource use, without assuming a provider credit conversion."""
+    successful = [row for row in rows if row.get("api_success")]
+    latencies = [row["latency_seconds"] for row in successful if isinstance(row.get("latency_seconds"), (int, float))]
+    with_usage = [row for row in successful if row.get("usage") is not None]
+    result = {
+        "api_successful_records": len(successful),
+        "latency_records": len(latencies),
+        "mean_latency_seconds": mean(latencies) if latencies else None,
+        "median_latency_seconds": median(latencies) if latencies else None,
+        "records_with_usage": len(with_usage),
+    }
+    for name, keys in (
+        ("prompt_tokens", ("prompt_tokens",)),
+        ("completion_tokens", ("completion_tokens",)),
+        ("reasoning_tokens", ("completion_tokens_details", "reasoning_tokens")),
+    ):
+        observed = []
+        for row in with_usage:
+            value = row["usage"]
+            for key in keys:
+                value = value.get(key) if isinstance(value, dict) else None
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                observed.append(value)
+        result[f"{name}_records"] = len(observed)
+        result[f"mean_{name}"] = mean(observed) if observed else None
+    return result
+
+
+def compare_judge_models(root: Path, results: Path, rows: list[dict[str, Any]], config: dict[str, Any]) -> dict[str, Any]:
+    """Compare identical requests only; agreement is not diagnostic accuracy."""
+    comparison = config.get("comparison_results_dir")
+    if not comparison:
+        return {"status": "not_configured"}
+    baseline = results_directory(root, {"results_dir": comparison})
+    if baseline == results:
+        raise ValueError("comparison_results_dir must differ from results_dir")
+    manifest_path = baseline / "experiment_manifest.json"
+    outputs_path = baseline / "judge_outputs.jsonl"
+    if not manifest_path.exists() or not outputs_path.exists():
+        return {"status": "baseline_not_available"}
+    old_manifest = read_json(manifest_path)
+    current_manifest = read_json(results / "experiment_manifest.json")
+    if old_manifest["data"] != current_manifest["data"] or old_manifest["prompts"] != current_manifest["prompts"]:
+        raise ValueError("Comparison requires identical data and prompts")
+    old_rows = read_jsonl(outputs_path)
+    if len({row["judge_request_id"] for row in old_rows}) != len(old_rows):
+        raise ValueError("Duplicate baseline Judge outputs")
+    if any(row.get("experiment_fingerprint") != old_manifest["experiment_fingerprint"] for row in old_rows):
+        raise ValueError("Baseline output fingerprint mismatch")
+    old_by_id = {row["judge_request_id"]: row for row in old_rows}
+    pairs = []
+    for row in rows:
+        old = old_by_id.get(row["judge_request_id"])
+        if old is None:
+            continue
+        if old["input_sha256"] != row["input_sha256"]:
+            raise ValueError("Matched request input fingerprint mismatch")
+        pairs.append((old, row))
+    valid = [(old, new) for old, new in pairs if old.get("schema_valid") and new.get("schema_valid")]
+    api_pairs = [(old, new) for old, new in pairs if old.get("api_success") and new.get("api_success")]
+    usage_pairs = [
+        (old, new) for old, new in api_pairs
+        if all(isinstance((row.get("usage") or {}).get("completion_tokens"), (int, float)) for row in (old, new))
+    ]
+    comparisons = [{
+        "judge_request_id": new["judge_request_id"],
+        "judge_protocol": new["judge_protocol"],
+        "event_presence_agrees": old["prediction"]["has_diagnostic_event"] == new["prediction"]["has_diagnostic_event"],
+        "content_label_set_agrees": set(old["prediction"]["content_labels"]) == set(new["prediction"]["content_labels"]),
+        "temporal_status_agrees": old["prediction"]["temporal_status"] == new["prediction"]["temporal_status"],
+        "answer_effect_agrees": old["prediction"]["answer_effect"] == new["prediction"]["answer_effect"],
+    } for old, new in valid]
+    write_jsonl(results / "matched_model_comparison.jsonl", comparisons)
+    return {
+        "status": "observed_matched_requests" if pairs else "awaiting_current_responses",
+        "baseline_directory": comparison,
+        "baseline_model": old_manifest["config"]["model_name"],
+        "current_model": config["model_name"],
+        "baseline_completed_records": len(old_rows),
+        "matched_records": len(pairs),
+        "both_api_successful": len(api_pairs),
+        "both_schema_valid": len(valid),
+        "baseline_performance_on_matched_api_successes": _performance([old for old, _ in api_pairs]),
+        "current_performance_on_matched_api_successes": _performance([new for _, new in api_pairs]),
+        "both_reported_usage_pairs": len(usage_pairs),
+        "mean_completion_token_difference_current_minus_baseline": mean(
+            new["usage"].get("completion_tokens", 0) - old["usage"].get("completion_tokens", 0)
+            for old, new in usage_pairs
+        ) if usage_pairs else None,
+        "agreement": {
+            key: {"numerator": sum(row[key] for row in comparisons), "denominator": len(comparisons),
+                  "rate": _ratio(sum(row[key] for row in comparisons), len(comparisons))}
+            for key in ("event_presence_agrees", "content_label_set_agrees", "temporal_status_agrees", "answer_effect_agrees")
+        },
+        "by_protocol": {
+            protocol: {
+                "matched_records": sum(new["judge_protocol"] == protocol for _, new in pairs),
+                "both_schema_valid": sum(row["judge_protocol"] == protocol for row in comparisons),
+            }
+            for protocol in ("direct", "structured_assistance")
+        },
+        "interpretation": "Matched observed requests only; agreement is not accuracy. Latency includes transport/retries and may differ across service periods.",
+    }
+
+
+def analyze_tokenplan_judge(root: Path, config: dict[str, Any] | None = None) -> dict[str, Any]:
     """Analyze all currently completed records without treating predictions as Gold."""
-    results = root / RESULTS_RELATIVE
+    results = results_directory(root, config)
+    manifest = read_json(results / "experiment_manifest.json")
     queue = read_jsonl(results / "request_queue.jsonl")
     outputs_path = results / "judge_outputs.jsonl"
     rows = read_jsonl(outputs_path) if outputs_path.exists() else []
@@ -76,6 +187,8 @@ def analyze_tokenplan_judge(root: Path) -> dict[str, Any]:
         raise ValueError("Duplicate TokenPlan Judge outputs")
     if set(output_ids) - queue_ids:
         raise ValueError("Unknown TokenPlan Judge output IDs")
+    if any(row.get("experiment_fingerprint") != manifest["experiment_fingerprint"] for row in rows):
+        raise ValueError("TokenPlan Judge output fingerprint mismatch")
 
     by_protocol: dict[str, dict[str, Any]] = {}
     for protocol in ("direct", "structured_assistance"):
@@ -101,6 +214,7 @@ def analyze_tokenplan_judge(root: Path) -> dict[str, Any]:
                 prediction.get("answer_effect") for prediction in predictions
             ).items())),
             "with_uncertainty_reason": sum(bool(prediction.get("uncertainty_reason")) for prediction in predictions),
+            "performance": _performance(protocol_rows),
         }
 
     by_message: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
@@ -186,21 +300,22 @@ def analyze_tokenplan_judge(root: Path) -> dict[str, Any]:
         },
         "scheduler": state,
     }
+    summary["model_comparison"] = compare_judge_models(root, results, rows, manifest["config"])
     atomic_write_json(results / "analysis_summary.json", summary)
     return summary
 
 
-def build_chinese_report(root: Path) -> dict[str, Any]:
+def build_chinese_report(root: Path, config: dict[str, Any] | None = None) -> dict[str, Any]:
     """Build a dynamic Chinese report for complete or interrupted Judge progress."""
-    results = root / RESULTS_RELATIVE
-    summary = analyze_tokenplan_judge(root)
+    results = results_directory(root, config)
+    summary = analyze_tokenplan_judge(root, config)
     manifest = read_json(results / "experiment_manifest.json")
     judge_config = manifest["config"]
     resume = read_json(root / "manifests/resume_audit.json")
     program = read_json(root / "results/program/summary.json")
     diagnostics = read_jsonl(root / "results/program/message_diagnostics.jsonl")
     lines = [
-        "# CBM MAD 漂移诊断：DeepSeek-V4-Pro Judge 报告", "",
+        f"# CBM MAD 漂移诊断：{judge_config['model_name']} Judge 报告", "",
         "## 实验状态", "",
         f"- Qwen 静态协议检查复用：{resume['qwen_protocol']['records']}/108。",
         f"- Qwen MAD 公开发言复用：{resume['qwen_mad']['records']}/1620。",
@@ -211,7 +326,8 @@ def build_chinese_report(root: Path) -> dict[str, Any]:
         f"解析成功 {sum(value['parse_success'] for value in summary['by_protocol'].values())}，"
         f"schema/引文/对象校验通过 {sum(value['schema_valid'] for value in summary['by_protocol'].values())}。",
         f"- 当前调度状态：`{summary['scheduler'].get('status', 'unknown')}`。",
-        "- 本报告是周额度停止点的阶段性总结，不代表 1800 次 Judge 已全部完成。",
+        ("- 本报告是当前进度的阶段性总结，不代表 1800 次 Judge 已全部完成。"
+         if summary["coverage"]["remaining"] else "- 预期 Judge 记录均已落盘；是否成功还须查看 API、解析和引文校验结果。"),
         "- 独立人工参考标签尚未产生，因此检测与内容分类准确率为：**尚未评估**。", "",
         "## Judge 配置", "",
         f"固定使用 Command Code TokenPlan 的 `{judge_config['model_name']}`，"
@@ -223,6 +339,15 @@ def build_chinese_report(root: Path) -> dict[str, Any]:
         f"程序结果状态为：{program['outcomes']}。过程状态为：{program['temporal_status']}。这些是答案集合的确定性比较，不是事实/规则/推导内容类别。", "",
         "按证据条件的 Qwen 发言正确率：",
     ]
+    service_path = results / "service_check.json"
+    if service_path.exists():
+        service = read_json(service_path)
+        lines[2:2] = [
+            "## 服务检查", "",
+            f"- 模型目录 HTTP 状态：{service['registry_http_status']}；模型存在：{service['model_in_catalog']}。",
+            f"- 检查时运行环境已载入凭证：{service['credential_present']}；认证推理已验证：{service['authenticated_inference_verified']}。",
+            "- 模型目录可用不等于额度充足或推理调用成功，须以预检响应为准。", "",
+        ]
     for variant in ("clean_stay", "evidence_update", "irrelevant_noise"):
         rows = [row for row in diagnostics if row["variant_type"] == variant]
         correct = sum(row["outcome"] == "valid_correct" for row in rows)
@@ -235,7 +360,16 @@ def build_chinese_report(root: Path) -> dict[str, Any]:
             f"解析成功 {stats['parse_success']}，schema/引文/对象校验通过 {stats['schema_valid']}，截断 {stats['truncated']}。"
         )
         lines.append(f"  内容标签计数：{stats['content_labels']}；过程标签计数：{stats['temporal_status']}。")
+        lines.append(f"  成功请求资源统计：{stats['performance']}。")
     paired = summary["paired_comparison"]
+    comparison = summary["model_comparison"]
+    if comparison["status"] != "not_configured":
+        lines.extend([
+            "", "## 与既有 Pro 结果的同请求比较", "",
+            f"比较状态：`{comparison['status']}`。只匹配相同输入和协议，保留 Pro 的未完成覆盖范围。",
+            "```json", json.dumps(comparison, ensure_ascii=False, indent=2), "```",
+            "一致率不是准确率；历史 Pro 和本轮 Flash 的服务时间不同，耗时差异不能完全归因于模型。",
+        ])
     lines.extend([
         "", "## 配对协议比较", "",
         f"当前有 {paired['complete_schema_valid_pairs']}/180 个可比较的双模式配对。",

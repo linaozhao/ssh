@@ -1,0 +1,141 @@
+{
+  "agent_id": "agent_3",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 243,
+      "delta_key_counts": {
+        "content": 67,
+        "reasoning_content": 173,
+        "role": 242
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T19:13:13.195099+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000202",
+  "completed_at": "2026-10-15T19:13:20.274067+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "d7e50db3f64ef10ae4fe2710c739b430c4b143f52d21a1c4f7b59ec28f8f0201",
+  "is_paired_sample": true,
+  "is_preflight": false,
+  "judge_protocol": "direct",
+  "judge_request_id": "direct:mad:cbm_v2_family_002::evidence_update:t1:r1:agent_3",
+  "latency_seconds": 7.0792,
+  "message_id": "mad:cbm_v2_family_002::evidence_update:t1:r1:agent_3",
+  "messages_sha256": "5c870bd62988e3ef3287fa027a5e7f14305b7a327201eb3105fc9ec489ff1419",
+  "normalization_actions": [],
+  "package_id": "judge:mad:cbm_v2_family_002::evidence_update:t1:r1:agent_3",
+  "package_sha256": "ddbcad4fdd4a9b024eb38fd1ef0d0c1d251c084e91ee6ad6f0035d0c88b8c1a5",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "wrong_to_correct",
+    "claims": [],
+    "content_labels": [],
+    "has_diagnostic_event": false,
+    "related_peer_message_ids": [
+      "mad:cbm_v2_family_002::evidence_update:t1:r0:agent_1",
+      "mad:cbm_v2_family_002::evidence_update:t1:r0:agent_2"
+    ],
+    "temporal_status": "corrected",
+    "uncertainty_reason": "The current message's answer_set (['B']) and its reasoning are consistent with the fixed requirements and formal evidence: Drew is unavailable on the weekend (violates C2), Marley and Noel are unavailable next month (violate C1), and Morgan is available on Monday with no negative evidence, so only Morgan remains. No observable content deviation, rule deviation, or factual deviation is present, so no diagnostic claims with violated rule/fact IDs can be supported. The temporal label 'corrected' reflects that this turn resolves the earlier incorrect ['A','B'] answer, but this rests on the visible prior assistant turn rather than on any deviating text in the current message itself."
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\n  \"has_diagnostic_event\": false,\n  \"temporal_status\": \"corrected\",\n  \"content_labels\": [],\n  \"claims\": [],\n  \"answer_effect\": \"wrong_to_correct\",\n  \"related_peer_message_ids\": [\n    \"mad:cbm_v2_family_002::evidence_update:t1:r0:agent_1\",\n    \"mad:cbm_v2_family_002::evidence_update:t1:r0:agent_2\"\n  ],\n  \"uncertainty_reason\": \"The current message's answer_set (['B']) and its reasoning are consistent with the fixed requirements and formal evidence: Drew is unavailable on the weekend (violates C2), Marley and Noel are unavailable next month (violate C1), and Morgan is available on Monday with no negative evidence, so only Morgan remains. No observable content deviation, rule deviation, or factual deviation is present, so no diagnostic claims with violated rule/fact IDs can be supported. The temporal label 'corrected' reflects that this turn resolves the earlier incorrect ['A','B'] answer, but this rests on the visible prior assistant turn rather than on any deviating text in the current message itself.\"\n}",
+  "reasoning_content": "Let me analyze the current message.\n\nTask: track candidates not yet eliminated.\n\nEvidence:\n- Drew unavailable on weekend → violates C2 → eliminated\n- Morgan can join Monday → satisfies C3, no other negative evidence\n- Marley unavailable next month → violates C1 → eliminated\n- Noel cannot join next month → violates C1 → eliminated\n\nSo correct answer: B (Morgan only).\n\nCurrent message: answer_set [\"B\"], explanation correct. So this is a correction from the prior assistant answer [\"A\",\"B\"] which was wrong.\n\nTemporal status: The previous turn (assistant) had [\"A\",\"B\"] — wrong. Current message is [\"B\"] — correct. So this is \"corrected\".\n\nWait, but is this the same agent? The current message_id is agent_3, r1. The prior assistant message was r0 presumably. The history shows the assistant's initial answer was [\"A\",\"B\"]. Peers said [\"B\"]. Now agent_3 says [\"B\"]. So it's a correction.\n\nhas_diagnostic_event: Well, the message is correct. So maybe no diagnostic event... Actually the diagnostic event is about deviations. The current message has no deviation. But temporal status \"corrected\" is possible. Let me think: has_diagnostic_event boolean — whether there's a diagnostic event observable in current message. The current message is correct, so no content deviation. But the framing... Hmm.\n\nActually the schema asks to assess observable content deviations and temporal status. If the message is fully correct, then has_diagnostic_event = false, content_labels empty, temporal_status \"corrected\" (since the prior was wrong and this corrects it).\n\nLet me include claims: the current message asserts Morgan meets all requirements, Drew unavailable weekend, Marley/Noel unavailable next month. These are correct and supported. No violated rules. So claims might be included but with no violations — but instructions say include only claims needed to support diagnostic decision. If no deviation, maybe empty claims list.\n\nGiven no deviation, return empty claims and explain. But temporal_status could be \"corrected\".\n\nLet me set:\n- has_diagnostic_event: false\n- temporal_status: \"corrected\"\n- content_labels: []\n- claims: []\n- answer_effect: \"wrong_to_correct\"\n- related_peer_message_ids: the peer messages? The peers are identified as \"mad:cbm_v2_family_002::evidence_update:t1:r0:agent_1\" etc. Include those.\n- uncertainty_reason: null or explanation.\n\nAnswer effect: previous current agent's answer was [\"A\",\"B\"] (wrong), now [\"B\"] (correct) → wrong_to_correct.\n\nContent labels empty since no deviation.\n\nLet me produce.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a diagnostic pre-annotation of one public agent message. Analyze only observable text and supplied evidence. Do not infer hidden cognition or causation. Quoted or rejected peer claims are not automatically the speaker's own claims. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates who can join next month are eligible.\\n2. The selected candidate must be able to participate on the weekend.\\n3. The selected candidate must be available on Monday.\\n\\nCandidates:\\nA. Drew\\nB. Morgan\\nC. Marley\\nD. Noel\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Only candidates who can join next month are eligible.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"The selected candidate must be able to participate on the weekend.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"The selected candidate must be available on Monday.\",\n      \"rule_id\": \"C3\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000202:A:available_weekend:v1\",\n      \"text\": \"Drew is unavailable on the weekend\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000202:B:available_monday:v1\",\n      \"text\": \"Morgan can join the project on Monday\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000202:C:available_next_month:v1\",\n      \"text\": \"Marley is unavailable next month\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000202:D:available_next_month:v1\",\n      \"text\": \"Noel cannot join the project next month\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates who can join next month are eligible.\\n2. The selected candidate must be able to participate on the weekend.\\n3. The selected candidate must be available on Monday.\\n\\nCandidates:\\nA. Drew\\nB. Morgan\\nC. Marley\\nD. Noel\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000202:B:available_monday:v1: Morgan can join the project on Monday.\\n- Evidence attr_v4_1_000202:C:available_next_month:v1: Marley is unavailable next month.\\n- Evidence attr_v4_1_000202:D:available_next_month:v1: Noel cannot join the project next month.\\n- Evidence attr_v4_1_000202:A:available_weekend:v1: Drew is unavailable on the weekend.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    },\n    {\n      \"content\": \"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Morgan) is available on Monday and has not been ruled out for other requirements. Candidate A (Drew) is unavailable on the weekend, which violates requirement 2, but since the requirement is about being able to participate on the weekend, and Drew is unavailable, he is eliminated. Candidates C (Marley) and D (Noel) are eliminated due to being unavailable next month, violating requirement 1.\\\"\\n}\",\n      \"role\": \"assistant\"\n    },\n    {\n      \"content\": \"Review the current answer using the fixed requirements and all formal evidence available through this stage.\\n\\nThe following are peer opinions from the immediately preceding discussion round. They are not formal evidence:\\nPeer message mad:cbm_v2_family_002::evidence_update:t1:r0:agent_1 from agent_1:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Morgan) is available on Monday and has not been reported as unavailable next month or on the weekend. Candidates A, C, and D have been eliminated due to unavailability on the weekend, next month, or Monday respectively.\\\"\\n}\\nPeer message mad:cbm_v2_family_002::evidence_update:t1:r0:agent_2 from agent_2:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Morgan) is the only one who meets all the requirements: available on Monday, can join next month (no evidence of unavailability), and can participate on the weekend (no evidence of unavailability). Candidates A, C, and D have been eliminated due to evidence of unavailability on the weekend, next month, or next month respectively.\\\"\\n}\\n\\nKeep your answer if it remains justified, or revise it if the evidence supports a change. Return only the required JSON object.\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_002::evidence_update:t1:r1:agent_3\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Morgan) is available on Monday and has no evidence of being unavailable next month or on the weekend, meeting all fixed requirements. Candidates A (Drew) is unavailable on the weekend, violating requirement 2. Candidates C (Marley) and D (Noel) are unavailable next month, violating requirement 1.\\\"\\n}\"\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "7eb364d21a71bd213804a54c6f5cee58",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 1,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 243,
+    "delta_key_counts": {
+      "content": 67,
+      "reasoning_content": 173,
+      "role": 242
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_002::evidence_update",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 817,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 566,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 1644,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 2461
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_002::evidence_update"
+}

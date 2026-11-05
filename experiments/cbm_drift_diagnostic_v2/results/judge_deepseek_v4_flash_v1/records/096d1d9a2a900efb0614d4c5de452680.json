@@ -1,0 +1,159 @@
+{
+  "agent_id": "agent_3",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 912,
+      "delta_key_counts": {
+        "content": 27,
+        "reasoning_content": 883,
+        "role": 911
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T18:45:52.002983+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000202",
+  "completed_at": "2026-10-15T18:46:16.518251+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "74bc66aa65a6910c5f87944762fdb4dbea80afa39a075f44015728f02333feb2",
+  "is_paired_sample": false,
+  "is_preflight": false,
+  "judge_protocol": "structured_assistance",
+  "judge_request_id": "structured_assistance:mad:cbm_v2_family_002::clean_stay:t1:r0:agent_3",
+  "latency_seconds": 24.5156,
+  "message_id": "mad:cbm_v2_family_002::clean_stay:t1:r0:agent_3",
+  "messages_sha256": "804045ca2f34f65641459b2b5aaa69ba76cd29bbc3037990692e8b6af7df7ed6",
+  "normalization_actions": [
+    "claim 0 offsets derived from unique exact quote"
+  ],
+  "package_id": "judge:mad:cbm_v2_family_002::clean_stay:t1:r0:agent_3",
+  "package_sha256": "e8ebcb3fe2a34cd2d02304ab40eaf018d3c7b76dd54246f8bb5a1a5bab5e5213",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "none",
+    "claims": [
+      {
+        "end": 188,
+        "quote": "Candidate A (Drew) is available on the weekend, which is required.",
+        "stance": "asserted",
+        "start": 122,
+        "target_entity_ids": [
+          "A"
+        ],
+        "violated_fact_ids": [
+          "attr_v4_1_000202:A:available_weekend:v1"
+        ],
+        "violated_rule_ids": [
+          "C2"
+        ]
+      }
+    ],
+    "content_labels": [
+      "factual_deviation",
+      "rule_deviation"
+    ],
+    "has_diagnostic_event": true,
+    "related_peer_message_ids": [],
+    "temporal_status": "initial_error",
+    "uncertainty_reason": null
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\"has_diagnostic_event\":true,\"temporal_status\":\"initial_error\",\"content_labels\":[\"factual_deviation\",\"rule_deviation\"],\"claims\":[{\"quote\":\"Candidate A (Drew) is available on the weekend, which is required.\",\"stance\":\"asserted\",\"target_entity_ids\":[\"A\"],\"violated_fact_ids\":[\"attr_v4_1_000202:A:available_weekend:v1\"],\"violated_rule_ids\":[\"C2\"]}],\"answer_effect\":\"none\",\"related_peer_message_ids\":[],\"uncertainty_reason\":null}",
+  "reasoning_content": "We need answer only JSON. Need assess current message. Let's parse.\n\nWe have task: candidates not yet eliminated under evidence. Requirements C1 next month, C2 weekend, C3 Monday. Evidence:\nA Drew unavailable on weekend -> violates C2, eliminated.\nB Morgan can join on Monday -> satisfies C3, but no direct evidence about next month or weekend? Wait C1 only candidates who can join next month eligible: no evidence for B? But oracle says B only, so inferred B can join next month? Hmm formal reference active evidence only includes B available_monday. No violation. So B not eliminated. C Marley unavailable next month violates C1. D Noel cannot join next month violates C1.\n\nCurrent message: answer_set [\"A\",\"B\"], explanation:\n\"Candidate B (Morgan) satisfies the requirement to be available on Monday. Candidate A (Drew) is available on the weekend, which is required. Candidates C (Marley) and D (Noel) are eliminated because Marley is unavailable next month and Noel cannot join next month, violating requirement 1.\"\n\nObservable content deviation: It claims Drew is available on weekend, but evidence says Drew is unavailable on weekend. That's factual deviation (contradicts evidence) and leads to not eliminating A despite rule C2. Also answer includes A extra. So content labels likely factual_deviation, rule_deviation? The claim about A being available weekend is factual deviation and rule deviation (violates C2? Actually rule deviation is treating A as satisfying C2 when evidence says not). It also includes A in answer, extra. Need claims with quotes exact.\n\nTemporal status: program_check temporal_status \"initial_error\", outcome valid_wrong. Current message is initial agent output at round 0. Has_diagnostic_event true? There is diagnostic event: extra A due to contradiction. Content_labels: factual_deviation, rule_deviation? Let's see.\n\nNeed include only claims needed. The key quote: \"Candidate A (Drew) is available on the weekend, which is required.\" This is asserted and contradicts evidence attr...A:available_weekend:v1 (\"Drew is unavailable on the weekend\"). So violated_fact_ids include that evidence ID. violated_rule_ids include C2? Because says available weekend required, but actually unavailable; rule C2 not satisfied. However the claim \"is available on the weekend\" asserts fact false; it's a factual deviation. Also because this leads to including A, rule deviation? The schema content_labels includes factual_deviation/rule_deviation/inference_application_error/unresolved. Might label both factual_deviation and rule_deviation? Need careful.\n\nAnother quote: \"Candidate B (Morgan) satisfies the requirement to be available on Monday.\" That's true, no deviation. Not needed maybe. \"Candidates C (Marley) and D (Noel) are eliminated because Marley is unavailable next month and Noel cannot join next month, violating requirement 1.\" That's correct. No diagnostic. \"answer_set\": [\"A\",\"B\"] includes A erroneously. But schema claims quotes from current_message_text; can quote answer set? \"answer_set\": [\"A\", \"B\"] maybe. But diagnostic claim likely the explanation sentence. Also if quoting \"A\" might not be enough. The claim needed is the false assertion about Drew available weekend. Could include quote \"Candidate A (Drew) is available on the weekend, which is required.\" target candidate A, violated fact evidence ID, violated rule C2.\n\nAlso answer effect: comparison oracle [\"B\"] vs prediction [\"A\",\"B\"], so wrong_to? Program says answer_effect none? Wait schema answer_effect \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\". The agent output is valid_wrong, initial_error. From what baseline? There is no previous output? program check answer_effect \"none\" because maybe no prior? The formal program says answer_effect \"none\". But if comparing to oracle, it's incorrect. The schema asks answer_effect. Need infer from reference: \"answer_effect\": \"none\" in program_check. So output answer_effect should be \"none\" perhaps. But wait answer_effect in program_check is none because maybe no previous answer to compare? Hmm The schema likely expects one of fixed; reference says \"none\". Use \"none\". Related peer message IDs: visible public history only one user message, no peer. related_peer_message_ids_by_answer_alignment empty. So related_peer_message_ids [].\n\nTemporal status: \"initial_error\" from program_check. So output temporal_status \"initial_error\".\n\nContent labels: Need decide. The observable false claim about Drew available weekend is factual deviation. It also violates rule C2 because A actually unavailable. But the answer includes extra A due to this false fact. Could label factual_deviation and rule_deviation. Is rule_deviation when an answer violates rule? The content itself says \"A available weekend, which is required\" so it's using a rule, but misapplying based on false fact. Maybe \"factual_deviation\" sufficient. But diagnostic CBM has error object extra:A with rule C2. The label likely includes factual_deviation. The instructions: \"content_labels\": [\"factual_deviation/rule_deviation/inference_application_error/unresolved\"]. We can include multiple? Array. I'd include \"factual_deviation\", maybe \"rule_deviation\". Need be precise.\n\nLet's inspect all claims:\n- \"Candidate B (Morgan) satisfies the requirement to be available on Monday.\" True per evidence B. No deviation. Not include unless support? Not needed.\n- \"Candidate A (Drew) is available on the weekend, which is required.\" False. Include.\n- \"Candidates C (Marley) and D (Noel) are eliminated because Marley is unavailable next month and Noel cannot join next month, violating requirement 1.\" True.\n- answer_set [\"A\",\"B\"] contains A extra. Could quote? The false claim explains inclusion. Maybe claim quote could be \"Candidate A (Drew) is available on the weekend, which is required.\" target A, violated_fact_ids [attr_v4_1_000202:A:available_weekend:v1], violated_rule_ids [C2].\n- Also maybe claim quote \"answer_set\": [\"A\", \"B\"] as asserted that A not eliminated. But the schema claims include quote, stance, target_entity_ids, violated_fact_ids, violated_rule_ids. For answer_set quote exactly: \"  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\"]\" from message? Exact substring. Need exact. The current_message_text is JSON string:\n{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\"],\\n  \\\"explanation\\\": ...\nIn the actual text, quotes are escaped? Wait current_message_text provided as JSON string, but when output quote we need exact substring from current_message_text, likely the unescaped string? The value of current_message_text is:\n\"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Morgan) satisfies the requirement to be available on Monday. Candidate A (Drew) is available on the weekend, which is required. Candidates C (Marley) and D (Noel) are eliminated because Marley is unavailable next month and Noel cannot join next month, violating requirement 1.\\\"\\n}\"\nIn our JSON output, quotes inside quote must be escaped. Need exact substring. We can quote the explanation sentence, but the actual characters include backslash-n? The current_message_text is JSON object string with literal newlines? In the prompt, it shows:\n\"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\"],\\n  \\\"explanation\\\": \\\"Candidate B ...\\\"\\n}\"\nActually within the JSON material, current_message_text is a JSON string containing \\n and \\\" escapes. But the \"exact substring\" from current_message_text might mean the actual text content after JSON parsing? Typically in these tasks, they want quote from current_message_text as displayed? The current_message_text value is a JSON string. In prior similar tasks, exact substring from current_message_text likely refers to the raw string, including escaped quotes? But they say copy quote verbatim from current_message_text: never summarize. Need decide.\n\nThe current_message_text shown in materials is:\n\"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Morgan) satisfies the requirement to be available on Monday. Candidate A (Drew) is available on the weekend, which is required. Candidates C (Marley) and D (Noel) are eliminated because Marley is unavailable next month and Noel cannot join next month, violating requirement 1.\\\"\\n}\"\n\nIf we output quote as \"Candidate A (Drew) is available on the weekend, which is required.\" That is a substring of the parsed string, but in raw current_message_text, it appears with escaped quotes? Actually in raw string, the sentence is inside explanation value: \\\"Candidate A (Drew) is available on the weekend, which is required. Candidate C... The exact substring in raw current_message_text includes backslashes before quotes but the sentence itself has no internal quotes. The raw current_message_text contains: \\\"explanation\\\": \\\"Candidate B (Morgan) satisfies ... Candidate A (Drew) is available on the weekend, which is required. Candidates...\\\" So the substring \"Candidate A (Drew) is available on the weekend, which is required.\" does appear in raw current_message_text? Let's check: raw string: `\\\"explanation\\\": \\\"Candidate B (Morgan) satisfies the requirement to be available on Monday. Candidate A (Drew) is available on the weekend, which is required. Candidates C (Marley) and D (Noel) are eliminated...` Within that, the substring `Candidate A (Drew) is available on the weekend, which is required.` is present (without backslashes because backslashes only before opening quote of explanation, not around sentence). Yes so it's exact substring.\n\nSimilarly answer_set quote could be `\\\"answer_set\\\": [\\\"A\\\", \\\"B\\\"]`? In raw current_message_text it has escaped quotes: `  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\"]`. But if we quote with escapes in our JSON output, it will be complicated. The evaluator derives offsets from each unique exact quote. It likely compares raw string. For safety, quote the explanation sentence only; enough.\n\nNeed output JSON only. Ensure valid JSON.\n\nLet's craft:\n\n{\n  \"has_diagnostic_event\": true,\n  \"temporal_status\": \"initial_error\",\n  \"content_labels\": [\"factual_deviation\", \"rule_deviation\"],\n  \"claims\": [\n    {\n      \"quote\": \"Candidate A (Drew) is available on the weekend, which is required.\",\n      \"stance\": \"asserted\",\n      \"target_entity_ids\": [\"A\"],\n      \"violated_fact_ids\": [\"attr_v4_1_000202:A:available_weekend:v1\"],\n      \"violated_rule_ids\": [\"C2\"]\n    }\n  ],\n  \"answer_effect\": \"none\",\n  \"related_peer_message_ids\": [],\n  \"uncertainty_reason\": null\n}\n\nCheck content_labels: Should \"rule_deviation\" be included? The false fact leads to incorrect rule application? The claim explicitly says \"which is required\" but not that A satisfies requirement? It states A available weekend, which is required. It's factual deviation. The rule deviation is that A should be eliminated under C2. In formal exclusions, A excluded by C2. The agent failed to eliminate A. The content label \"rule_deviation\" may be for misapplying rule. But rule deviation in these tasks often means answer violates a rule. Since extra A violates C2. So yes include rule_deviation. However is \"rule_deviation\" redundant? The schema allowed multiple. Might include both. But if content_labels must be one? It says array with options separated by slash. It implies can include labels. I'll include both.\n\nCould also include claim quote for answer_set containing A? But the false fact claim suffices. The answer_effect: program says \"none\". But maybe answer_effect relative to prior? There's no prior. So \"none\".\n\nTemporal status \"initial_error\" from program_check. has_diagnostic_event true. Good.\n\nNeed ensure no other false claims. Let's verify explanation: \"Candidate B (Morgan) satisfies the requirement to be available on Monday.\" true. \"Candidates C and D eliminated because Marley unavailable next month and Noel cannot join next month, violating requirement 1.\" true. answer_set [\"A\",\"B\"] extra A. The explanation for A is false. That's diagnostic.\n\nPotential issue: Does A also satisfy C1? No evidence about A next month. But A is eliminated by C2 due to unavailable weekend. Agent says A available weekend. So false.\n\nThus final JSON.\n\nBut need think: \"has_diagnostic_event\" boolean. If content labels include factual_deviation/rule_deviation. Yes true.\n\nEnsure quotes exact: The quote string in current_message_text: \"Candidate A (Drew) is available on the weekend, which is required.\" It appears exactly. Good.\n\nNow output JSON only.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a reference-structure-assisted diagnostic pre-annotation of one public agent message. The supplied formal state is authoritative reference information for this analysis. Analyze observable text only; do not infer hidden cognition or causation. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates who can join next month are eligible.\\n2. The selected candidate must be able to participate on the weekend.\\n3. The selected candidate must be available on Monday.\\n\\nCandidates:\\nA. Drew\\nB. Morgan\\nC. Marley\\nD. Noel\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Only candidates who can join next month are eligible.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"The selected candidate must be able to participate on the weekend.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"The selected candidate must be available on Monday.\",\n      \"rule_id\": \"C3\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000202:A:available_weekend:v1\",\n      \"text\": \"Drew is unavailable on the weekend\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000202:B:available_monday:v1\",\n      \"text\": \"Morgan can join the project on Monday\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000202:C:available_next_month:v1\",\n      \"text\": \"Marley is unavailable next month\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000202:D:available_next_month:v1\",\n      \"text\": \"Noel cannot join the project next month\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates who can join next month are eligible.\\n2. The selected candidate must be able to participate on the weekend.\\n3. The selected candidate must be available on Monday.\\n\\nCandidates:\\nA. Drew\\nB. Morgan\\nC. Marley\\nD. Noel\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000202:B:available_monday:v1: Morgan can join the project on Monday.\\n- Evidence attr_v4_1_000202:C:available_next_month:v1: Marley is unavailable next month.\\n- Evidence attr_v4_1_000202:D:available_next_month:v1: Noel cannot join the project next month.\\n- Evidence attr_v4_1_000202:A:available_weekend:v1: Drew is unavailable on the weekend.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_002::clean_stay:t1:r0:agent_3\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Morgan) satisfies the requirement to be available on Monday. Candidate A (Drew) is available on the weekend, which is required. Candidates C (Marley) and D (Noel) are eliminated because Marley is unavailable next month and Noel cannot join next month, violating requirement 1.\\\"\\n}\",\n  \"reference_structure_assistance\": {\n    \"active_evidence\": [\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_weekend\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Drew\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000202:A:available_weekend:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Drew is unavailable on the weekend\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_monday\",\n        \"candidate_id\": \"B\",\n        \"candidate_name\": \"Morgan\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000202:B:available_monday:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Morgan can join the project on Monday\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_next_month\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Marley\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000202:C:available_next_month:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Marley is unavailable next month\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_next_month\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Noel\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000202:D:available_next_month:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Noel cannot join the project next month\",\n        \"value\": false,\n        \"version\": 1\n      }\n    ],\n    \"exclusions\": {\n      \"A\": [\n        {\n          \"attribute\": \"available_weekend\",\n          \"candidate_id\": \"A\",\n          \"evidence_id\": \"attr_v4_1_000202:A:available_weekend:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C2\"\n        }\n      ],\n      \"C\": [\n        {\n          \"attribute\": \"available_next_month\",\n          \"candidate_id\": \"C\",\n          \"evidence_id\": \"attr_v4_1_000202:C:available_next_month:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C1\"\n        }\n      ],\n      \"D\": [\n        {\n          \"attribute\": \"available_next_month\",\n          \"candidate_id\": \"D\",\n          \"evidence_id\": \"attr_v4_1_000202:D:available_next_month:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C1\"\n        }\n      ]\n    },\n    \"oracle\": [\n      \"B\"\n    ],\n    \"program_check\": {\n      \"agent_id\": \"agent_3\",\n      \"answer_effect\": \"none\",\n      \"base_item_id\": \"attr_v4_1_000202\",\n      \"comparison_scope\": \"initial\",\n      \"continued_error_objects\": [],\n      \"diagnostic_version\": \"cbm_drift_v2.program_diagnostic.1\",\n      \"error_objects\": [\n        \"extra:A\"\n      ],\n      \"evidence_stage\": 1,\n      \"extra_candidate_violations\": {\n        \"A\": [\n          {\n            \"attribute\": \"available_weekend\",\n            \"candidate_id\": \"A\",\n            \"evidence_id\": \"attr_v4_1_000202:A:available_weekend:v1\",\n            \"observed_value\": false,\n            \"required_value\": true,\n            \"rule_id\": \"C2\"\n          }\n        ]\n      },\n      \"extra_candidates\": [\n        \"A\"\n      ],\n      \"family_id\": \"cbm_v2_family_002\",\n      \"formal_oracle_changed_since_previous_output\": false,\n      \"message_id\": \"mad:cbm_v2_family_002::clean_stay:t1:r0:agent_3\",\n      \"new_error_objects\": [\n        \"extra:A\"\n      ],\n      \"omitted_candidates\": [],\n      \"oracle\": [\n        \"B\"\n      ],\n      \"outcome\": \"valid_wrong\",\n      \"prediction\": [\n        \"A\",\n        \"B\"\n      ],\n      \"related_peer_message_ids_by_answer_alignment\": [],\n      \"request_id\": \"mad:cbm_v2_family_002::clean_stay:t1:r0:agent_3\",\n      \"resolved_error_objects\": [],\n      \"round\": 0,\n      \"temporal_status\": \"initial_error\",\n      \"trajectory_id\": \"cbm_v2_family_002::clean_stay\",\n      \"variant_id\": \"cbm_v2_family_002::clean_stay\",\n      \"variant_type\": \"clean_stay\"\n    },\n    \"rules\": [\n      {\n        \"attribute\": \"available_next_month\",\n        \"id\": \"C1\",\n        \"natural_language\": \"Only candidates who can join next month are eligible.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"available_weekend\",\n        \"id\": \"C2\",\n        \"natural_language\": \"The selected candidate must be able to participate on the weekend.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"available_monday\",\n        \"id\": \"C3\",\n        \"natural_language\": \"The selected candidate must be available on Monday.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      }\n    ]\n  }\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "2cf1f5f551b173644eaa4f2f888cc18a",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 0,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 912,
+    "delta_key_counts": {
+      "content": 27,
+      "reasoning_content": 883,
+      "role": 911
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_002::clean_stay",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 2932,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 2806,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 2680,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 5612
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_002::clean_stay"
+}

@@ -37,6 +37,16 @@ QUOTA_CAP_OVERRIDE_ENV = "TOKENPLAN_MAX_ATTEMPTS_PER_WINDOW"
 QUOTA_OVERRIDE_SOURCE_ENV = "TOKENPLAN_QUOTA_OVERRIDE_SOURCE"
 
 
+def results_directory(root: Path, config: dict[str, Any] | None = None) -> Path:
+    """Resolve an isolated results directory, preserving the legacy Pro default."""
+    relative = Path((config or {}).get("results_dir", str(RESULTS_RELATIVE)))
+    destination = (root / relative).resolve()
+    results_root = (root / "results").resolve()
+    if relative.is_absolute() or not destination.is_relative_to(results_root) or destination == results_root:
+        raise ValueError("results_dir must name a subdirectory under results/")
+    return destination
+
+
 def utc_now() -> str:
     """Return a stable UTC timestamp."""
     return dt.datetime.now(dt.timezone.utc).isoformat()
@@ -258,7 +268,7 @@ def _protocol_messages(package: dict[str, Any], protocol: str) -> list[dict[str,
 
 def prepare_tokenplan_experiment(root: Path, config: dict[str, Any]) -> dict[str, Any]:
     """Freeze paired/preflight manifests, request queue, and experiment fingerprint."""
-    results = root / RESULTS_RELATIVE
+    results = results_directory(root, config)
     results.mkdir(parents=True, exist_ok=True)
     packages_path = root / "results/judge/judge_input_packages.jsonl"
     packages = read_jsonl(packages_path)
@@ -507,7 +517,7 @@ class TokenPlanJudgeRunner:
 
     def __init__(self, root: Path, config: dict[str, Any]) -> None:
         self.root = root
-        self.results = root / RESULTS_RELATIVE
+        self.results = results_directory(root, config)
         self.config = config
         self.quota_cap, self.quota_cap_source = effective_quota_cap(config)
         self.manifest = read_json(self.results / "experiment_manifest.json")
@@ -526,6 +536,7 @@ class TokenPlanJudgeRunner:
         timeout = float(config["request_timeout_seconds"])
         self.client = httpx.Client(
             follow_redirects=False,
+            trust_env=bool(config.get("trust_env", True)),
             timeout=httpx.Timeout(timeout, connect=min(timeout, 30.0), write=min(timeout, 60.0)),
             limits=httpx.Limits(max_connections=1, max_keepalive_connections=1),
             headers={
@@ -778,6 +789,10 @@ class TokenPlanJudgeRunner:
         """Run preflight or formal jobs while respecting the persisted unknown-quota window cap."""
         if phase not in {"preflight", "formal"}:
             raise ValueError("phase must be preflight or formal")
+        if phase == "formal" and self.config.get("require_preflight_pass", False):
+            self.materialize()
+            if not validate_preflight(self.root, self.config)["passed"]:
+                raise RuntimeError("Formal Judge execution requires a passing frozen preflight")
         with scheduler_lock(self.results / "scheduler.lock"):
             completed = self._completed()
             state = self._window_state()
@@ -857,19 +872,25 @@ class TokenPlanJudgeRunner:
             return self.materialize()
 
 
-def validate_preflight(root: Path) -> dict[str, Any]:
+def validate_preflight(root: Path, config: dict[str, Any] | None = None) -> dict[str, Any]:
     """Audit protocol coverage, output budget, parsing, and quote/object mapping."""
-    results = root / RESULTS_RELATIVE
+    results = results_directory(root, config)
     manifest = read_jsonl(results / "preflight_manifest.jsonl")
     ids = {row["message_id"] for row in manifest}
-    outputs = [row for row in read_jsonl(results / "judge_outputs.jsonl") if row["message_id"] in ids]
+    outputs_path = results / "judge_outputs.jsonl"
+    outputs = [row for row in read_jsonl(outputs_path) if row["message_id"] in ids] if outputs_path.exists() else []
     errors = []
+    frozen = read_json(results / "experiment_manifest.json")
+    if any(row.get("experiment_fingerprint") != frozen["experiment_fingerprint"] for row in outputs):
+        errors.append("preflight output fingerprint mismatch")
     if len(manifest) != 12 or len(ids) != 12:
         errors.append("preflight manifest is not 12 unique messages")
     request_ids = {row["judge_request_id"] for row in outputs}
     expected = {f"{protocol}:{message_id}" for message_id in ids for protocol in ("direct", "structured_assistance")}
     if request_ids != expected:
         errors.append("preflight protocol coverage mismatch")
+    if len(request_ids) != len(outputs):
+        errors.append("duplicate preflight requests")
     api_success = sum(row["api_success"] for row in outputs)
     parse_success = sum(row["parse_success"] for row in outputs)
     schema_valid = sum(row["schema_valid"] for row in outputs)

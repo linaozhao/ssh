@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run or resume the frozen TokenPlan DeepSeek-V4-Pro Judge queue."""
+"""Run or resume a configured TokenPlan Judge queue."""
 
 from __future__ import annotations
 
@@ -20,9 +20,10 @@ if __name__ == "__main__":
     parser.add_argument("--phase", choices=("preflight", "formal"), required=True)
     parser.add_argument("--max-new", type=int)
     parser.add_argument("--validate-preflight", action="store_true")
+    parser.add_argument("--config", type=Path, default=ROOT / "config/tokenplan_deepseek_v4_pro.json")
     args = parser.parse_args()
-    config = read_json(ROOT / "config/tokenplan_deepseek_v4_pro.json")
+    config = read_json(args.config)
     runner = TokenPlanJudgeRunner(ROOT, config)
     print(json.dumps(runner.run(args.phase, args.max_new), ensure_ascii=False, indent=2))
     if args.validate_preflight:
-        print(json.dumps(validate_preflight(ROOT), ensure_ascii=False, indent=2))
+        print(json.dumps(validate_preflight(ROOT, config), ensure_ascii=False, indent=2))

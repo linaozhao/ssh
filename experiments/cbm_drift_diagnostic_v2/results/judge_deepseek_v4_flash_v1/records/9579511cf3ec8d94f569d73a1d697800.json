@@ -1,0 +1,194 @@
+{
+  "agent_id": "agent_2",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 226,
+      "delta_key_counts": {
+        "content": 64,
+        "reasoning_content": 160,
+        "role": 225
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T17:50:43.798878+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000390",
+  "completed_at": "2026-10-15T17:50:50.262586+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "4e2d2e86bea19a97f20cdc0d14d5c4d4b1bb816eebb1dfeb5fb2d8cff14aa153",
+  "is_paired_sample": false,
+  "is_preflight": false,
+  "judge_protocol": "structured_assistance",
+  "judge_request_id": "structured_assistance:mad:cbm_v2_family_007::irrelevant_noise:t1:r0:agent_2",
+  "latency_seconds": 6.464,
+  "message_id": "mad:cbm_v2_family_007::irrelevant_noise:t1:r0:agent_2",
+  "messages_sha256": "d10e7a307301c5661e712dff0a84e7956eee60fd257e5f70d55a6181b73bb4f1",
+  "normalization_actions": [
+    "claim 0 offsets derived from unique exact quote",
+    "claim 1 offsets derived from unique exact quote",
+    "claim 2 offsets derived from unique exact quote"
+  ],
+  "package_id": "judge:mad:cbm_v2_family_007::irrelevant_noise:t1:r0:agent_2",
+  "package_sha256": "0b819c087763391374232c07c5a3e385031a56ec67c20917a4c08d9f58e33ba1",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "none",
+    "claims": [
+      {
+        "end": 121,
+        "quote": "No candidate has been eliminated based on the current evidence.",
+        "stance": "asserted",
+        "start": 58,
+        "target_entity_ids": [
+          "A",
+          "D"
+        ],
+        "violated_fact_ids": [
+          "attr_v4_1_000390:A:available_next_month:v1",
+          "attr_v4_1_000390:D:available_weekend:v1"
+        ],
+        "violated_rule_ids": [
+          "C5",
+          "C2"
+        ]
+      },
+      {
+        "end": 385,
+        "quote": "Arden's availability next month is reported as unavailable, but this does not violate any requirement as it is not explicitly stated that availability next month is required.",
+        "stance": "asserted",
+        "start": 211,
+        "target_entity_ids": [
+          "A"
+        ],
+        "violated_fact_ids": [
+          "attr_v4_1_000390:A:available_next_month:v1"
+        ],
+        "violated_rule_ids": [
+          "C5"
+        ]
+      },
+      {
+        "end": 474,
+        "quote": "Similarly, other candidates have either met or have unknown status for each requirement.",
+        "stance": "asserted",
+        "start": 386,
+        "target_entity_ids": [
+          "D"
+        ],
+        "violated_fact_ids": [
+          "attr_v4_1_000390:D:available_weekend:v1"
+        ],
+        "violated_rule_ids": [
+          "C2"
+        ]
+      }
+    ],
+    "content_labels": [
+      "inference_application_error",
+      "rule_deviation"
+    ],
+    "has_diagnostic_event": true,
+    "related_peer_message_ids": [],
+    "temporal_status": "initial_error",
+    "uncertainty_reason": null
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\"has_diagnostic_event\": true, \"temporal_status\": \"initial_error\", \"content_labels\": [\"rule_deviation\", \"inference_application_error\"], \"claims\": [{\"quote\": \"No candidate has been eliminated based on the current evidence.\", \"stance\": \"asserted\", \"target_entity_ids\": [\"A\", \"D\"], \"violated_fact_ids\": [\"attr_v4_1_000390:A:available_next_month:v1\", \"attr_v4_1_000390:D:available_weekend:v1\"], \"violated_rule_ids\": [\"C5\", \"C2\"]}, {\"quote\": \"Arden's availability next month is reported as unavailable, but this does not violate any requirement as it is not explicitly stated that availability next month is required.\", \"stance\": \"asserted\", \"target_entity_ids\": [\"A\"], \"violated_fact_ids\": [\"attr_v4_1_000390:A:available_next_month:v1\"], \"violated_rule_ids\": [\"C5\"]}, {\"quote\": \"Similarly, other candidates have either met or have unknown status for each requirement.\", \"stance\": \"asserted\", \"target_entity_ids\": [\"D\"], \"violated_fact_ids\": [\"attr_v4_1_000390:D:available_weekend:v1\"], \"violated_rule_ids\": [\"C2\"]}], \"answer_effect\": \"none\", \"related_peer_message_ids\": [], \"uncertainty_reason\": null}",
+  "reasoning_content": "Let me analyze the current message.\n\nThe agent outputs answer_set [\"A\",\"B\",\"C\",\"D\"] with explanation claiming no candidate has been eliminated.\n\nReference: oracle is [\"B\",\"C\"]. Exclusions: A violated by C5 (available_next_month false), D violated by C2 (available_weekend false).\n\nThe agent claims Arden's unavailability next month does not violate a requirement (\"it is not explicitly stated that availability next month is required\"). But C5 explicitly states \"The selected candidate must be available next month.\" So that's a rule deviation / inference application error.\n\nAlso the agent claims \"All candidates have either met the requirements or their status is unknown.\" — but Kris cannot participate in weekend work, which violates C2.\n\nLet me build claims with exact quotes.\n\nQuote 1: \"Arden's availability next month is reported as unavailable, but this does not violate any requirement as it is not explicitly stated that availability next month is required.\"\n\nTarget entity: A (Arden). violated_rule_ids: C5. violated_fact_ids: attr_v4_1_000390:A:available_next_month:v1. Stance: asserted.\n\nQuote 2: \"No candidate has been eliminated based on the current evidence. All candidates have either met the requirements or their status is unknown.\"\n\nThis asserts no elimination — contradicts exclusions. Target entities A, D. violated rules C5, C2.\n\nQuote 3: \"Similarly, other candidates have either met or have unknown status for each requirement.\"\n\nMaybe that's a broad assertion. Could include.\n\nLet me keep it to main claims.\n\nTemporal status: initial_error (round 0, first output).\n\nContent labels: factual_deviation? The agent misstates rule — says \"it is not explicitly stated that availability next month is required\" which is factually wrong about the task (rule exists). This is a rule_deviation / inference_application_error. I'd label \"rule_deviation\" and \"inference_application_error\".\n\nAnswer effect: none (comparison_scope initial, answer_effect \"none\"). Actually answer_effect field in program_check is \"none\". Hmm, that means the message itself didn't change... Actually answer_effect: \"none\" suggests the noise variant had no effect on answer. But we should report based on schema options. Let me use \"none\".\n\nWait, the answer_effect is about whether the message caused a change. It's \"none\". So use \"none\".\n\nhas_diagnostic_event: true.\n\nLet me construct claims.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a reference-structure-assisted diagnostic pre-annotation of one public agent message. The supplied formal state is authoritative reference information for this analysis. Analyze observable text only; do not infer hidden cognition or causation. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Prior management experience is required.\\n2. The selected candidate must be able to participate on the weekend.\\n3. Travel availability is required for this assignment.\\n4. Candidates must have participated in research work before.\\n5. The selected candidate must be available next month.\\n\\nCandidates:\\nA. Arden\\nB. Blair\\nC. Robin\\nD. Kris\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Prior management experience is required.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"The selected candidate must be able to participate on the weekend.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"Travel availability is required for this assignment.\",\n      \"rule_id\": \"C3\"\n    },\n    {\n      \"natural_language\": \"Candidates must have participated in research work before.\",\n      \"rule_id\": \"C4\"\n    },\n    {\n      \"natural_language\": \"The selected candidate must be available next month.\",\n      \"rule_id\": \"C5\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000390:A:available_next_month:v1\",\n      \"text\": \"Arden is unavailable next month\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000390:A:willing_to_travel:v1\",\n      \"text\": \"Arden can support project-related travel\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000390:B:willing_to_travel:v1\",\n      \"text\": \"Blair can travel for the project\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000390:C:available_next_month:v1\",\n      \"text\": \"Robin is available next month\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000390:C:has_research_experience:v1\",\n      \"text\": \"Robin has participated in research projects\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000390:D:available_weekend:v1\",\n      \"text\": \"Kris cannot participate in weekend work\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000390:D:willing_to_travel:v1\",\n      \"text\": \"Kris can support project-related travel\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Prior management experience is required.\\n2. The selected candidate must be able to participate on the weekend.\\n3. Travel availability is required for this assignment.\\n4. Candidates must have participated in research work before.\\n5. The selected candidate must be available next month.\\n\\nCandidates:\\nA. Arden\\nB. Blair\\nC. Robin\\nD. Kris\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000390:A:willing_to_travel:v1: Arden can support project-related travel.\\n- Evidence attr_v4_1_000390:A:available_next_month:v1: Arden is unavailable next month.\\n- Evidence attr_v4_1_000390:C:has_research_experience:v1: Robin has participated in research projects.\\n- Evidence attr_v4_1_000390:B:willing_to_travel:v1: Blair can travel for the project.\\n- Evidence attr_v4_1_000390:D:available_weekend:v1: Kris cannot participate in weekend work.\\n- Evidence attr_v4_1_000390:D:willing_to_travel:v1: Kris can support project-related travel.\\n- Evidence attr_v4_1_000390:C:available_next_month:v1: Robin is available next month.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_007::irrelevant_noise:t1:r0:agent_2\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"A\\\", \\\"B\\\", \\\"C\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"No candidate has been eliminated based on the current evidence. All candidates have either met the requirements or their status is unknown. For example, Arden's availability next month is reported as unavailable, but this does not violate any requirement as it is not explicitly stated that availability next month is required. Similarly, other candidates have either met or have unknown status for each requirement.\\\"\\n}\",\n  \"reference_structure_assistance\": {\n    \"active_evidence\": [\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_next_month\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Arden\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000390:A:available_next_month:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Arden is unavailable next month\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"willing_to_travel\",\n        \"candidate_id\": \"A\",\n        \"candidate_name\": \"Arden\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000390:A:willing_to_travel:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Arden can support project-related travel\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"willing_to_travel\",\n        \"candidate_id\": \"B\",\n        \"candidate_name\": \"Blair\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000390:B:willing_to_travel:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Blair can travel for the project\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_next_month\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Robin\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000390:C:available_next_month:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Robin is available next month\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"has_research_experience\",\n        \"candidate_id\": \"C\",\n        \"candidate_name\": \"Robin\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000390:C:has_research_experience:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Robin has participated in research projects\",\n        \"value\": true,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"available_weekend\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Kris\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000390:D:available_weekend:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Kris cannot participate in weekend work\",\n        \"value\": false,\n        \"version\": 1\n      },\n      {\n        \"appearance_stage\": 1,\n        \"attribute\": \"willing_to_travel\",\n        \"candidate_id\": \"D\",\n        \"candidate_name\": \"Kris\",\n        \"corrected_by\": null,\n        \"event_type\": \"observation\",\n        \"evidence_id\": \"attr_v4_1_000390:D:willing_to_travel:v1\",\n        \"fact_kind\": \"target\",\n        \"first_appearance_round\": 1,\n        \"restates_evidence_id\": null,\n        \"supersedes_evidence_id\": null,\n        \"text\": \"Kris can support project-related travel\",\n        \"value\": true,\n        \"version\": 1\n      }\n    ],\n    \"exclusions\": {\n      \"A\": [\n        {\n          \"attribute\": \"available_next_month\",\n          \"candidate_id\": \"A\",\n          \"evidence_id\": \"attr_v4_1_000390:A:available_next_month:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C5\"\n        }\n      ],\n      \"D\": [\n        {\n          \"attribute\": \"available_weekend\",\n          \"candidate_id\": \"D\",\n          \"evidence_id\": \"attr_v4_1_000390:D:available_weekend:v1\",\n          \"observed_value\": false,\n          \"required_value\": true,\n          \"rule_id\": \"C2\"\n        }\n      ]\n    },\n    \"oracle\": [\n      \"B\",\n      \"C\"\n    ],\n    \"program_check\": {\n      \"agent_id\": \"agent_2\",\n      \"answer_effect\": \"none\",\n      \"base_item_id\": \"attr_v4_1_000390\",\n      \"comparison_scope\": \"initial\",\n      \"continued_error_objects\": [],\n      \"diagnostic_version\": \"cbm_drift_v2.program_diagnostic.1\",\n      \"error_objects\": [\n        \"extra:A\",\n        \"extra:D\"\n      ],\n      \"evidence_stage\": 1,\n      \"extra_candidate_violations\": {\n        \"A\": [\n          {\n            \"attribute\": \"available_next_month\",\n            \"candidate_id\": \"A\",\n            \"evidence_id\": \"attr_v4_1_000390:A:available_next_month:v1\",\n            \"observed_value\": false,\n            \"required_value\": true,\n            \"rule_id\": \"C5\"\n          }\n        ],\n        \"D\": [\n          {\n            \"attribute\": \"available_weekend\",\n            \"candidate_id\": \"D\",\n            \"evidence_id\": \"attr_v4_1_000390:D:available_weekend:v1\",\n            \"observed_value\": false,\n            \"required_value\": true,\n            \"rule_id\": \"C2\"\n          }\n        ]\n      },\n      \"extra_candidates\": [\n        \"A\",\n        \"D\"\n      ],\n      \"family_id\": \"cbm_v2_family_007\",\n      \"formal_oracle_changed_since_previous_output\": false,\n      \"message_id\": \"mad:cbm_v2_family_007::irrelevant_noise:t1:r0:agent_2\",\n      \"new_error_objects\": [\n        \"extra:A\",\n        \"extra:D\"\n      ],\n      \"omitted_candidates\": [],\n      \"oracle\": [\n        \"B\",\n        \"C\"\n      ],\n      \"outcome\": \"valid_wrong\",\n      \"prediction\": [\n        \"A\",\n        \"B\",\n        \"C\",\n        \"D\"\n      ],\n      \"related_peer_message_ids_by_answer_alignment\": [],\n      \"request_id\": \"mad:cbm_v2_family_007::irrelevant_noise:t1:r0:agent_2\",\n      \"resolved_error_objects\": [],\n      \"round\": 0,\n      \"temporal_status\": \"initial_error\",\n      \"trajectory_id\": \"cbm_v2_family_007::irrelevant_noise\",\n      \"variant_id\": \"cbm_v2_family_007::irrelevant_noise\",\n      \"variant_type\": \"irrelevant_noise\"\n    },\n    \"rules\": [\n      {\n        \"attribute\": \"has_management_experience\",\n        \"id\": \"C1\",\n        \"natural_language\": \"Prior management experience is required.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"available_weekend\",\n        \"id\": \"C2\",\n        \"natural_language\": \"The selected candidate must be able to participate on the weekend.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"willing_to_travel\",\n        \"id\": \"C3\",\n        \"natural_language\": \"Travel availability is required for this assignment.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"has_research_experience\",\n        \"id\": \"C4\",\n        \"natural_language\": \"Candidates must have participated in research work before.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      },\n      {\n        \"attribute\": \"available_next_month\",\n        \"id\": \"C5\",\n        \"natural_language\": \"The selected candidate must be available next month.\",\n        \"required_value\": true,\n        \"type\": \"required_positive_attribute\"\n      }\n    ]\n  }\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "3cc1cf464af7732e3d13a70af24c8fd2",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 0,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 226,
+    "delta_key_counts": {
+      "content": 64,
+      "reasoning_content": 160,
+      "role": 225
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_007::irrelevant_noise",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 836,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 520,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 3588,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 4424
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_007::irrelevant_noise"
+}

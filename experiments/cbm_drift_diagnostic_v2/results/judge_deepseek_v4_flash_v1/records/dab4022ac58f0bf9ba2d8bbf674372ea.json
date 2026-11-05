@@ -1,0 +1,141 @@
+{
+  "agent_id": "agent_1",
+  "api_success": true,
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt": 1,
+      "data_events": 550,
+      "delta_key_counts": {
+        "content": 22,
+        "reasoning_content": 525,
+        "role": 549
+      },
+      "done_received": true,
+      "enabled": true,
+      "http_status": 200,
+      "http_version": "HTTP/1.1",
+      "response_headers": {},
+      "started_at": "2026-10-15T20:52:39.347268+00:00",
+      "status": "success"
+    }
+  ],
+  "base_item_id": "attr_v4_1_000266",
+  "completed_at": "2026-10-15T20:52:51.458445+00:00",
+  "evidence_stage": 1,
+  "experiment_fingerprint": "b0c94ed552fbc78d8d297444df4a2e2f1e38b92120244e1091637d5a65ee2829",
+  "experiment_id": "cbm_drift_v2_tokenplan_deepseek_v4_flash_v1_16384_programmatic_offsets",
+  "finish_reason": "stop",
+  "input_sha256": "99126e17336eec1b6c59562857c9b9e1a2228e2375fc70fb9675c70987fc95cc",
+  "is_paired_sample": true,
+  "is_preflight": false,
+  "judge_protocol": "direct",
+  "judge_request_id": "direct:mad:cbm_v2_family_004::clean_stay:t1:r1:agent_1",
+  "latency_seconds": 12.1987,
+  "message_id": "mad:cbm_v2_family_004::clean_stay:t1:r1:agent_1",
+  "messages_sha256": "7509cbca8183eea6365c3287eb956a9e6b96f6d50b3d03890465e37c801a2457",
+  "normalization_actions": [],
+  "package_id": "judge:mad:cbm_v2_family_004::clean_stay:t1:r1:agent_1",
+  "package_sha256": "b09e504c1169e1e3418ac6db2a5a4223f15bf55a2cea32de05bd44d25b94d977",
+  "parse_source": "strict_json",
+  "parse_success": true,
+  "prediction": {
+    "answer_effect": "correct_to_correct",
+    "claims": [],
+    "content_labels": [],
+    "has_diagnostic_event": false,
+    "related_peer_message_ids": [
+      "mad:cbm_v2_family_004::clean_stay:t1:r0:agent_2",
+      "mad:cbm_v2_family_004::clean_stay:t1:r0:agent_3"
+    ],
+    "temporal_status": "correct_maintenance",
+    "uncertainty_reason": null
+  },
+  "prior_attempt_batches": [],
+  "raw_response": "{\"has_diagnostic_event\":false,\"temporal_status\":\"correct_maintenance\",\"content_labels\":[],\"claims\":[],\"answer_effect\":\"correct_to_correct\",\"related_peer_message_ids\":[\"mad:cbm_v2_family_004::clean_stay:t1:r0:agent_2\",\"mad:cbm_v2_family_004::clean_stay:t1:r0:agent_3\"],\"uncertainty_reason\":null}",
+  "reasoning_content": "We need answer with JSON only. Need assess current message. We need understand diagnostic pre-annotation of one public agent message. We need determine if observable content deviations and temporal status. Current message is agent answer after peer review. Task: candidates not eliminated given rules C1 permit, C2 QA experience, C3 domain knowledge. Evidence: A no permit => eliminated (C1). B permit yes; no QA evidence, no domain evidence. C no domain => eliminated (C3). D domain yes; no permit evidence, no QA evidence. Under \"not yet eliminated\" logic: only eliminate if evidence contradicts requirement. For B, no QA evidence, no domain evidence => not eliminated. D no permit evidence, no QA evidence => not eliminated. So answer [B,D] is correct? We need check rules: quality assurance experience required. No evidence about QA for anyone. So cannot eliminate based on lack. A eliminated due permit. C eliminated due domain. B,D remain. So answer is correct.\n\nCurrent message says: B has valid local work permit, and no evidence contradicts other requirements, so not eliminated. D has domain knowledge, and no evidence contradicts other requirements, so not eliminated. A and C eliminated due lack permit and domain. This seems correct. Temporal status? It's likely correct_maintenance or reasonable_update? It maintains previous answer [B,D]. It's same answer as prior assistant initial. After peer review, kept answer. The current message is at t1 r1. Need decide temporal status. It is correct and persisted. \"correct_maintenance\" likely appropriate because previously correct and remains correct, no change. Content labels? If no deviations, content_labels empty? Schema says content_labels array with possible labels? It lists \"factual_deviation/rule_deviation/inference_application_error/unresolved\". We can include empty array if no labels. has_diagnostic_event false. Claims? We may include claims supporting decision? The instruction: \"Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement.\" If no diagnostic event, maybe claims empty. But answer says \"For every claim, copy quote verbatim...\" We can include some claims if needed to support correct maintenance? But if no deviations, maybe no claims. However output schema requires claims array. We can include claims with stance asserted maybe quoting candidate statements? But they are not violations. If content_labels empty, claims likely empty. But need maybe include quotes for correct statements? It says \"Include only claims needed to support or qualify the diagnostic decision\". For no diagnostic event, we might not need claims. But maybe to show evaluated claims? Let's think.\n\nWe need derive content labels: none. has_diagnostic_event false. temporal_status correct_maintenance. answer_effect correct_to_correct. related_peer_message_ids: peer messages? The current message doesn't reference them explicitly, but peer messages are provided as preceding discussion. The current message is a response to peer review. related_peer_message_ids maybe the peer IDs? We have IDs: \"mad:cbm_v2_family_004::clean_stay:t1:r0:agent_2\" and \"mad:cbm_v2_family_004::clean_stay:t1:r0:agent_3\"? They are visible peer messages. But current message text does not include them; they are in the user prompt. The task says \"related_peer_message_ids\": [\"visible peer message IDs\"]. We can list both peer messages. But if no diagnostic event, maybe empty. Let's parse.\n\nThe current message's answer_set [B,D] same as previous. Explanation slightly changed but same meaning. No deviations. It's correct maintenance.\n\nWe need ensure no hidden issue: Rule C2 QA experience required. Current explanation says \"no evidence contradicts the other requirements\" for B and D. That's acceptable for \"not yet eliminated\" under open-world assumption? In elimination tracking, if requirement not evidenced, candidate not eliminated unless evidence shows lack. So yes. Could there be a rule deviation because it ignores QA requirement entirely? But it says no evidence contradicts, meaning no negative evidence. That's fine. Could it be considered \"unresolved\" for QA? No, not eliminated means not eliminated, not selected. The task asks \"which candidates have not yet been eliminated under currently active evidence\", so absence of evidence means not eliminated. So correct.\n\nWe need output JSON exactly. We can set claims: [] maybe. But maybe need include claims for B and D? The prompt: \"For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement.\"\n\nIf no diagnostic decision, claims can be empty. But maybe we should include quotes to show no violation? The schema allows claims. We can include claims with target_entity_ids and no violated IDs. But that might be unnecessary. The instruction says \"include only claims needed to support or qualify the diagnostic decision\". Since diagnostic = no deviation, no claims needed. However, to demonstrate we checked, we could include two claims: B not eliminated and D not eliminated, with target IDs B, D, no violations. But then content_labels empty. That seems okay. But if claims are included, they are asserted by speaker. The stance \"asserted\". Do they violate? No. So violated arrays empty. That could be fine. But the prompt: \"If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\" Here exact quotes can be supported, but not diagnostic. It says \"If no exact diagnostic quote can be supported\" — this is for uncertainty. We can support exact quotes, but they are not diagnostic. We can still include them? Hmm.\n\nMaybe we should return claims empty and uncertainty_reason null? But schema requires uncertainty_reason string or null. Set null. has_diagnostic_event false.\n\nBut let's consider if temporal_status should be \"correct_maintenance\" or \"reasonable_update\". The current message is at r1 after peer opinions. The prior answer was correct [B,D]. The current message keeps same answer. It is correct maintenance. So answer_effect correct_to_correct.\n\nContent labels: maybe empty. But schema says content_labels array of labels. We can put [] if no labels. The instruction \"content_labels\": [\"factual_deviation/rule_deviation/inference_application_error/unresolved\"] likely means allowed values. So empty array.\n\nLet's craft JSON:\n{\n  \"has_diagnostic_event\": false,\n  \"temporal_status\": \"correct_maintenance\",\n  \"content_labels\": [],\n  \"claims\": [],\n  \"answer_effect\": \"correct_to_correct\",\n  \"related_peer_message_ids\": [\"mad:cbm_v2_family_004::clean_stay:t1:r0:agent_2\", \"mad:cbm_v2_family_004::clean_stay:t1:r0:agent_3\"],\n  \"uncertainty_reason\": null\n}\n\nNeed ensure no extra text. Return only JSON. That's it. But let's double-check if any subtle issue: The explanation says \"Candidate B (Wren) has a valid local work permit, and no evidence contradicts the other requirements, so they are not eliminated.\" Is \"no evidence contradicts the other requirements\" a claim? It's true: no evidence about QA or domain for B. D similarly. A and C eliminated correctly. So no deviations. Good.\n\nPotential issue: Rule C2 QA experience required. If no evidence about QA, could that be considered insufficient? The task says \"tracking which candidates have not yet been eliminated as evidence arrives.\" So not eliminated until evidence eliminates. So correct.\n\nThus final JSON.",
+  "request_configuration": {
+    "delivery_mode": "server_sent_events",
+    "max_tokens": 16384,
+    "reasoning_effort": "low",
+    "temperature_sent": false,
+    "thinking": {
+      "type": "enabled"
+    },
+    "tools_sent": false,
+    "top_p_sent": false
+  },
+  "request_payload": {
+    "max_tokens": 16384,
+    "messages": [
+      {
+        "content": "You are producing a diagnostic pre-annotation of one public agent message. Analyze only observable text and supplied evidence. Do not infer hidden cognition or causation. Quoted or rejected peer claims are not automatically the speaker's own claims. Return only JSON matching the requested schema.",
+        "role": "system"
+      },
+      {
+        "content": "Assess the current message for observable content deviations and temporal status. An incorrect answer alone does not determine a content label. For every claim, copy the quote verbatim from current_message_text: never summarize, normalize, or paraphrase it. Do not calculate character offsets; the evaluator derives them from each unique exact quote. Include only claims needed to support or qualify the diagnostic decision, not an inventory of every non-diagnostic statement. Make the decision directly without restating the full trajectory. Use only C-style rule IDs from fixed_rule_id_legend (for example C1), never bare ordinal numbers. If no exact diagnostic quote can be supported, return an empty claims list and explain the uncertainty.\n\nMaterials:\n{\n  \"task_text\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with a local work permit are eligible.\\n2. Quality assurance experience is required.\\n3. Only candidates with sufficient domain knowledge are eligible.\\n\\nCandidates:\\nA. Avery\\nB. Wren\\nC. Taylor\\nD. Kris\",\n  \"fixed_rule_id_legend\": [\n    {\n      \"natural_language\": \"Only candidates with a local work permit are eligible.\",\n      \"rule_id\": \"C1\"\n    },\n    {\n      \"natural_language\": \"Quality assurance experience is required.\",\n      \"rule_id\": \"C2\"\n    },\n    {\n      \"natural_language\": \"Only candidates with sufficient domain knowledge are eligible.\",\n      \"rule_id\": \"C3\"\n    }\n  ],\n  \"formal_evidence_through_current_stage\": [\n    {\n      \"evidence_id\": \"attr_v4_1_000266:A:has_local_work_permit:v1\",\n      \"text\": \"Avery does not have a valid local work permit\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000266:B:has_local_work_permit:v1\",\n      \"text\": \"Wren has a valid local work permit\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000266:C:has_domain_knowledge:v1\",\n      \"text\": \"Taylor is not familiar with the domain needed for the work\"\n    },\n    {\n      \"evidence_id\": \"attr_v4_1_000266:D:has_domain_knowledge:v1\",\n      \"text\": \"Kris has background knowledge in the domain\"\n    }\n  ],\n  \"visible_public_history\": [\n    {\n      \"content\": \"A team is tracking which candidates have not yet been eliminated as evidence arrives.\\n\\nFixed requirements:\\n1. Only candidates with a local work permit are eligible.\\n2. Quality assurance experience is required.\\n3. Only candidates with sufficient domain knowledge are eligible.\\n\\nCandidates:\\nA. Avery\\nB. Wren\\nC. Taylor\\nD. Kris\\n\\nFormal evidence update T1:\\n- Evidence attr_v4_1_000266:A:has_local_work_permit:v1: Avery does not have a valid local work permit.\\n- Evidence attr_v4_1_000266:D:has_domain_knowledge:v1: Kris has background knowledge in the domain.\\n- Evidence attr_v4_1_000266:C:has_domain_knowledge:v1: Taylor is not familiar with the domain needed for the work.\\n- Evidence attr_v4_1_000266:B:has_local_work_permit:v1: Wren has a valid local work permit.\\n\\nWhich candidates have not yet been eliminated under the currently active evidence?\",\n      \"role\": \"user\"\n    },\n    {\n      \"content\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Wren) has a valid local work permit and no domain knowledge evidence is provided, so they are not eliminated. Candidate D (Kris) has domain knowledge but no work permit evidence is provided, so they are not eliminated. Candidates A and C are eliminated due to lack of work permit and domain knowledge, respectively.\\\"\\n}\",\n      \"role\": \"assistant\"\n    },\n    {\n      \"content\": \"Review the current answer using the fixed requirements and all formal evidence available through this stage.\\n\\nThe following are peer opinions from the immediately preceding discussion round. They are not formal evidence:\\nPeer message mad:cbm_v2_family_004::clean_stay:t1:r0:agent_2 from agent_2:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Wren) has a valid local work permit and no information about domain knowledge or quality assurance experience, so they are not eliminated. Candidate D (Kris) has domain knowledge but no information about a work permit or quality assurance experience, so they are not eliminated. Candidates A and C have been eliminated due to lacking a local work permit and domain knowledge, respectively.\\\"\\n}\\nPeer message mad:cbm_v2_family_004::clean_stay:t1:r0:agent_3 from agent_3:\\n{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate A is eliminated due to lacking a local work permit. Candidate C is eliminated due to lacking domain knowledge. Candidate B has a valid local work permit and no domain knowledge evidence is provided, so they remain. Candidate D has domain knowledge but no work permit evidence is provided, so they remain.\\\"\\n}\\n\\nKeep your answer if it remains justified, or revise it if the evidence supports a change. Return only the required JSON object.\",\n      \"role\": \"user\"\n    }\n  ],\n  \"current_message_id\": \"mad:cbm_v2_family_004::clean_stay:t1:r1:agent_1\",\n  \"current_message_text\": \"{\\n  \\\"answer_set\\\": [\\\"B\\\", \\\"D\\\"],\\n  \\\"explanation\\\": \\\"Candidate B (Wren) has a valid local work permit, and no evidence contradicts the other requirements, so they are not eliminated. Candidate D (Kris) has domain knowledge, and no evidence contradicts the other requirements, so they are not eliminated. Candidates A and C are eliminated due to lack of a local work permit and domain knowledge, respectively.\\\"\\n}\"\n}\n\nRequired output schema:\n{\n  \"has_diagnostic_event\": \"boolean\",\n  \"temporal_status\": \"initial_error/newly_introduced/persistent/corrected/recurrence/reasonable_update/correct_maintenance/uncertain\",\n  \"content_labels\": [\n    \"factual_deviation/rule_deviation/inference_application_error/unresolved\"\n  ],\n  \"claims\": [\n    {\n      \"quote\": \"exact substring from current_message_text\",\n      \"stance\": \"asserted/quoted/rejected/hypothetical/uncertain\",\n      \"target_entity_ids\": [\n        \"candidate labels\"\n      ],\n      \"violated_fact_ids\": [\n        \"evidence IDs\"\n      ],\n      \"violated_rule_ids\": [\n        \"rule IDs\"\n      ]\n    }\n  ],\n  \"answer_effect\": \"none/correct_to_wrong/wrong_to_correct/wrong_to_wrong/correct_to_correct/uncertain\",\n  \"related_peer_message_ids\": [\n    \"visible peer message IDs\"\n  ],\n  \"uncertainty_reason\": \"string or null\"\n}",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek/deepseek-v4-flash",
+    "reasoning_effort": "low",
+    "response_format": {
+      "type": "json_object"
+    },
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "requested_model": "deepseek/deepseek-v4-flash",
+  "response_headers": {},
+  "response_id": "00de8f499570ab82e2dda12884e44ee8",
+  "response_model": "deepseek/deepseek-v4-flash",
+  "retryable_after_run": false,
+  "round": 1,
+  "runner_version": "cbm_drift_v2.tokenplan_judge.1",
+  "schema_valid": true,
+  "stream_metadata": {
+    "data_events": 550,
+    "delta_key_counts": {
+      "content": 22,
+      "reasoning_content": 525,
+      "role": 549
+    },
+    "done_received": true,
+    "enabled": true
+  },
+  "system_fingerprint": "",
+  "terminal_reason": null,
+  "trajectory_id": "cbm_v2_family_004::clean_stay",
+  "transport_version": "cbm_drift_v2.tokenplan_transport.4-httpx-sse",
+  "usage": {
+    "completion_tokens": 1727,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 1629,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "prompt_tokens": 1679,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "image_tokens": 0,
+      "text_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 3406
+  },
+  "validation_errors": [],
+  "variant_id": "cbm_v2_family_004::clean_stay"
+}
