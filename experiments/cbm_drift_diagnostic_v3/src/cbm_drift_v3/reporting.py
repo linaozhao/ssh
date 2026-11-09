@@ -1,0 +1,103 @@
+"""Status-first report; never turn missing calls or software mocks into findings."""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+from .common import atomic_text, read_json, read_jsonl, write_json
+from .judge import credential_gate
+
+
+def build_report(root: Path, config: dict[str, Any], judge_config: dict[str, Any]) -> dict[str, Any]:
+    """Report A/B/C independently with explicit missing denominators."""
+    result = root / "results" / config["run_id"]
+    judge_dir = result / judge_config.get("results_subdir", "controlled_judge")
+    def optional(path: Path, default: Any) -> Any:
+        return read_json(path) if path.exists() else default
+    data = optional(root / "data/validation_report.json", {"status": "pending"})
+    reference = optional(root / "data/controlled/reference_validation.json", {"status": "pending", "built": 0, "verified": 0})
+    tests = optional(result / "software_validation.json", {"status": "not_run"})
+    runtime = optional(result / "runtime_manifest.json", {"status": "not_checked"})
+    mad = optional(result / "mad/status.json", {"status": "not_run", "planned": 1188, "attempted": 0, "api_success": 0, "parsed": 0, "failed": 0, "blocked": 0})
+    protocol = optional(result / "protocol/status.json", {"status": "not_run", "planned": 108, "api_success": 0})
+    judge = optional(judge_dir / "status.json", credential_gate(judge_config, enabled=False))
+    evaluation = optional(judge_dir / "evaluation.json", {"status": "not_evaluated"})
+    annotation = optional(root / "annotation/deferred_real/status.json", {"status": "pending", "available_messages": 0})
+    source = optional(result / "source_preservation_validation.json", {"status": "pending"})
+    queue_path = judge_dir / "request_queue.jsonl"
+    queue_count = len(read_jsonl(queue_path)) if queue_path.exists() else 0
+    states = {"run_id": config["run_id"], "software_validation": tests,
+              "data_validation": data, "source_preservation": source,
+              "controlled_reference_validation": reference, "controlled_judge": judge,
+              "controlled_evaluation": evaluation, "mad_generation": mad, "protocol_generation": protocol,
+              "runtime": runtime, "real_annotation": {"status": "deferred", "materials": annotation},
+              "real_diagnostic_evaluation": {"status": "not_evaluated"}}
+    write_json(result / "run_status.json", states)
+    text = f"""# MAD 漂移诊断 v3 R2 本轮运行总结
+
+计划：controlled-first-r2。run_id：`{config['run_id']}`。
+实际分支：`feature/cbm-drift-shared-prefix-v3`。只读基线：`{config['source_sha']}`。
+本报告由本轮产物生成；文件存在、程序测试通过不代表在线实验完成。
+
+## A. 本轮必须完成事项
+
+| 事项 | 实际状态 / 数量 |
+| --- | --- |
+| 原有题目、选题记录、旧代码和旧结果字节保护 | {source['status']} |
+| 四条件证据、状态、共享请求图 | {data['status']}；48序列 / 1188唯一请求 / 2160引用 |
+| 软件验证 | {tests['status']}；详见 software_validation.json |
+| 受控样例 | 已构造 {reference['built']}；程序核验 {reference['verified']}；人工核验 0 |
+| 静态协议预检 | {protocol['status']}；API成功 {protocol.get('api_success', 0)}/108 |
+| 新MAD生成 | {mad['status']}；尝试 {mad.get('attempted', 0)}/1188；API成功 {mad.get('api_success', 0)}；可解析 {mad.get('parsed', 0)} |
+| MAD失败 / 阻塞 | {mad.get('failed', 0)} / {mad.get('blocked', 0)}；未尝试不是请求失败 |
+| 受控Judge队列 | 已准备 {queue_count}/144，未混入真实轨迹队列 |
+| 真实待标注材料 | 计划132目标；已有真实文本 {annotation.get('available_messages', 0)}；不足部分明确标未生成 |
+
+GPU政策固定物理编号4、UUID `GPU-36dfefdc-f06d-c469-3aa2-c4cb1404b8ee`。
+本次运行环境状态：`{runtime['status']}`；原因：`{runtime.get('reason', 'unknown')}`。
+不换卡、不停止其他用户进程、不使用旧MAD补齐1188。本次没有GPU成功运行时，MAD部分仍是阻塞，A不能整体宣称完成。
+
+程序实现包括：证据重放；unknown/known_satisfied/known_violated；候选多选集合评分；
+把上一答案按新状态重评分；对象级变化代理；共享前史和四分支隔离；严格输入指纹；
+合法原始格式错误可继续进入后续历史，但不重采样到正确。执行器当前逐请求串行，
+低于最多3并发的授权上限，不影响依赖语义。
+
+## B. 依赖新凭证的受控Judge
+
+要求模型：DeepSeek-v4.1 flash。实际provider模型ID尚未核验，配置中不以旧v4-flash代替。
+新凭证只从服务器本地 `JUDGE_API_KEY_V3_NEW` 读取；不会从聊天、旧key变量或日志获取。
+当前状态：`{judge['status']}`。受控评估：`{evaluation['status']}`。
+在线成功数：{judge.get('successful_outputs', 0)}；终态数：{judge.get('terminal_requests', 0)}/144；
+HTTP尝试：{judge.get('formal_attempts', 0)}；调试调用：0；额外抽取：0。
+未在线运行时，准确率、F1、误报率、token费用均尚未评估，不填0或mock分数。
+
+受控72例为脚本化必要前史，开发/留出各36，基础题family按6/6隔离；12个主层各6例。
+每个split分别覆盖首次错误、新引入、持续、纠正、更新后回退、更新失败、缺前史不确定等情形。
+参考由受限语言解析器独立核对事实、规则、答案与前史，称为program_verified，不称人工金标。
+dev/holdout共享部分句型，留出只代表本pilot中的family隔离，不能推广为自然MAD或模板独立验证。
+Judge渲染器不读取expected_labels；结构化模式只增加可计算状态，不提供F/R/I或时间真值。
+
+## C. 后续人工真实评测
+
+状态：deferred / not_evaluated。已准备132个按agent/round平衡的目标清单、两位标注者模板、
+仲裁模板、离线盲标页面及nested-to-flat转换。未生成的消息不会用脚本化文本冒充。
+真实双模式264请求不在本轮调度队列；未开展独立人工标注和真实诊断指标计算。
+
+## 后续恢复条件
+
+1. 物理GPU4可用后，核验UUID和服务PID，运行108静态预检、198新MAD预检，再续跑其余990。
+2. 由服务器安全注入新凭证，核验实际模型ID/接口；配置变化需另冻结Judge运行目录。
+3. 启用受控队列；预检12计入144，先dev再holdout。认证/额度失败停止，不无限轮询。
+4. 新MAD生成后另生成具有真实文本的盲标材料版本；保留本次未生成清单，不覆盖已冻结材料。
+
+## 解释边界
+
+受控构造和程序测试不等于强模型诊断有效；不存在人工参考时不报告自然MAD的F/R/I准确率。
+没有前史不自动认定initial_error；更新失败不自动当回退；答案错误不自动当规则偏离。
+多对象匹配先固定位置与对象，再评分标签；所有适用参考保留在召回分母，失败不当正确拒报。
+共享324消息只计一次。将来四条件比较按family成组，只作程序行为描述，不声称同伴因果。
+"""
+    atomic_text(root / "RUN_SUMMARY_ZH.md", text)
+    atomic_text(result / "RUN_SUMMARY_ZH.md", text)
+    return states
