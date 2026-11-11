@@ -111,7 +111,9 @@ def verify_source_manifest(repository_root: Path, manifest: dict[str, Any]) -> d
 def prepare_dataset(repository_root: Path, experiment_root: Path, config: dict[str, Any]) -> dict[str, Any]:
     """Create new frozen data; never generate replacement source families."""
     source_root = repository_root / "experiments/cbm_drift_diagnostic_v2"
-    data = experiment_root / "data"
+    data = experiment_root / config.get("data_subdir", "data")
+    if not data.resolve().is_relative_to((experiment_root / "data").resolve()):
+        raise ValueError("Data version must remain under the new experiment data directory")
     manifest_path = data / "source_manifest.json"
     if not manifest_path.exists():
         freeze_json(manifest_path, capture_source_manifest(repository_root, source_root))

@@ -225,6 +225,32 @@ def test_malformed_schema_is_recordable(controlled):
     assert result["schema_valid"] is False and result["object_valid"] is False
 
 
+def test_numeric_evidence_version_requires_unique_explicit_reference(controlled):
+    prediction, package = _example_prediction(controlled)
+    claim = prediction["claims"][0]
+    original_id = claim["evidence_version"]
+    evidence = next(e for e in package["evidence"] if e["evidence_id"] == original_id)
+    claim["evidence_version"] = evidence["version"]
+    result = validate_prediction(prediction, package)
+    assert result["object_valid"] and result["formal_valid"]
+    normalized = result["prediction"]["claims"][0]
+    assert normalized["evidence_version"] == original_id
+    assert normalized["raw_evidence_version"] == evidence["version"]
+    assert claim["evidence_version"] == evidence["version"]
+    claim["conflicting_evidence_ids"] = []
+    assert not validate_prediction(prediction, package)["object_valid"]
+
+
+def test_numeric_evidence_version_rejects_ambiguity_and_bool(controlled):
+    prediction, package = _example_prediction(controlled)
+    claim = prediction["claims"][0]
+    claim.update(attribute=None, candidate_ids=[], conflicting_evidence_ids=[], evidence_version=1,
+                 cited_evidence_ids=[e["evidence_id"] for e in package["evidence"] if e["version"] == 1])
+    assert not validate_prediction(prediction, package)["object_valid"]
+    claim["evidence_version"] = True
+    assert not validate_prediction(prediction, package)["object_valid"]
+
+
 def test_same_message_wrong_object_and_missing_message_denominator():
     ref = {"case_id": "c", "message_id": "m", "candidate_ids": ["C"], "attribute": "x", "rule_ids": [], "quote": "claim", "start": 0, "end": 5, "stance": "asserted", "content_labels": ["F"]}
     second = {**ref, "case_id": "c2", "message_id": "m2"}

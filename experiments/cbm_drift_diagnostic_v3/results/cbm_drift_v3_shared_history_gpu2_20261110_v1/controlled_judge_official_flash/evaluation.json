@@ -1,0 +1,1816 @@
+{
+  "matching_version": "v3-object-span-bipartite-1",
+  "primary_split": "holdout",
+  "scope": "controlled pilot; not natural-MAD semantic validation; no post-hoc pass threshold",
+  "splits": {
+    "dev": {
+      "direct": {
+        "abstentions": 0,
+        "claim_events": {
+          "classification": {
+            "F": {
+              "f1": 0.0,
+              "fn": 15,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 15,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "I": {
+              "f1": 0.0,
+              "fn": 3,
+              "fp": 2,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 3,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "R": {
+              "f1": 0.0,
+              "fn": 6,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 6,
+              "tp": 0,
+              "undefined_reason": null
+            }
+          },
+          "excluded_reference_events": 0,
+          "identity_pairs": [
+            [
+              0,
+              9
+            ]
+          ],
+          "macro_f1": 0.0,
+          "macro_supported_labels": 3,
+          "matching_rule": "maximum cardinality, frozen index tie break, location + object + exact span; no labels",
+          "matching_version": "v3-object-span-bipartite-1",
+          "micro": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "object_and_quote": {
+            "f1": 0.07142857142857142,
+            "fn": 23,
+            "fp": 3,
+            "precision": 0.25,
+            "recall": 0.041666666666666664,
+            "support": 24,
+            "tp": 1,
+            "undefined_reason": null
+          },
+          "prior_support_exact": {
+            "correct": 0,
+            "denominator": 24
+          },
+          "reference_events": 24,
+          "strict_localization": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 4,
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "strict_pairs": [],
+          "temporal": {
+            "accuracy": 0.0,
+            "correct": 0,
+            "support": 21
+          }
+        },
+        "classification_message": {
+          "macro_f1": 0.16666666666666666,
+          "macro_supported_labels": 3,
+          "micro": {
+            "f1": 0.08,
+            "fn": 23,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 0.041666666666666664,
+            "support": 24,
+            "tp": 1,
+            "undefined_reason": null
+          },
+          "per_label": {
+            "F": {
+              "f1": 0.0,
+              "fn": 15,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 15,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "I": {
+              "f1": 0.5,
+              "fn": 2,
+              "fp": 0,
+              "precision": 1.0,
+              "recall": 0.3333333333333333,
+              "support": 3,
+              "tp": 1,
+              "undefined_reason": null
+            },
+            "R": {
+              "f1": 0.0,
+              "fn": 6,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 6,
+              "tp": 0,
+              "undefined_reason": null
+            }
+          }
+        },
+        "correct_answer_wrong_explanation": {
+          "detection_rate": 0.0,
+          "support": 15
+        },
+        "coverage": {
+          "api_success": {
+            "denominator": 36,
+            "passed": 6
+          },
+          "completed_diagnostics": 6,
+          "formal_valid": {
+            "denominator": 36,
+            "passed": 6
+          },
+          "missing_outputs": 30,
+          "object_valid": {
+            "denominator": 36,
+            "passed": 4
+          },
+          "outputs_received": 6,
+          "parse_success": {
+            "denominator": 36,
+            "passed": 6
+          },
+          "quote_valid": {
+            "denominator": 36,
+            "passed": 6
+          },
+          "requests_expected": 36,
+          "schema_valid": {
+            "denominator": 36,
+            "passed": 6
+          },
+          "status_counts": {
+            "success": 6
+          }
+        },
+        "current_deviation": {
+          "f1": 0.2222222222222222,
+          "fn": 21,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.125,
+          "support": 24,
+          "tp": 3,
+          "undefined_reason": null
+        },
+        "eligible_reference_count": 36,
+        "excluded_references": {},
+        "message_localization": {
+          "agent": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          },
+          "joint": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          },
+          "message": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          },
+          "round": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          },
+          "stage": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          }
+        },
+        "missing_history": {
+          "inappropriate_certainty": 0,
+          "inappropriate_certainty_rate_on_judged": 0.0,
+          "judged": 1,
+          "judgment_coverage": 0.25,
+          "support": 4,
+          "uncertain_correct": 1,
+          "uncertain_end_to_end_rate": 0.25
+        },
+        "negative": {
+          "end_to_end_correct_rejection_rate": 0.25,
+          "false_positive_rate_on_judged": 0.0,
+          "false_positives": 0,
+          "judged": 3,
+          "judgment_coverage": 0.25,
+          "support": 12,
+          "true_negatives": 3
+        },
+        "negative_by_stratum": {
+          "correct_answer_stale_basis": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "correct_answer_wrong_basis": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "correct_maintenance": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "hypothetical_only": {
+            "end_to_end_correct_rejection_rate": 0.3333333333333333,
+            "false_positive_rate_on_judged": 0.0,
+            "false_positives": 0,
+            "judged": 1,
+            "judgment_coverage": 0.3333333333333333,
+            "support": 3,
+            "true_negatives": 1
+          },
+          "inference_error": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "known_fact_contradiction": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "multi_claim": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "quoted_then_rejected": {
+            "end_to_end_correct_rejection_rate": 0.3333333333333333,
+            "false_positive_rate_on_judged": 0.0,
+            "false_positives": 0,
+            "judged": 1,
+            "judgment_coverage": 0.3333333333333333,
+            "support": 3,
+            "true_negatives": 1
+          },
+          "reasonable_update": {
+            "end_to_end_correct_rejection_rate": 0.3333333333333333,
+            "false_positive_rate_on_judged": 0.0,
+            "false_positives": 0,
+            "judged": 1,
+            "judgment_coverage": 0.3333333333333333,
+            "support": 3,
+            "true_negatives": 1
+          },
+          "rule_change": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "unsupported_assertion": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "wrong_answer_unresolved": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          }
+        },
+        "reference_count": 36,
+        "reference_sources": {
+          "scripted_restricted_language_program_reference": 36
+        },
+        "resources": {
+          "completion_tokens": {
+            "known_outputs": 6,
+            "reported_total": 19037,
+            "unknown_outputs": 0
+          },
+          "latency_seconds": {
+            "known_outputs": 6,
+            "mean": 21.774193175835535,
+            "reported_total": 130.6451590550132
+          },
+          "prompt_tokens": {
+            "known_outputs": 6,
+            "reported_total": 25793,
+            "unknown_outputs": 0
+          },
+          "reported_cost": null,
+          "total_tokens": {
+            "known_outputs": 6,
+            "reported_total": 44830,
+            "unknown_outputs": 0
+          }
+        },
+        "stratum_reference_coverage": {
+          "correct_answer_stale_basis": {
+            "eligible": 3,
+            "total": 3
+          },
+          "correct_answer_wrong_basis": {
+            "eligible": 3,
+            "total": 3
+          },
+          "correct_maintenance": {
+            "eligible": 3,
+            "total": 3
+          },
+          "hypothetical_only": {
+            "eligible": 3,
+            "total": 3
+          },
+          "inference_error": {
+            "eligible": 3,
+            "total": 3
+          },
+          "known_fact_contradiction": {
+            "eligible": 3,
+            "total": 3
+          },
+          "multi_claim": {
+            "eligible": 3,
+            "total": 3
+          },
+          "quoted_then_rejected": {
+            "eligible": 3,
+            "total": 3
+          },
+          "reasonable_update": {
+            "eligible": 3,
+            "total": 3
+          },
+          "rule_change": {
+            "eligible": 3,
+            "total": 3
+          },
+          "unsupported_assertion": {
+            "eligible": 3,
+            "total": 3
+          },
+          "wrong_answer_unresolved": {
+            "eligible": 3,
+            "total": 3
+          }
+        },
+        "temporal": {
+          "accuracy": 0.15625,
+          "confusion": {
+            "correct_maintenance->correct_maintenance": 2,
+            "correct_maintenance->uncompleted": 5,
+            "corrected->uncompleted": 2,
+            "initial_error->initial_error": 1,
+            "initial_error->uncompleted": 4,
+            "newly_introduced->uncompleted": 5,
+            "persistent->uncompleted": 4,
+            "post_update_reversion->post_update_reversion": 1,
+            "post_update_reversion->uncompleted": 2,
+            "reasonable_update->reasonable_update": 1,
+            "reasonable_update->uncompleted": 2,
+            "recurrence->uncompleted": 1,
+            "update_failure->uncompleted": 2
+          },
+          "correct": 5,
+          "support": 32
+        },
+        "unresolved": {
+          "correct": 2,
+          "predicted": 2,
+          "rate": 0.6666666666666666,
+          "support": 3
+        }
+      },
+      "paired": {
+        "both_valid_pairs": 6,
+        "eligible_references": 36,
+        "family_mean_differences": {
+          "attr_v4_1_000184": 0.0,
+          "attr_v4_1_000229": 0.0,
+          "attr_v4_1_000390": 0.0,
+          "attr_v4_1_000497": 0.0
+        },
+        "inference": "descriptive only; families/templates are correlated",
+        "rows": [
+          {
+            "base_item_id": "attr_v4_1_000390",
+            "case_id": "case_08ba8a0b78c5bb0a",
+            "direct_correct": true,
+            "structured_correct": true
+          },
+          {
+            "base_item_id": "attr_v4_1_000184",
+            "case_id": "case_9df512ef1f34a44e",
+            "direct_correct": true,
+            "structured_correct": true
+          },
+          {
+            "base_item_id": "attr_v4_1_000497",
+            "case_id": "case_9239d2afb14ae3f7",
+            "direct_correct": true,
+            "structured_correct": true
+          },
+          {
+            "base_item_id": "attr_v4_1_000229",
+            "case_id": "case_0803a6c452b5f0a2",
+            "direct_correct": true,
+            "structured_correct": true
+          },
+          {
+            "base_item_id": "attr_v4_1_000390",
+            "case_id": "case_502617938623ba84",
+            "direct_correct": true,
+            "structured_correct": true
+          },
+          {
+            "base_item_id": "attr_v4_1_000497",
+            "case_id": "case_3757d042e9bf6ce0",
+            "direct_correct": true,
+            "structured_correct": true
+          }
+        ],
+        "structured_minus_direct_accuracy": 0.0
+      },
+      "structured": {
+        "abstentions": 0,
+        "claim_events": {
+          "classification": {
+            "F": {
+              "f1": 0.0,
+              "fn": 15,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 15,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "I": {
+              "f1": 0.0,
+              "fn": 3,
+              "fp": 2,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 3,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "R": {
+              "f1": 0.0,
+              "fn": 6,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 6,
+              "tp": 0,
+              "undefined_reason": null
+            }
+          },
+          "excluded_reference_events": 0,
+          "identity_pairs": [
+            [
+              1,
+              9
+            ]
+          ],
+          "macro_f1": 0.0,
+          "macro_supported_labels": 3,
+          "matching_rule": "maximum cardinality, frozen index tie break, location + object + exact span; no labels",
+          "matching_version": "v3-object-span-bipartite-1",
+          "micro": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "object_and_quote": {
+            "f1": 0.07142857142857142,
+            "fn": 23,
+            "fp": 3,
+            "precision": 0.25,
+            "recall": 0.041666666666666664,
+            "support": 24,
+            "tp": 1,
+            "undefined_reason": null
+          },
+          "prior_support_exact": {
+            "correct": 0,
+            "denominator": 24
+          },
+          "reference_events": 24,
+          "strict_localization": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 4,
+            "precision": 0.0,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "strict_pairs": [],
+          "temporal": {
+            "accuracy": 0.0,
+            "correct": 0,
+            "support": 21
+          }
+        },
+        "classification_message": {
+          "macro_f1": 0.16666666666666666,
+          "macro_supported_labels": 3,
+          "micro": {
+            "f1": 0.08,
+            "fn": 23,
+            "fp": 0,
+            "precision": 1.0,
+            "recall": 0.041666666666666664,
+            "support": 24,
+            "tp": 1,
+            "undefined_reason": null
+          },
+          "per_label": {
+            "F": {
+              "f1": 0.0,
+              "fn": 15,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 15,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "I": {
+              "f1": 0.5,
+              "fn": 2,
+              "fp": 0,
+              "precision": 1.0,
+              "recall": 0.3333333333333333,
+              "support": 3,
+              "tp": 1,
+              "undefined_reason": null
+            },
+            "R": {
+              "f1": 0.0,
+              "fn": 6,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 6,
+              "tp": 0,
+              "undefined_reason": null
+            }
+          }
+        },
+        "correct_answer_wrong_explanation": {
+          "detection_rate": 0.0,
+          "support": 15
+        },
+        "coverage": {
+          "api_success": {
+            "denominator": 36,
+            "passed": 6
+          },
+          "completed_diagnostics": 6,
+          "formal_valid": {
+            "denominator": 36,
+            "passed": 4
+          },
+          "missing_outputs": 30,
+          "object_valid": {
+            "denominator": 36,
+            "passed": 3
+          },
+          "outputs_received": 6,
+          "parse_success": {
+            "denominator": 36,
+            "passed": 6
+          },
+          "quote_valid": {
+            "denominator": 36,
+            "passed": 6
+          },
+          "requests_expected": 36,
+          "schema_valid": {
+            "denominator": 36,
+            "passed": 6
+          },
+          "status_counts": {
+            "success": 6
+          }
+        },
+        "current_deviation": {
+          "f1": 0.2222222222222222,
+          "fn": 21,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.125,
+          "support": 24,
+          "tp": 3,
+          "undefined_reason": null
+        },
+        "eligible_reference_count": 36,
+        "excluded_references": {},
+        "message_localization": {
+          "agent": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          },
+          "joint": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          },
+          "message": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          },
+          "round": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          },
+          "stage": {
+            "correct": 3,
+            "recall": 0.125,
+            "support": 24
+          }
+        },
+        "missing_history": {
+          "inappropriate_certainty": 0,
+          "inappropriate_certainty_rate_on_judged": 0.0,
+          "judged": 1,
+          "judgment_coverage": 0.25,
+          "support": 4,
+          "uncertain_correct": 1,
+          "uncertain_end_to_end_rate": 0.25
+        },
+        "negative": {
+          "end_to_end_correct_rejection_rate": 0.25,
+          "false_positive_rate_on_judged": 0.0,
+          "false_positives": 0,
+          "judged": 3,
+          "judgment_coverage": 0.25,
+          "support": 12,
+          "true_negatives": 3
+        },
+        "negative_by_stratum": {
+          "correct_answer_stale_basis": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "correct_answer_wrong_basis": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "correct_maintenance": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "hypothetical_only": {
+            "end_to_end_correct_rejection_rate": 0.3333333333333333,
+            "false_positive_rate_on_judged": 0.0,
+            "false_positives": 0,
+            "judged": 1,
+            "judgment_coverage": 0.3333333333333333,
+            "support": 3,
+            "true_negatives": 1
+          },
+          "inference_error": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "known_fact_contradiction": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "multi_claim": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "quoted_then_rejected": {
+            "end_to_end_correct_rejection_rate": 0.3333333333333333,
+            "false_positive_rate_on_judged": 0.0,
+            "false_positives": 0,
+            "judged": 1,
+            "judgment_coverage": 0.3333333333333333,
+            "support": 3,
+            "true_negatives": 1
+          },
+          "reasonable_update": {
+            "end_to_end_correct_rejection_rate": 0.3333333333333333,
+            "false_positive_rate_on_judged": 0.0,
+            "false_positives": 0,
+            "judged": 1,
+            "judgment_coverage": 0.3333333333333333,
+            "support": 3,
+            "true_negatives": 1
+          },
+          "rule_change": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "unsupported_assertion": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "wrong_answer_unresolved": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          }
+        },
+        "reference_count": 36,
+        "reference_sources": {
+          "scripted_restricted_language_program_reference": 36
+        },
+        "resources": {
+          "completion_tokens": {
+            "known_outputs": 6,
+            "reported_total": 13690,
+            "unknown_outputs": 0
+          },
+          "latency_seconds": {
+            "known_outputs": 6,
+            "mean": 15.995650354384756,
+            "reported_total": 95.97390212630853
+          },
+          "prompt_tokens": {
+            "known_outputs": 6,
+            "reported_total": 55620,
+            "unknown_outputs": 0
+          },
+          "reported_cost": null,
+          "total_tokens": {
+            "known_outputs": 6,
+            "reported_total": 69310,
+            "unknown_outputs": 0
+          }
+        },
+        "stratum_reference_coverage": {
+          "correct_answer_stale_basis": {
+            "eligible": 3,
+            "total": 3
+          },
+          "correct_answer_wrong_basis": {
+            "eligible": 3,
+            "total": 3
+          },
+          "correct_maintenance": {
+            "eligible": 3,
+            "total": 3
+          },
+          "hypothetical_only": {
+            "eligible": 3,
+            "total": 3
+          },
+          "inference_error": {
+            "eligible": 3,
+            "total": 3
+          },
+          "known_fact_contradiction": {
+            "eligible": 3,
+            "total": 3
+          },
+          "multi_claim": {
+            "eligible": 3,
+            "total": 3
+          },
+          "quoted_then_rejected": {
+            "eligible": 3,
+            "total": 3
+          },
+          "reasonable_update": {
+            "eligible": 3,
+            "total": 3
+          },
+          "rule_change": {
+            "eligible": 3,
+            "total": 3
+          },
+          "unsupported_assertion": {
+            "eligible": 3,
+            "total": 3
+          },
+          "wrong_answer_unresolved": {
+            "eligible": 3,
+            "total": 3
+          }
+        },
+        "temporal": {
+          "accuracy": 0.15625,
+          "confusion": {
+            "correct_maintenance->correct_maintenance": 2,
+            "correct_maintenance->uncompleted": 5,
+            "corrected->uncompleted": 2,
+            "initial_error->initial_error": 1,
+            "initial_error->uncompleted": 4,
+            "newly_introduced->uncompleted": 5,
+            "persistent->uncompleted": 4,
+            "post_update_reversion->post_update_reversion": 1,
+            "post_update_reversion->uncompleted": 2,
+            "reasonable_update->reasonable_update": 1,
+            "reasonable_update->uncompleted": 2,
+            "recurrence->uncompleted": 1,
+            "update_failure->uncompleted": 2
+          },
+          "correct": 5,
+          "support": 32
+        },
+        "unresolved": {
+          "correct": 2,
+          "predicted": 2,
+          "rate": 0.6666666666666666,
+          "support": 3
+        }
+      }
+    },
+    "holdout": {
+      "direct": {
+        "abstentions": 0,
+        "claim_events": {
+          "classification": {
+            "F": {
+              "f1": 0.0,
+              "fn": 15,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 15,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "I": {
+              "f1": 0.0,
+              "fn": 3,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 3,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "R": {
+              "f1": 0.0,
+              "fn": 6,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 6,
+              "tp": 0,
+              "undefined_reason": null
+            }
+          },
+          "excluded_reference_events": 0,
+          "identity_pairs": [],
+          "macro_f1": 0.0,
+          "macro_supported_labels": 3,
+          "matching_rule": "maximum cardinality, frozen index tie break, location + object + exact span; no labels",
+          "matching_version": "v3-object-span-bipartite-1",
+          "micro": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "object_and_quote": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "prior_support_exact": {
+            "correct": 0,
+            "denominator": 24
+          },
+          "reference_events": 24,
+          "strict_localization": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "strict_pairs": [],
+          "temporal": {
+            "accuracy": 0.0,
+            "correct": 0,
+            "support": 21
+          }
+        },
+        "classification_message": {
+          "macro_f1": 0.0,
+          "macro_supported_labels": 3,
+          "micro": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "per_label": {
+            "F": {
+              "f1": 0.0,
+              "fn": 15,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 15,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "I": {
+              "f1": 0.0,
+              "fn": 3,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 3,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "R": {
+              "f1": 0.0,
+              "fn": 6,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 6,
+              "tp": 0,
+              "undefined_reason": null
+            }
+          }
+        },
+        "correct_answer_wrong_explanation": {
+          "detection_rate": 0.0,
+          "support": 15
+        },
+        "coverage": {
+          "api_success": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "completed_diagnostics": 0,
+          "formal_valid": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "missing_outputs": 36,
+          "object_valid": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "outputs_received": 0,
+          "parse_success": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "quote_valid": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "requests_expected": 36,
+          "schema_valid": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "status_counts": {}
+        },
+        "current_deviation": {
+          "f1": 0.0,
+          "fn": 24,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "support": 24,
+          "tp": 0,
+          "undefined_reason": null
+        },
+        "eligible_reference_count": 36,
+        "excluded_references": {},
+        "message_localization": {
+          "agent": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          },
+          "joint": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          },
+          "message": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          },
+          "round": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          },
+          "stage": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          }
+        },
+        "missing_history": {
+          "inappropriate_certainty": 0,
+          "inappropriate_certainty_rate_on_judged": null,
+          "judged": 0,
+          "judgment_coverage": 0.0,
+          "support": 4,
+          "uncertain_correct": 0,
+          "uncertain_end_to_end_rate": 0.0
+        },
+        "negative": {
+          "end_to_end_correct_rejection_rate": 0.0,
+          "false_positive_rate_on_judged": null,
+          "false_positives": 0,
+          "judged": 0,
+          "judgment_coverage": 0.0,
+          "support": 12,
+          "true_negatives": 0
+        },
+        "negative_by_stratum": {
+          "correct_answer_stale_basis": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "correct_answer_wrong_basis": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "correct_maintenance": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "hypothetical_only": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "inference_error": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "known_fact_contradiction": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "multi_claim": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "quoted_then_rejected": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "reasonable_update": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "rule_change": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "unsupported_assertion": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "wrong_answer_unresolved": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          }
+        },
+        "reference_count": 36,
+        "reference_sources": {
+          "scripted_restricted_language_program_reference": 36
+        },
+        "resources": {
+          "completion_tokens": {
+            "known_outputs": 0,
+            "reported_total": null,
+            "unknown_outputs": 0
+          },
+          "latency_seconds": {
+            "known_outputs": 0,
+            "mean": null,
+            "reported_total": null
+          },
+          "prompt_tokens": {
+            "known_outputs": 0,
+            "reported_total": null,
+            "unknown_outputs": 0
+          },
+          "reported_cost": null,
+          "total_tokens": {
+            "known_outputs": 0,
+            "reported_total": null,
+            "unknown_outputs": 0
+          }
+        },
+        "stratum_reference_coverage": {
+          "correct_answer_stale_basis": {
+            "eligible": 3,
+            "total": 3
+          },
+          "correct_answer_wrong_basis": {
+            "eligible": 3,
+            "total": 3
+          },
+          "correct_maintenance": {
+            "eligible": 3,
+            "total": 3
+          },
+          "hypothetical_only": {
+            "eligible": 3,
+            "total": 3
+          },
+          "inference_error": {
+            "eligible": 3,
+            "total": 3
+          },
+          "known_fact_contradiction": {
+            "eligible": 3,
+            "total": 3
+          },
+          "multi_claim": {
+            "eligible": 3,
+            "total": 3
+          },
+          "quoted_then_rejected": {
+            "eligible": 3,
+            "total": 3
+          },
+          "reasonable_update": {
+            "eligible": 3,
+            "total": 3
+          },
+          "rule_change": {
+            "eligible": 3,
+            "total": 3
+          },
+          "unsupported_assertion": {
+            "eligible": 3,
+            "total": 3
+          },
+          "wrong_answer_unresolved": {
+            "eligible": 3,
+            "total": 3
+          }
+        },
+        "temporal": {
+          "accuracy": 0.0,
+          "confusion": {
+            "correct_maintenance->uncompleted": 7,
+            "corrected->uncompleted": 2,
+            "initial_error->uncompleted": 5,
+            "newly_introduced->uncompleted": 5,
+            "persistent->uncompleted": 4,
+            "post_update_reversion->uncompleted": 3,
+            "reasonable_update->uncompleted": 3,
+            "recurrence->uncompleted": 1,
+            "update_failure->uncompleted": 2
+          },
+          "correct": 0,
+          "support": 32
+        },
+        "unresolved": {
+          "correct": 0,
+          "predicted": 0,
+          "rate": 0.0,
+          "support": 3
+        }
+      },
+      "paired": {
+        "both_valid_pairs": 0,
+        "eligible_references": 36,
+        "family_mean_differences": {},
+        "inference": "descriptive only; families/templates are correlated",
+        "rows": [],
+        "structured_minus_direct_accuracy": null
+      },
+      "structured": {
+        "abstentions": 0,
+        "claim_events": {
+          "classification": {
+            "F": {
+              "f1": 0.0,
+              "fn": 15,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 15,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "I": {
+              "f1": 0.0,
+              "fn": 3,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 3,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "R": {
+              "f1": 0.0,
+              "fn": 6,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 6,
+              "tp": 0,
+              "undefined_reason": null
+            }
+          },
+          "excluded_reference_events": 0,
+          "identity_pairs": [],
+          "macro_f1": 0.0,
+          "macro_supported_labels": 3,
+          "matching_rule": "maximum cardinality, frozen index tie break, location + object + exact span; no labels",
+          "matching_version": "v3-object-span-bipartite-1",
+          "micro": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "object_and_quote": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "prior_support_exact": {
+            "correct": 0,
+            "denominator": 24
+          },
+          "reference_events": 24,
+          "strict_localization": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "strict_pairs": [],
+          "temporal": {
+            "accuracy": 0.0,
+            "correct": 0,
+            "support": 21
+          }
+        },
+        "classification_message": {
+          "macro_f1": 0.0,
+          "macro_supported_labels": 3,
+          "micro": {
+            "f1": 0.0,
+            "fn": 24,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 24,
+            "tp": 0,
+            "undefined_reason": null
+          },
+          "per_label": {
+            "F": {
+              "f1": 0.0,
+              "fn": 15,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 15,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "I": {
+              "f1": 0.0,
+              "fn": 3,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 3,
+              "tp": 0,
+              "undefined_reason": null
+            },
+            "R": {
+              "f1": 0.0,
+              "fn": 6,
+              "fp": 0,
+              "precision": null,
+              "recall": 0.0,
+              "support": 6,
+              "tp": 0,
+              "undefined_reason": null
+            }
+          }
+        },
+        "correct_answer_wrong_explanation": {
+          "detection_rate": 0.0,
+          "support": 15
+        },
+        "coverage": {
+          "api_success": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "completed_diagnostics": 0,
+          "formal_valid": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "missing_outputs": 36,
+          "object_valid": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "outputs_received": 0,
+          "parse_success": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "quote_valid": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "requests_expected": 36,
+          "schema_valid": {
+            "denominator": 36,
+            "passed": 0
+          },
+          "status_counts": {}
+        },
+        "current_deviation": {
+          "f1": 0.0,
+          "fn": 24,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "support": 24,
+          "tp": 0,
+          "undefined_reason": null
+        },
+        "eligible_reference_count": 36,
+        "excluded_references": {},
+        "message_localization": {
+          "agent": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          },
+          "joint": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          },
+          "message": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          },
+          "round": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          },
+          "stage": {
+            "correct": 0,
+            "recall": 0.0,
+            "support": 24
+          }
+        },
+        "missing_history": {
+          "inappropriate_certainty": 0,
+          "inappropriate_certainty_rate_on_judged": null,
+          "judged": 0,
+          "judgment_coverage": 0.0,
+          "support": 4,
+          "uncertain_correct": 0,
+          "uncertain_end_to_end_rate": 0.0
+        },
+        "negative": {
+          "end_to_end_correct_rejection_rate": 0.0,
+          "false_positive_rate_on_judged": null,
+          "false_positives": 0,
+          "judged": 0,
+          "judgment_coverage": 0.0,
+          "support": 12,
+          "true_negatives": 0
+        },
+        "negative_by_stratum": {
+          "correct_answer_stale_basis": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "correct_answer_wrong_basis": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "correct_maintenance": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "hypothetical_only": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "inference_error": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "known_fact_contradiction": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "multi_claim": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "quoted_then_rejected": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "reasonable_update": {
+            "end_to_end_correct_rejection_rate": 0.0,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": 0.0,
+            "support": 3,
+            "true_negatives": 0
+          },
+          "rule_change": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "unsupported_assertion": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          },
+          "wrong_answer_unresolved": {
+            "end_to_end_correct_rejection_rate": null,
+            "false_positive_rate_on_judged": null,
+            "false_positives": 0,
+            "judged": 0,
+            "judgment_coverage": null,
+            "support": 0,
+            "true_negatives": 0
+          }
+        },
+        "reference_count": 36,
+        "reference_sources": {
+          "scripted_restricted_language_program_reference": 36
+        },
+        "resources": {
+          "completion_tokens": {
+            "known_outputs": 0,
+            "reported_total": null,
+            "unknown_outputs": 0
+          },
+          "latency_seconds": {
+            "known_outputs": 0,
+            "mean": null,
+            "reported_total": null
+          },
+          "prompt_tokens": {
+            "known_outputs": 0,
+            "reported_total": null,
+            "unknown_outputs": 0
+          },
+          "reported_cost": null,
+          "total_tokens": {
+            "known_outputs": 0,
+            "reported_total": null,
+            "unknown_outputs": 0
+          }
+        },
+        "stratum_reference_coverage": {
+          "correct_answer_stale_basis": {
+            "eligible": 3,
+            "total": 3
+          },
+          "correct_answer_wrong_basis": {
+            "eligible": 3,
+            "total": 3
+          },
+          "correct_maintenance": {
+            "eligible": 3,
+            "total": 3
+          },
+          "hypothetical_only": {
+            "eligible": 3,
+            "total": 3
+          },
+          "inference_error": {
+            "eligible": 3,
+            "total": 3
+          },
+          "known_fact_contradiction": {
+            "eligible": 3,
+            "total": 3
+          },
+          "multi_claim": {
+            "eligible": 3,
+            "total": 3
+          },
+          "quoted_then_rejected": {
+            "eligible": 3,
+            "total": 3
+          },
+          "reasonable_update": {
+            "eligible": 3,
+            "total": 3
+          },
+          "rule_change": {
+            "eligible": 3,
+            "total": 3
+          },
+          "unsupported_assertion": {
+            "eligible": 3,
+            "total": 3
+          },
+          "wrong_answer_unresolved": {
+            "eligible": 3,
+            "total": 3
+          }
+        },
+        "temporal": {
+          "accuracy": 0.0,
+          "confusion": {
+            "correct_maintenance->uncompleted": 7,
+            "corrected->uncompleted": 2,
+            "initial_error->uncompleted": 5,
+            "newly_introduced->uncompleted": 5,
+            "persistent->uncompleted": 4,
+            "post_update_reversion->uncompleted": 3,
+            "reasonable_update->uncompleted": 3,
+            "recurrence->uncompleted": 1,
+            "update_failure->uncompleted": 2
+          },
+          "correct": 0,
+          "support": 32
+        },
+        "unresolved": {
+          "correct": 0,
+          "predicted": 0,
+          "rate": 0.0,
+          "support": 3
+        }
+      }
+    }
+  },
+  "status": "evaluated"
+}

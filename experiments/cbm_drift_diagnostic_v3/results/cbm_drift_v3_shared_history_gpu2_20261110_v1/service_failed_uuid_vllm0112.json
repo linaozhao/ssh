@@ -1,0 +1,105 @@
+{
+  "command": [
+    "/home/share/anaconda/bin/python",
+    "-m",
+    "vllm.entrypoints.openai.api_server",
+    "--model",
+    "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B",
+    "--served-model-name",
+    "Qwen3-8B",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8112",
+    "--dtype",
+    "bfloat16",
+    "--tensor-parallel-size",
+    "1",
+    "--max-model-len",
+    "16384",
+    "--gpu-memory-utilization",
+    "0.8",
+    "--max-num-seqs",
+    "1",
+    "--enable-prefix-caching",
+    "--enforce-eager"
+  ],
+  "endpoint": "http://127.0.0.1:8112/v1",
+  "exit_code": 1,
+  "gpu_uuid": "GPU-221ea0c6-cdd5-2d17-9594-45d336491563",
+  "inspection": {
+    "allowed": true,
+    "expected_uuid": "GPU-221ea0c6-cdd5-2d17-9594-45d336491563",
+    "foreign_processes": [
+      {
+        "gpu_uuid": "GPU-221ea0c6-cdd5-2d17-9594-45d336491563",
+        "pid": "3785032",
+        "process_name": "/home/lmp/projects/qwen05b_lora_demo_v1/.venv/bin/python",
+        "used_gpu_memory": "1462"
+      }
+    ],
+    "gpu": {
+      "index": "2",
+      "memory.total": "24564",
+      "memory.used": "1484",
+      "name": "NVIDIA GeForce RTX 4090",
+      "pci.bus_id": "00000000:3D:00.0",
+      "uuid": "GPU-221ea0c6-cdd5-2d17-9594-45d336491563"
+    },
+    "gpu_csv": "0, GPU-be098d15-9482-4adf-5122-1b2a4dddf1dc, NVIDIA GeForce RTX 4090, 00000000:1A:00.0, 24564, 13649\n1, GPU-a6225c52-bf4d-907f-c634-630638b11e56, NVIDIA GeForce RTX 4090, 00000000:1B:00.0, 24564, 21958\n2, GPU-221ea0c6-cdd5-2d17-9594-45d336491563, NVIDIA GeForce RTX 4090, 00000000:3D:00.0, 24564, 1484\n3, GPU-6792e2c8-0121-1b10-070b-ea11fd3c42c3, NVIDIA GeForce RTX 4090, 00000000:3E:00.0, 24564, 10794\n4, GPU-36dfefdc-f06d-c469-3aa2-c4cb1404b8ee, NVIDIA GeForce RTX 4090, 00000000:88:00.0, 24564, 5551\n5, GPU-ba13e964-b241-3f12-577d-edc8da1ae9d2, NVIDIA GeForce RTX 4090, 00000000:89:00.0, 24564, 15228\n6, GPU-70cd4b18-25a4-9853-eaf6-144d5250c9e4, NVIDIA GeForce RTX 4090, 00000000:B1:00.0, 24564, 18804\n7, GPU-4f904122-855b-af04-40a4-1c6f1ace7251, NVIDIA GeForce RTX 4090, 00000000:B2:00.0, 24564, 13864\n",
+    "inspection_only": false,
+    "physical_gpu_index": 2,
+    "process_csv": "1566690, GPU-be098d15-9482-4adf-5122-1b2a4dddf1dc, /data/zyx/2026/1010/MATA-main/local_reproduction/.venv/bin/python, 5628\n2653614, GPU-be098d15-9482-4adf-5122-1b2a4dddf1dc, /data/zyx/2026/1010/paper/case_study/code/experiments/complement_router_v1/.venv/bin/python, 8006\n1038232, GPU-a6225c52-bf4d-907f-c634-630638b11e56, VLLM::EngineCore, 21948\n3785032, GPU-221ea0c6-cdd5-2d17-9594-45d336491563, /home/lmp/projects/qwen05b_lora_demo_v1/.venv/bin/python, 1462\n1656359, GPU-6792e2c8-0121-1b10-070b-ea11fd3c42c3, /home/share/anaconda/envs/xgy/bin/python3.11, 10784\n1105470, GPU-36dfefdc-f06d-c469-3aa2-c4cb1404b8ee, /home/share/anaconda/envs/ms-swift/bin/python, 2450\n2375913, GPU-36dfefdc-f06d-c469-3aa2-c4cb1404b8ee, /home/share/anaconda/bin/python, 3086\n1569523, GPU-ba13e964-b241-3f12-577d-edc8da1ae9d2, /home/share/anaconda/envs/xgy/bin/python3.11, 15218\n1569524, GPU-70cd4b18-25a4-9853-eaf6-144d5250c9e4, /home/share/anaconda/envs/xgy/bin/python3.11, 18794\n1656360, GPU-4f904122-855b-af04-40a4-1c6f1ace7251, /home/share/anaconda/envs/xgy/bin/python3.11, 13854\n",
+    "processes": [
+      {
+        "gpu_uuid": "GPU-221ea0c6-cdd5-2d17-9594-45d336491563",
+        "pid": "3785032",
+        "process_name": "/home/lmp/projects/qwen05b_lora_demo_v1/.venv/bin/python",
+        "used_gpu_memory": "1462"
+      }
+    ],
+    "reason": null,
+    "shared_gpu_authorized": true,
+    "status": "ready"
+  },
+  "model_config_sha256": "44f9af49a5c6da772602c90a7307dc32b891270e61513afbb3594c05349f1bed",
+  "model_files": {
+    "config.json": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+    "configuration.json": "f888421726665e8a84b738eed42a64875aed79de8be7daade851ac8bf4c0cef9",
+    "generation_config.json": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2",
+    "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+    "model-00001-of-00005.safetensors": "31d6a825ae35f11fb85b195b4c42c146c051e446433125a215336abdf95cbf5f",
+    "model-00002-of-00005.safetensors": "5991236cea6fe21f3d43cab0f0e84448734fbbe0789816202989f2ddc9d18282",
+    "model-00003-of-00005.safetensors": "c5185c4794be2d8a9784d5753c9922db38df478ce11f9ed0b415b7304d896836",
+    "model-00004-of-00005.safetensors": "b5ee7de71fbf17db3d5704e0c8f2bc7d005ca9e1d7ca2aeb19827b0cfcaa917a",
+    "model-00005-of-00005.safetensors": "20c2d6366ab85c90786ccdd829cd2b9e7d30ef3b2ebbb998280e7e4014b542ff",
+    "model.safetensors.index.json": "f9fdbcb91c23971c13ec5d5f2573d2349e8f61f2f049371ec699281748fdb1bc",
+    "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "tokenizer_config.json": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  "model_files_sha256": "4402fbf128bf6a4e8cbccb3fd8659a61247ecdb2b15d67c0ad6566d0c11aab72",
+  "owner_uid": 1047,
+  "physical_gpu_index": 2,
+  "pid": 2686553,
+  "processes": [
+    {
+      "pid": 2686553,
+      "start_ticks": 390479227,
+      "uid": 1047
+    },
+    {
+      "pid": 2687543,
+      "start_ticks": 390480458,
+      "uid": 1047
+    },
+    {
+      "pid": 2687544,
+      "start_ticks": 390480458,
+      "uid": 1047
+    }
+  ],
+  "run_id": "cbm_drift_v3_shared_history_gpu2_20261110_v1",
+  "runtime_source_sha256": "c6c737ed15456a5cf18693a425ee2ed256f900df9806128ea9a5db71885794c3",
+  "status": "exited"
+}

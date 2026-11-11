@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import pytest
 
-from cbm_drift_v3.runner import run_requests, run_protocol, build_messages
+from cbm_drift_v3.runner import run_requests, run_protocol, build_messages, LocalClient
 from cbm_drift_v3.common import read_json, sha256_json
 from cbm_drift_v3.runtime import RuntimeBlocked
 from cbm_drift_v3.diagnostics import analyze_program
@@ -23,6 +23,26 @@ class FakeClient:
         self.calls.append(copy.deepcopy(payload))
         raw = "NOT JSON" if self.malformed else json.dumps({"answer_set": list("ABCD"), "explanation": f"synthetic-response-{len(self.calls)}"})
         return {"model": "Qwen3-8B", "choices": [{"message": {"content": raw}, "finish_reason": "stop"}], "usage": {"total_tokens": 120}}
+
+
+def test_local_token_counter_explicitly_requests_ids():
+    class DictionaryDefaultTokenizer:
+        def apply_chat_template(self, messages, *, return_dict=True, **kwargs):
+            assert kwargs["enable_thinking"] is False
+            return {"input_ids": list(range(17)), "attention_mask": [1] * 17} if return_dict else list(range(17))
+    client = object.__new__(LocalClient)
+    client.tokenizer = DictionaryDefaultTokenizer()
+    assert client.count_tokens([{"role": "user", "content": "test"}]) == 17
+
+
+def test_local_token_counter_rejects_unexpected_batch_shape():
+    class BrokenTokenizer:
+        def apply_chat_template(self, *args, **kwargs):
+            return {"input_ids": [1, 2, 3], "attention_mask": [1, 1, 1]}
+    client = object.__new__(LocalClient)
+    client.tokenizer = BrokenTokenizer()
+    with pytest.raises(ValueError, match="flat list"):
+        client.count_tokens([{"role": "user", "content": "test"}])
 
 
 def test_full1188_mock_preflight_and_resume(config, sequences, plans, tmp_path):

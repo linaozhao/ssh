@@ -1,0 +1,22 @@
+{
+  "physical_gpu_index": 2,
+  "uuid": "GPU-221ea0c6-cdd5-2d17-9594-45d336491563",
+  "authorization": "User explicitly allowed sharing physical GPU2 on 2026-11-10; this supersedes GPU4-only for this new run.",
+  "cuda_mapping": "CUDA_DEVICE_ORDER=PCI_BUS_ID and CUDA_VISIBLE_DEVICES=2; logical device 0 UUID independently checked before launch.",
+  "vllm_version": "0.11.2",
+  "transformers_version": "5.12.1",
+  "torch_version": "2.9.0+cu128",
+  "tokenizers_version": "0.22.1",
+  "input_count_metadata_issue": "Frozen executor used len(BatchEncoding), which is 2 in transformers5.12.1. Raw records are retained; context_token_recount.jsonl supplies correct explicit-token-ID counts, independently compared against provider usage. Executed source is archived before a post-run fix.",
+  "weights_dtype": "bfloat16",
+  "quantization": null,
+  "gpu_memory_utilization": 0.8,
+  "max_num_seqs": 1,
+  "max_model_len": 16384,
+  "thinking_enabled": false,
+  "request_overrides": {"temperature": 0.7, "top_p": 0.9, "max_tokens": 1024},
+  "inherited_model_generation_default": {"top_k": 20},
+  "default_source": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B/generation_config.json",
+  "sharing_check": "Foreign PID3785032 remained present at 1462 MiB; owned engine PID2712457 used 19704 MiB. Ownership/UUID checked continuously; no foreign process is signalled.",
+  "initial_launch_failure": "vLLM0.11.2 attempted int(CUDA_VISIBLE_DEVICES) when given a UUID; preserved in service_failed_uuid_vllm0112.json. No inference requests were issued by that failed service."
+}

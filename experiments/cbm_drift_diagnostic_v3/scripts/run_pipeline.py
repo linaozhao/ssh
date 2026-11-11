@@ -27,6 +27,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=ROOT / "config/experiment_gpu4_r2.json")
     parser.add_argument("--judge-config", type=Path, default=ROOT / "config/judge_controlled_r2.json")
+    parser.add_argument("--judge-results-subdir", help="Read an explicitly versioned validation continuation")
     parser.add_argument("--dataset", choices=["controlled"], default="controlled")
     parser.add_argument("--logical-request-cap", type=int, default=144)
     stages = ("prepare", "validate", "build-controlled", "validate-controlled", "run-protocol", "run-mad", "preflight",
@@ -37,9 +38,10 @@ def main() -> int:
     if args.logical_request_cap != 144:
         parser.error("R2 controlled logical cap is exactly144; real queue is deferred")
     config, judge_config = read_json(args.config), read_json(args.judge_config)
+    data_dir = ROOT / config.get("data_subdir", "data")
     result = ROOT / "results" / config["run_id"]
     result.mkdir(parents=True, exist_ok=True)
-    judge_subdir = judge_config.get("results_subdir", "controlled_judge")
+    judge_subdir = args.judge_results_subdir or judge_config.get("results_subdir", "controlled_judge")
     if Path(judge_subdir).name != judge_subdir:
         raise ValueError("Judge results_subdir must be a single new run-local directory name")
     judge_dir = result / judge_subdir
@@ -49,15 +51,15 @@ def main() -> int:
     outputs = {}
     if args.prepare:
         outputs["prepare"] = prepare_dataset(ROOT.parents[1], ROOT, config)
-    sequences = read_jsonl(ROOT / "data/evidence_sequences.jsonl")
-    plan = read_jsonl(ROOT / "data/mad_request_plan.jsonl")
-    views = read_jsonl(ROOT / "data/branch_views.jsonl")
+    sequences = read_jsonl(data_dir / "evidence_sequences.jsonl")
+    plan = read_jsonl(data_dir / "mad_request_plan.jsonl")
+    views = read_jsonl(data_dir / "branch_views.jsonl")
     if args.validate:
         source = read_jsonl(ROOT.parent / "cbm_drift_diagnostic_v2/data/evidence_sequences.jsonl")
         report = validate_dataset(sequences, plan, views, source)
-        write_json(ROOT / "data/validation_report.json", report)
+        write_json(data_dir / "validation_report.json", report)
         outputs["data_validation"] = report
-        preserved = verify_source_manifest(ROOT.parents[1], read_json(ROOT / "data/source_manifest.json"))
+        preserved = verify_source_manifest(ROOT.parents[1], read_json(data_dir / "source_manifest.json"))
         write_json(result / "source_preservation_validation.json", preserved)
         if report["status"] != "passed" or preserved["status"] != "passed":
             raise ValueError("Source/data validation failed")
@@ -78,7 +80,7 @@ def main() -> int:
         runtime = check_gpu(config, owned_service=service)
         write_json(result / "runtime_manifest.json", runtime | {"run_id": config["run_id"]})
         if not runtime["allowed"]:
-            for name, selected in (("protocol", read_jsonl(ROOT / "data/protocol_request_plan.jsonl")), ("mad", plan)):
+            for name, selected in (("protocol", read_jsonl(data_dir / "protocol_request_plan.jsonl")), ("mad", plan)):
                 if getattr(args, "run_" + name):
                     existing = load_records(result / name)
                     ids = {r["request_id"] for r in selected}
@@ -101,7 +103,7 @@ def main() -> int:
                     outputs[name] = status
         else:
             if args.run_protocol:
-                outputs["protocol"] = run_protocol(config, read_jsonl(ROOT / "data/protocol_request_plan.jsonl"), sequences, result / "protocol", resume=args.resume)
+                outputs["protocol"] = run_protocol(config, read_jsonl(data_dir / "protocol_request_plan.jsonl"), sequences, result / "protocol", resume=args.resume)
             if args.run_mad:
                 protocol_status = read_json(result / "protocol/status.json") if (result / "protocol/status.json").exists() else {}
                 if protocol_status.get("api_success") != 108:
@@ -130,10 +132,10 @@ def main() -> int:
         outputs["evaluation"] = evaluate_controlled(read_jsonl(file) if file.exists() else [], read_jsonl(ROOT / "data/controlled/expected_labels.jsonl"))
         write_json(judge_dir / "evaluation.json", outputs["evaluation"])
     if args.prepare_deferred_real:
-        outputs["deferred"] = prepare_deferred_real(plan, sequences, records, ROOT / "annotation/deferred_real", config["selection_seed"])
+        outputs["deferred"] = prepare_deferred_real(plan, sequences, records, ROOT / config.get("annotation_subdir", "annotation/deferred_real"), config["selection_seed"])
     if args.report:
-        build_report(ROOT, config, judge_config)
-        outputs["report"] = str(ROOT / "RUN_SUMMARY_ZH.md")
+        build_report(ROOT, config, judge_config, judge_results_subdir=judge_subdir)
+        outputs["report"] = str(result / "RUN_SUMMARY_ZH.md")
     print(json.dumps(outputs, ensure_ascii=False, indent=2))
     return 0
 

@@ -19,7 +19,8 @@ from .runtime import RuntimeBlocked, model_files, verify_service
 
 def code_fingerprint() -> dict[str, str]:
     """Pin local implementation rather than relying on an uncommitted base SHA."""
-    return {p.name: sha256_file(p) for p in sorted(Path(__file__).parent.glob("*.py"))}
+    names = {"common.py", "state.py", "prompts.py", "parsing.py", "prepare.py", "validation.py", "runtime.py", "runner.py"}
+    return {p.name: sha256_file(p) for p in sorted(Path(__file__).parent.glob("*.py")) if p.name in names}
 
 
 def build_messages(request: dict[str, Any], sequence: dict[str, Any], completed: dict[str, Any]) -> list[dict[str, str]]:
@@ -48,7 +49,11 @@ class LocalClient:
 
     def count_tokens(self, messages: list[dict[str, str]]) -> int:
         """Count with the non-thinking chat template, including generation prefix."""
-        return len(self.tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True, enable_thinking=False))
+        ids = self.tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True,
+                                                enable_thinking=False, return_dict=False)
+        if not isinstance(ids, list) or any(type(token) is not int for token in ids):
+            raise ValueError("Tokenizer must return one flat list of token IDs")
+        return len(ids)
 
     def __call__(self, payload: dict[str, Any]) -> dict[str, Any]:
         verify_service(self.config)

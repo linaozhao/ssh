@@ -202,6 +202,19 @@ def validate_prediction(value: Any, package: dict[str, Any]) -> dict[str, Any]:
         if not member(claim.get("current_deviation"), {"yes", "no", "uncertain"}) or not member(claim.get("temporal_status"), TEMPORAL):
             errors.append("invalid claim deviation/time")
         version = claim.get("evidence_version")
+        # Evidence records expose both an integer version and a full ID. Resolve
+        # an integer only through explicitly cited, uniquely matching evidence.
+        if type(version) is int:
+            references = claim.get("conflicting_evidence_ids", []) + claim.get("cited_evidence_ids", []) if all(
+                isinstance(claim.get(k), list) for k in ("conflicting_evidence_ids", "cited_evidence_ids")) else []
+            matches = {eid for eid in references if isinstance(eid, str) and eid in evidence
+                       and evidence[eid].get("version") == version
+                       and (not claim.get("attribute") or evidence[eid].get("attribute") == claim["attribute"])
+                       and (not claim.get("candidate_ids") or evidence[eid].get("candidate_id") in claim["candidate_ids"])}
+            if len(matches) == 1:
+                claim["raw_evidence_version"] = version
+                version = claim["evidence_version"] = next(iter(matches))
+                claim["evidence_version_resolution"] = "unique_explicit_reference"
         if version is not None and (not isinstance(version, str) or version not in evidence):
             object_errors.append("invalid evidence version")
         if isinstance(claim.get("conflicting_evidence_ids"), list):
@@ -247,7 +260,9 @@ def run_controlled_judge(config: dict[str, Any], output_dir: Path, *, enabled: b
     write_json(output_dir / "credential_gate.json", gate)
     if not gate["allowed"]:
         return gate
-    freeze_json(output_dir / "implementation_freeze.json", {p.name: sha256_file(p) for p in sorted(Path(__file__).parent.glob("*.py"))})
+    judge_modules = {"common.py", "state.py", "parsing.py", "judge.py", "controlled_cases.py", "evaluation.py"}
+    freeze_json(output_dir / "implementation_freeze.json", {
+        p.name: sha256_file(p) for p in sorted(Path(__file__).parent.glob("*.py")) if p.name in judge_modules})
     if config.get("dataset") != "controlled" or config.get("enable_real_trajectory_queue") or config.get("logical_request_cap") != 144:
         raise ValueError("Controlled-only budget policy violated")
     manifest = read_json(output_dir / "experiment_manifest.json")

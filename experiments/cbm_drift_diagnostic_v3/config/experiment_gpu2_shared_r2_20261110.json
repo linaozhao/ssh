@@ -1,0 +1,38 @@
+{
+  "plan_revision": "controlled-first-r2-gpu2-authorized-20261110",
+  "schema_version": "cbm-drift-v3-r2", "prompt_version": "shared-history-r2-v1",
+  "run_id": "cbm_drift_v3_shared_history_gpu2_20261110_v1",
+  "source_sha": "5d4a12f34dd2318d36ae20224668e866111fd0d9",
+  "code_sha": "1be00ccb068a5313fba312aa3a9fd809c6d57f34",
+  "code_sha_note": "Implementation base; current files fingerprinted at execution freeze.",
+  "data_subdir": "data/gpu2_shared_20261110",
+  "annotation_subdir": "annotation/gpu2_shared_20261110",
+  "preserve_root_report": true,
+  "schedule_seed": 20261109, "selection_seed": 20261109, "repeats": 1,
+  "gpu": {
+    "physical_gpu_index": 2, "expected_gpu_name": "RTX4090",
+    "expected_uuid": "GPU-221ea0c6-cdd5-2d17-9594-45d336491563",
+    "require_uuid_verification": true, "allow_gpu_fallback": false,
+    "allow_shared_gpu": true, "sharing_authorization": "user_2026-11-10_gpu2",
+    "min_free_reserve_mib": 1024
+  },
+  "model": {
+    "alias": "qwen", "model_name": "Qwen3-8B", "api_key": "EMPTY",
+    "base_url": "http://127.0.0.1:8112/v1",
+    "weights_path": "/data/zla/mad_drift_benchmark/modelscope_models/Qwen/Qwen3-8B",
+    "thinking_enabled": false, "extra_body": {"chat_template_kwargs": {"enable_thinking": false}},
+    "deployment": {
+      "dtype": "bfloat16", "quantization": null, "revision": "unknown",
+      "tensor_parallel_size": 1, "max_model_len": 16384,
+      "gpu_memory_utilization": 0.8, "max_num_seqs": 1,
+      "enable_prefix_caching": true, "enforce_eager": true, "host": "127.0.0.1"
+    }
+  },
+  "generation": {
+    "temperature": 0.7, "top_p": 0.9, "max_tokens": 1024,
+    "request_timeout_seconds": 180, "max_retries": 2, "retry_sleep_seconds": 2,
+    "max_concurrent_families": 1, "max_concurrent_requests": 1
+  },
+  "protocol_check": {"seeds": [11, 22, 33], "snapshots": ["early_unknown", "clean_t3", "update_t4"]},
+  "mad": {"agents": ["agent_1", "agent_2", "agent_3"], "stages": [1, 2, 3, 4, 5], "rounds": [0, 1, 2], "preflight_base_items": 2}
+}

@@ -8,5 +8,5 @@ fi
 
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 export PYTHONPATH="${ROOT}/src${PYTHONPATH:+:${PYTHONPATH}}"
-# The Python gate verifies physical GPU4 and pins its UUID before spawning vLLM.
+# The Python gate verifies the authorized physical device and its CUDA UUID.
 exec "${PYTHON:-python}" -m cbm_drift_v3.runtime --config "$1" --manifest "$2" --launch
